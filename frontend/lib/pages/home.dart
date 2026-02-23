@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
         ),
         child: LayoutBuilder(
           builder: (context, constrains) {
-            print(constrains.maxHeight);
             if (constrains.maxWidth > 840 && constrains.maxHeight > 500) {
               return Center(
                 child: Container(
@@ -55,7 +54,7 @@ class _HomeState extends State<Home> {
                       AnimatedPositioned(
                         left: _isEnter ? 0 : 800 - (800 * 0.55),
                         top: 0,
-                        duration: Duration(milliseconds: 150),
+                        duration: Duration(milliseconds: 300),
                         child: SizedBox(
                           width: 800 * 0.55,
                           height: 520,
@@ -157,7 +156,7 @@ class _HomeState extends State<Home> {
                       AnimatedPositioned(
                         left: _isEnter ? 800 - (800 * 0.45) : 0,
                         top: 0,
-                        duration: Duration(milliseconds: 150),
+                        duration: Duration(milliseconds: 300),
                         child: Container(
                           width: 800 * 0.45,
                           height: 520,
@@ -270,7 +269,7 @@ class _HomeState extends State<Home> {
                               margin: EdgeInsets.only(top: 38, bottom: 20),
                               child: Center(
                                 child: Text(
-                                  'Вход',
+                                  _isEnter ? 'Вход' : 'Регистрация',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.w600,
