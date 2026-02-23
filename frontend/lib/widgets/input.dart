@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class Input extends StatefulWidget {
+  const Input({
+    super.key,
+    required this.isPassword,
+    required this.hintText,
+    required this.controller,
+  });
+
+  final String hintText;
+
+  final bool isPassword;
+  final TextEditingController controller;
+
+  @override
+  State<Input> createState() => _InputState();
+}
+
+class _InputState extends State<Input> {
+  late bool _isPassword;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isPassword = widget.isPassword;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // margin: EdgeInsets.symmetric(horizontal: 20.w),
+      height: 50,
+      // width: 316.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Color.fromRGBO(240, 240, 240, 1),
+      ),
+      child: Row(
+        children: [
+          SizedBox(width: 14),
+          Expanded(
+            child: TextField(
+              controller: widget.controller,
+              obscureText: _isPassword,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ),
+          if (widget.isPassword)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _isPassword = !_isPassword;
+                });
+              },
+              icon: Icon(
+                _isPassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.grey,
+              ),
+            ),
+          SizedBox(width: 14),
+        ],
+      ),
+    );
+  }
+}
