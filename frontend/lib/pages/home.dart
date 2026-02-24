@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   child: Input(
                                     hintText: 'Имя',
-                                    isPassword: true,
+                                    isPassword: false,
                                     controller: _controllerName,
                                   ),
                                 ),
@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   child: Input(
                                     hintText: 'Фамилия',
-                                    isPassword: true,
+                                    isPassword: false,
                                     controller: _controllerSurname,
                                   ),
                                 ),
@@ -123,6 +123,11 @@ class _HomeState extends State<Home> {
                                 ),
                               SizedBox(height: _isEnter ? 15 : 30),
                               GestureDetector(
+                                onTap: _isEnter
+                                    ? () {}
+                                    : () {
+                                        Navigator.pushNamed(context, '/otp');
+                                      },
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,
@@ -242,8 +247,9 @@ class _HomeState extends State<Home> {
                 ),
               );
             } else {
-              return SizedBox(
+              return Container(
                 height: MediaQuery.of(context).size.height,
+                margin: EdgeInsets.symmetric(vertical: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -331,6 +337,11 @@ class _HomeState extends State<Home> {
                             SizedBox(height: _isEnter ? 7.5 : 22.5),
                             Center(
                               child: GestureDetector(
+                                onTap: _isEnter
+                                    ? () {}
+                                    : () {
+                                        Navigator.pushNamed(context, '/otp');
+                                      },
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,
