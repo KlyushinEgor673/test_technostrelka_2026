@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend/widgets/input.dart';
@@ -124,7 +127,17 @@ class _HomeState extends State<Home> {
                               SizedBox(height: _isEnter ? 15 : 30),
                               GestureDetector(
                                 onTap: _isEnter
-                                    ? () {}
+                                    ? () async {
+                                        final dio = Dio();
+                                        final response = await dio.post(
+                                          'http://localhost:3000/api/enter',
+                                          data: jsonEncode({
+                                            'email': _controllerEmail.text,
+                                            'password': _controllerPassword.text
+                                          })
+                                        );
+                                        print(response.data);
+                                      }
                                     : () {
                                         Navigator.pushNamed(context, '/otp');
                                       },
