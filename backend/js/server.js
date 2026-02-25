@@ -17,10 +17,12 @@ const { authMiddleware } = require("./middlewares/auth.middleware");
 //swagger
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
+const { use } = require("react");
 
 const app = express();
 
 const tempStorage = new Map();
+const usedCodes = new Map();
 
 app.use(
   cors({
@@ -127,7 +129,7 @@ app.post("/api/user/register", async (req, res) => {
     });
   } catch (error) {
     console.error("Ошибка регистрации: ", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -162,7 +164,7 @@ app.post("/api/user/enter", async (req, res) => {
     res.status(200).json({ token: token, user: user });
   } catch (error) {
     console.error("Ошибка входа:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -187,8 +189,8 @@ app.put("/api/user/edit", authMiddleware, async (req, res) => {
 
     res.status(200).json({ status: "success" })
   } catch (error) {
-    console.log("Ошибка", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" })
+    console.log("Ошибка: ", error);
+    res.status(500).json({ error: "Internal server error" })
   }
 });
 
@@ -211,7 +213,7 @@ app.get("/api/user/me", authMiddleware, async (req, res) => {
     });
   } catch (error) {
     console.log("Ошибка", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" })
+    res.status(500).json({ error: "Internal server error" })
   }
   
 });
@@ -281,7 +283,7 @@ app.post("/api/code/verify-code", async (req, res) => {
     });
   } catch (error) {
     console.error("Ошибка верификации:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -317,7 +319,7 @@ app.post("/api/code/resend-code", async (req, res) => {
     res.status(200).json({ message: "Новый код отправлен" });
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -362,7 +364,7 @@ app.post('/api/subscription', authMiddleware, async (req, res) => {
     res.status(200).json({ status: "success" })
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 })
 
@@ -423,7 +425,7 @@ app.put('/api/subscription', authMiddleware, async (req, res) => {
     res.status(200).json({ status: "success" })
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 })
 
@@ -445,7 +447,7 @@ app.get('/api/subscription', authMiddleware, async (req, res) => {
     res.status(200).json({ subscriptions: subscriptions })
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 })
 
@@ -477,11 +479,11 @@ app.delete('/api/subscription', authMiddleware, async (req, res) => {
     const subscription = await prisma.subscriptions.delete({
       where: { id: parseInt(id) }
     })
-
+    
     res.status(200).json({ status: "success" })
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 })
 
@@ -489,6 +491,15 @@ app.delete('/api/subscription', authMiddleware, async (req, res) => {
 
 // получение access-токена (yoomoney)
 app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
+
+  /* #swagger.tags = ['yoomoney'] */
+  /* #swagger.summary = 'Получение access-токена для yoomoney (используется только с фронта 1 раз)' */
+
+  console.log(`[${new Date().toISOString()}] POST /api/exchange-token called`);
+  console.log(`Request ID: ${Math.random().toString(36).substring(7)}`);
+  console.log(`Headers:`, req.headers);
+  console.log(`Body:`, req.body);
+  
   try {
     const { code } = req.body;
     
@@ -496,6 +507,15 @@ app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
       return res.status(400).json({ error: 'Код обязателен' });
     }
 
+    if(usedCodes.has(code)){
+      console.log(`Код ${code} уже был использован. Запрос проигнорирован.`)
+      return res.status(200).json({ error: "данный код уже использовался" })
+    }
+
+    usedCodes.set(code, { inProgress: true, userId: req.user.id })
+
+    console.log(`[${new Date().toISOString()}] Sending request to YooMoney...`);
+    
     const response = await fetch('https://yoomoney.ru/oauth/token', {
       method: 'POST',
       headers: {
@@ -510,24 +530,26 @@ app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
       })
     });
     
+    console.log(`[${new Date().toISOString()}] Received response from YooMoney with status: ${response.status}`);
+    
     const data = await response.json();
-    console.log("yoomoney", data)
+    console.log(`Response data:`, data);
 
+    if(!data.access_token){
+      usedCodes.delete(code)
+      return res.status(400).json({ error: "Неверный токен" })
+    }
 
     await prisma.users.update({
       where: { id: req.user.id },
       data: {
-        access_token: data.access_token
+        access_token_yoomoney: data.access_token
       }
     })
 
-    const newUser = await prisma.users.findUnique({
-      where: { id: req.user.id }
-    })
+    usedCodes.set(code, { inProgress: false, success: true, userId: req.user.id })
 
-
-
-    res.status(200).json({data: data, newUser: newUser });
+    res.status(200).json({ status: "success" });
   } catch (error) {
     console.error('Error exchanging token:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -537,9 +559,118 @@ app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
 
 
 // получение истории операций (yoomoney)
-// app.post('/api/operation-history')
+app.post('/api/operation-history', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['yoomoney'] */
+  /* #swagger.summary = 'Получение истории операций' */
+  try {
+
+    const bodyParams = new URLSearchParams();
+
+    const user = await prisma.users.findUnique({
+      where: { id: req.user.id }
+    })
+    const access_token = user.access_token_yoomoney
+
+    // перечень типов операций: deposition — пополнение счета (пополнение), payment — платежи со счета (траты)
+    if(req.params.type) bodyParams.append('type', req.params.type)
+    // отбор платежей по значению метки (сам хз что это, надо разобраться)
+    if(req.params.label) bodyParams.append('label', req.params.label)
+    // операции, равные from, или более поздние
+    if(req.params.from) bodyParams.append('from', req.params.from)
+    // операции более ранние, чем till
+    if(req.params.till) bodyParams.append('till', req.params.till)
+    // если параметр присутствует, то будут отображены операции, начиная с номера start_record. Операции нумеруются с 0
+    if(req.params.start_record) bodyParams.append('start_record', req.params.start_record)
+    // количество запрашиваемых записей истории операций. Допустимые значения: от 1 до 100, по умолчанию — 30
+    if(req.params.records) bodyParams.append('records', req.params.records)
+    // показывать подробные детали операции. По умолчанию false. Для отображения деталей операции требуется наличие права operation-details
+    if(req.params.details) bodyParams.append('details', req.params.details)
+
+    if(bodyParams.length === 0){
+      bodyParams.append('records', 100)
+    }
+
+    const response = await fetch('https://yoomoney.ru/api/operation-history', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: bodyParams
+    })
+
+    if(!response.ok){
+      return res.status(400).json({ error: response.status })
+    }
+
+    const data = await response.json()
+
+    if(data.error){
+      return res.status(400).json({ error: data.error })
+    }
+
+    res.status(200).json({ subscriptions: data })
+
+  } catch (error) {
+    console.error('Error exchanging token:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
 
 
+
+// получение информации об операции (для yoomoney)
+app.post('/api/operation-details', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['yoomoney'] */
+  /* #swagger.summary = 'Получение информации об операции' */
+  /* #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Параметры запроса',
+      required: true,
+      schema: {
+        operation_id: ""
+      }
+  } */
+  try {
+    const { operation_id } = req.body;
+    if (!operation_id) {
+      return res.status(400).json({ error: "Идентификатор операции обязателен" });
+    }
+
+    const user = await prisma.users.findUnique({
+      where: { id: req.user.id }
+    });
+    const access_token = user.access_token_yoomoney;
+
+    const bodyParams = new URLSearchParams();
+    bodyParams.append('operation_id', operation_id);
+
+    const response = await fetch('https://yoomoney.ru/api/operation-details', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: bodyParams
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('YooMoney API error:', response.status, errorText);
+      return res.status(400).json({ error: `YooMoney API error: ${response.status}` });
+    }
+
+    const data = await response.json();
+    if (data.error) {
+      return res.status(400).json({ error: data.error });
+    }
+
+    res.status(200).json({ details: data });
+  } catch (error) {
+    console.error('Error in operation-details:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 const PORT = process.env.PORT;

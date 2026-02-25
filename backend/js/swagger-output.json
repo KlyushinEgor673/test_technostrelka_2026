@@ -462,6 +462,10 @@
     },
     "/api/exchange-token": {
       "post": {
+        "tags": [
+          "yoomoney"
+        ],
+        "summary": "Получение access-токена для yoomoney (используется только с фронта 1 раз)",
         "description": "",
         "parameters": [
           {
@@ -477,6 +481,81 @@
               "properties": {
                 "code": {
                   "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/operation-history": {
+      "post": {
+        "tags": [
+          "yoomoney"
+        ],
+        "summary": "Получение истории операций",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/operation-details": {
+      "post": {
+        "tags": [
+          "yoomoney"
+        ],
+        "summary": "Получение информации об операции",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Параметры запроса",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
