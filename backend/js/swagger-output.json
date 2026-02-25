@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Twitter API",
-    "description": "Description",
+    "title": "API Documentation",
+    "description": "Subscription Monitoring API",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -10,9 +10,21 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Введите JWT токен в формате: Bearer {token}"
+    }
+  },
   "paths": {
     "/api/test": {
       "get": {
+        "tags": [
+          "Test"
+        ],
+        "summary": "Тестовый запрос",
         "description": "",
         "responses": {
           "200": {
@@ -23,6 +35,10 @@
     },
     "/api/user/register": {
       "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Регистрация",
         "description": "",
         "parameters": [
           {
@@ -68,6 +84,10 @@
     },
     "/api/user/enter": {
       "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Авторизация пользователя",
         "description": "",
         "parameters": [
           {
@@ -101,6 +121,10 @@
     },
     "/api/user/edit": {
       "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Редактирование профиля пользователя",
         "description": "",
         "parameters": [
           {
@@ -142,6 +166,10 @@
     },
     "/api/user/me": {
       "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Получение теукщего пользователя",
         "description": "",
         "parameters": [
           {
@@ -165,6 +193,10 @@
     },
     "/api/code/verify-code": {
       "post": {
+        "tags": [
+          "Code"
+        ],
+        "summary": "Получение кода подтверждения",
         "description": "",
         "parameters": [
           {
@@ -198,6 +230,10 @@
     },
     "/api/code/resend-code": {
       "post": {
+        "tags": [
+          "Code"
+        ],
+        "summary": "Повторная отправка кода подтверждения",
         "description": "",
         "parameters": [
           {
@@ -228,6 +264,10 @@
     },
     "/api/subscription": {
       "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Создание новой подписки",
         "description": "",
         "parameters": [
           {
@@ -282,6 +322,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Изменение данных подписки",
         "description": "",
         "parameters": [
           {
@@ -318,9 +362,6 @@
                 },
                 "img": {
                   "example": "any"
-                },
-                "id_user": {
-                  "example": "any"
                 }
               }
             }
@@ -330,8 +371,17 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -339,6 +389,10 @@
         }
       },
       "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Получение всех подписок пользователя",
         "description": "",
         "parameters": [
           {
@@ -360,6 +414,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Удаление подписки",
         "description": "",
         "parameters": [
           {
@@ -384,8 +442,17 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -393,5 +460,10 @@
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

@@ -37,6 +37,8 @@ app.use(express.json());
 
 //тестовый запрос
 app.get("/api/test", async (req, res) => {
+  /* #swagger.tags = ['Test'] */
+  /* #swagger.summary = 'Тестовый запрос' */
   res.status(200).json({ message: "success" });
 });
 
@@ -78,6 +80,8 @@ async function sendVerificationEmail(userEmail, verificationCode) {
 
 //регистрация
 app.post("/api/user/register", async (req, res) => {
+  /* #swagger.tags = ['Users'] */
+  /* #swagger.summary = 'Регистрация' */
   try {
     const { email, password, name, surname } = req.body;
 
@@ -129,6 +133,8 @@ app.post("/api/user/register", async (req, res) => {
 
 //вход
 app.post("/api/user/enter", async (req, res) => {
+  /* #swagger.tags = ['Users'] */
+  /* #swagger.summary = 'Авторизация пользователя' */
   try {
     const { email, password } = req.body;
 
@@ -162,6 +168,8 @@ app.post("/api/user/enter", async (req, res) => {
 
 //редактирование пользователя (изменение профиля)
 app.put("/api/user/edit", authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Users'] */
+  /* #swagger.summary = 'Редактирование профиля пользователя' */
   try {
     const { name, surname } = req.body;
 
@@ -186,6 +194,8 @@ app.put("/api/user/edit", authMiddleware, async (req, res) => {
 
 //получение текущего пользователя
 app.get("/api/user/me", authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Users'] */
+  /* #swagger.summary = 'Получение теукщего пользователя' */
   try {
     const user = await prisma.users.findUnique({
       where: { id: req.user.id },
@@ -207,6 +217,8 @@ app.get("/api/user/me", authMiddleware, async (req, res) => {
 });
 
 app.post("/api/code/verify-code", async (req, res) => {
+  /* #swagger.tags = ['Code'] */
+  /* #swagger.summary = 'Получение кода подтверждения' */
   try {
     const { email, code } = req.body;
 
@@ -275,6 +287,8 @@ app.post("/api/code/verify-code", async (req, res) => {
 
 // Дополнительно: повторная отправка кода
 app.post("/api/code/resend-code", async (req, res) => {
+  /* #swagger.tags = ['Code'] */
+  /* #swagger.summary = 'Повторная отправка кода подтверждения' */
   try {
     const { email } = req.body;
 
@@ -311,6 +325,8 @@ app.post("/api/code/resend-code", async (req, res) => {
 
 //создание подписок
 app.post('/api/subscription', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Subscription'] */
+  /* #swagger.summary = 'Создание новой подписки' */
   try {
     const { name, description, start_date, end_date, price, flag_auto, img } = req.body
 
@@ -354,6 +370,8 @@ app.post('/api/subscription', authMiddleware, async (req, res) => {
 
 //изменение подписки
 app.put('/api/subscription', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Subscription'] */
+  /* #swagger.summary = 'Изменение данных подписки' */
   try {
     const { id, name, description, start_date, end_date, price, flag_auto, img } = req.body
 
@@ -413,8 +431,13 @@ app.put('/api/subscription', authMiddleware, async (req, res) => {
 
 //получение всех подписок (ИЗМЕНИТЬ НА ПОЛУЧЕНИЕ ВСЕХ ПОДПИСОК ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ)
 app.get('/api/subscription', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Subscription'] */
+  /* #swagger.summary = 'Получение всех подписок пользователя' */
   try {
     const subscriptions = await prisma.subscriptions.findMany({
+      where: {
+      id_user: req.user.id
+      },
       orderBy: {
         id: "asc"
       }
@@ -430,6 +453,8 @@ app.get('/api/subscription', authMiddleware, async (req, res) => {
 
 //удаление подписки
 app.delete('/api/subscription', authMiddleware, async (req, res) => {
+  /* #swagger.tags = ['Subscription'] */
+  /* #swagger.summary = 'Удаление подписки' */
   try {
     const id = req.body.id
 
