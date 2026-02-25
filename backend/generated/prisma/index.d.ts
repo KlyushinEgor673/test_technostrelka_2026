@@ -1009,6 +1009,7 @@ export namespace Prisma {
     password: string | null
     name: string | null
     surname: string | null
+    access_token_yoomoney: string | null
     created_at: Date | null
   }
 
@@ -1018,6 +1019,7 @@ export namespace Prisma {
     password: string | null
     name: string | null
     surname: string | null
+    access_token_yoomoney: string | null
     created_at: Date | null
   }
 
@@ -1027,6 +1029,7 @@ export namespace Prisma {
     password: number
     name: number
     surname: number
+    access_token_yoomoney: number
     created_at: number
     _all: number
   }
@@ -1046,6 +1049,7 @@ export namespace Prisma {
     password?: true
     name?: true
     surname?: true
+    access_token_yoomoney?: true
     created_at?: true
   }
 
@@ -1055,6 +1059,7 @@ export namespace Prisma {
     password?: true
     name?: true
     surname?: true
+    access_token_yoomoney?: true
     created_at?: true
   }
 
@@ -1064,6 +1069,7 @@ export namespace Prisma {
     password?: true
     name?: true
     surname?: true
+    access_token_yoomoney?: true
     created_at?: true
     _all?: true
   }
@@ -1160,6 +1166,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney: string | null
     created_at: Date
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
@@ -1188,6 +1195,7 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     surname?: boolean
+    access_token_yoomoney?: boolean
     created_at?: boolean
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1199,6 +1207,7 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     surname?: boolean
+    access_token_yoomoney?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["users"]>
 
@@ -1208,6 +1217,7 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     surname?: boolean
+    access_token_yoomoney?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["users"]>
 
@@ -1217,10 +1227,11 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     surname?: boolean
+    access_token_yoomoney?: boolean
     created_at?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "access_token_yoomoney" | "created_at", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1239,6 +1250,7 @@ export namespace Prisma {
       password: string
       name: string
       surname: string
+      access_token_yoomoney: string | null
       created_at: Date
     }, ExtArgs["result"]["users"]>
     composites: {}
@@ -1669,6 +1681,7 @@ export namespace Prisma {
     readonly password: FieldRef<"users", 'String'>
     readonly name: FieldRef<"users", 'String'>
     readonly surname: FieldRef<"users", 'String'>
+    readonly access_token_yoomoney: FieldRef<"users", 'String'>
     readonly created_at: FieldRef<"users", 'DateTime'>
   }
     
@@ -3298,6 +3311,7 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     surname: 'surname',
+    access_token_yoomoney: 'access_token_yoomoney',
     created_at: 'created_at'
   };
 
@@ -3439,6 +3453,7 @@ export namespace Prisma {
     password?: StringFilter<"users"> | string
     name?: StringFilter<"users"> | string
     surname?: StringFilter<"users"> | string
+    access_token_yoomoney?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
     subscriptions?: SubscriptionsListRelationFilter
   }
@@ -3449,6 +3464,7 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     surname?: SortOrder
+    access_token_yoomoney?: SortOrderInput | SortOrder
     created_at?: SortOrder
     subscriptions?: subscriptionsOrderByRelationAggregateInput
   }
@@ -3462,6 +3478,7 @@ export namespace Prisma {
     password?: StringFilter<"users"> | string
     name?: StringFilter<"users"> | string
     surname?: StringFilter<"users"> | string
+    access_token_yoomoney?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
     subscriptions?: SubscriptionsListRelationFilter
   }, "id" | "email">
@@ -3472,6 +3489,7 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     surname?: SortOrder
+    access_token_yoomoney?: SortOrderInput | SortOrder
     created_at?: SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
@@ -3489,6 +3507,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"users"> | string
     name?: StringWithAggregatesFilter<"users"> | string
     surname?: StringWithAggregatesFilter<"users"> | string
+    access_token_yoomoney?: StringNullableWithAggregatesFilter<"users"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
   }
 
@@ -3584,6 +3603,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney?: string | null
     created_at?: Date | string
     subscriptions?: subscriptionsCreateNestedManyWithoutUsersInput
   }
@@ -3594,6 +3614,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney?: string | null
     created_at?: Date | string
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUsersInput
   }
@@ -3603,6 +3624,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: subscriptionsUpdateManyWithoutUsersNestedInput
   }
@@ -3613,6 +3635,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
@@ -3623,6 +3646,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney?: string | null
     created_at?: Date | string
   }
 
@@ -3631,6 +3655,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -3640,6 +3665,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -3763,6 +3789,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3780,6 +3821,11 @@ export namespace Prisma {
     none?: subscriptionsWhereInput
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type subscriptionsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -3790,6 +3836,7 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     surname?: SortOrder
+    access_token_yoomoney?: SortOrder
     created_at?: SortOrder
   }
 
@@ -3803,6 +3850,7 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     surname?: SortOrder
+    access_token_yoomoney?: SortOrder
     created_at?: SortOrder
   }
 
@@ -3812,6 +3860,7 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     surname?: SortOrder
+    access_token_yoomoney?: SortOrder
     created_at?: SortOrder
   }
 
@@ -3853,6 +3902,24 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3865,21 +3932,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -3912,11 +3964,6 @@ export namespace Prisma {
   export type UsersScalarRelationFilter = {
     is?: usersWhereInput
     isNot?: usersWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type subscriptionsCountOrderByAggregateInput = {
@@ -3971,24 +4018,6 @@ export namespace Prisma {
     id?: SortOrder
     price?: SortOrder
     id_user?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -4047,6 +4076,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -4091,10 +4124,6 @@ export namespace Prisma {
     create?: XOR<usersCreateWithoutSubscriptionsInput, usersUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutSubscriptionsInput
     connect?: usersWhereUniqueInput
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -4144,6 +4173,20 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -4201,6 +4244,34 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -4213,20 +4284,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDecimalFilter<$PrismaModel = never> = {
@@ -4254,34 +4311,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -4395,6 +4424,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney?: string | null
     created_at?: Date | string
   }
 
@@ -4404,6 +4434,7 @@ export namespace Prisma {
     password: string
     name: string
     surname: string
+    access_token_yoomoney?: string | null
     created_at?: Date | string
   }
 
@@ -4428,6 +4459,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -4437,6 +4469,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     surname?: StringFieldUpdateOperationsInput | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

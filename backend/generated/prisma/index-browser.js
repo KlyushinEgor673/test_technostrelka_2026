@@ -126,6 +126,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   password: 'password',
   name: 'name',
   surname: 'surname',
+  access_token_yoomoney: 'access_token_yoomoney',
   created_at: 'created_at'
 };
 

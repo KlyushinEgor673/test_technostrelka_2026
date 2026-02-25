@@ -487,12 +487,13 @@ app.delete('/api/subscription', authMiddleware, async (req, res) => {
 
 
 
+// получение access-токена (yoomoney)
 app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
   try {
     const { code } = req.body;
     
     if (!code) {
-      return res.status(400).json({ error: 'Code is required' });
+      return res.status(400).json({ error: 'Код обязателен' });
     }
 
     const response = await fetch('https://yoomoney.ru/oauth/token', {
@@ -510,13 +511,35 @@ app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
     });
     
     const data = await response.json();
-    res.json(data);
+    console.log("yoomoney", data)
+
+
+    await prisma.users.update({
+      where: { id: req.user.id },
+      data: {
+        access_token: data.access_token
+      }
+    })
+
+    const newUser = await prisma.users.findUnique({
+      where: { id: req.user.id }
+    })
+
+
+
+    res.status(200).json({data: data, newUser: newUser });
   } catch (error) {
     console.error('Error exchanging token:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-
 })
+
+
+
+// получение истории операций (yoomoney)
+// app.post('/api/operation-history')
+
+
 
 
 const PORT = process.env.PORT;

@@ -8,13 +8,14 @@ datasource db {
 }
 
 model users {
-  id            Int             @id @default(autoincrement())
-  email         String          @unique
-  password      String
-  name          String
-  surname       String
-  created_at    DateTime        @default(now())
-  subscriptions subscriptions[]
+  id                    Int             @id @default(autoincrement())
+  email                 String          @unique
+  password              String
+  name                  String
+  surname               String
+  access_token_yoomoney String?
+  created_at            DateTime        @default(now())
+  subscriptions         subscriptions[]
 }
 
 model subscriptions {
