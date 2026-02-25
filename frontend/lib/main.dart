@@ -5,7 +5,7 @@ import 'package:frontend/pages/home.dart';
 import 'package:frontend/pages/otp.dart';
 import 'package:frontend/pages/profile.dart';
 
-void main() async{
+void main() async {
   final storage = FlutterSecureStorage();
   String? token = await storage.read(key: 'token');
   runApp(
@@ -16,7 +16,7 @@ void main() async{
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/':
-              if (token == null){
+              if (token == null) {
                 return PageRouteBuilder(pageBuilder: (_, __, ___) => Home());
               } else {
                 return PageRouteBuilder(pageBuilder: (_, __, ___) => Profile());
@@ -24,7 +24,10 @@ void main() async{
             case '/entrance':
               return PageRouteBuilder(pageBuilder: (_, __, ___) => Home());
             case '/otp':
-              return PageRouteBuilder(pageBuilder: (_, __, ___) => Otp());
+              final args = settings.arguments as Map;
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => Otp(email: args['email']),
+              );
             case '/profile':
               return PageRouteBuilder(pageBuilder: (_, __, ___) => Profile());
           }

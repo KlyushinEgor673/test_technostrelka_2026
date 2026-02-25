@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:s_webview/s_webview.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,18 +22,15 @@ class _HomeState extends State<Home> {
   final _controllerName = TextEditingController();
   final _controllerSurname = TextEditingController();
 
+  final _dio = Dio();
+  final _storage = FlutterSecureStorage();
+
   Future<void> _enter() async {
     if (_controllerPassword.text.isEmpty || _controllerEmail.text.isEmpty) {
       Alerts.showError(context, 'Заполните все поля');
     } else {
-      final dio = Dio();
-      final storage = FlutterSecureStorage();
-      print({
-        'email': _controllerEmail.text,
-        'password': _controllerPassword.text,
-      });
       try {
-        final response = await dio.post(
+        final response = await _dio.post(
           'http://localhost:3000/api/user/enter',
           data: jsonEncode({
             'email': _controllerEmail.text,
@@ -42,11 +38,40 @@ class _HomeState extends State<Home> {
           }),
         );
         final data = response.data;
-        print(data['token']);
-        await storage.write(key: 'token', value: data['token']);
+        await _storage.write(key: 'token', value: data['token']);
         Navigator.pushNamed(context, '/profile');
       } catch (e) {
         Alerts.showError(context, 'Неверный логин или пароль');
+      }
+    }
+  }
+
+  Future<void> _register() async {
+    if (_controllerPassword.text.isEmpty ||
+        _controllerEmail.text.isEmpty ||
+        _controllerName.text.isEmpty ||
+        _controllerSurname.text.isEmpty) {
+      Alerts.showError(context, 'Заполните все поля');
+    } else if (!EmailValidator.validate(_controllerEmail.text)) {
+      Alerts.showError(context, 'Введите коректный email');
+    } else {
+      try {
+        await _dio.post(
+          'http://localhost:3000/api/user/register',
+          data: jsonEncode({
+            'email': _controllerEmail.text,
+            'password': _controllerPassword.text,
+            'name': _controllerName.text,
+            'surname': _controllerSurname.text
+          }),
+        );
+        Navigator.pushNamed(context, '/otp', arguments: {
+          'email': _controllerEmail.text
+        });
+      } on DioException catch (e){
+        if (e.response?.statusCode == 409){
+          Alerts.showError(context, 'Такой email уже занят');
+        }
       }
     }
   }
@@ -159,9 +184,7 @@ class _HomeState extends State<Home> {
                               GestureDetector(
                                 onTap: _isEnter
                                     ? _enter
-                                    : () {
-                                        Navigator.pushNamed(context, '/otp');
-                                      },
+                                    : _register,
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,
@@ -373,9 +396,7 @@ class _HomeState extends State<Home> {
                               child: GestureDetector(
                                 onTap: _isEnter
                                     ? _enter
-                                    : () {
-                                        Navigator.pushNamed(context, '/otp');
-                                      },
+                                    : _register,
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,
@@ -423,7 +444,7 @@ class _HomeState extends State<Home> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 38.h),
+                            SizedBox(height: 38),
                           ],
                         ),
                       ),

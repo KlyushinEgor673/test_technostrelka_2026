@@ -1,9 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/otp_box.dart';
 
 class Otp extends StatefulWidget {
-  const Otp({super.key});
+  const Otp({super.key, required this.email});
+
+  final String email;
 
   @override
   State<Otp> createState() => _OtpState();
@@ -12,14 +20,24 @@ class Otp extends StatefulWidget {
 class _OtpState extends State<Otp> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
+  int seconds = 60;
+  final _dio = Dio();
+  final _storage = FlutterSecureStorage();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _focusNode.addListener((){
-      if (!_focusNode.hasFocus){
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
         _focusNode.requestFocus();
+      }
+    });
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (seconds != 0) {
+        setState(() {
+          seconds -= 1;
+        });
       }
     });
   }
@@ -48,13 +66,9 @@ class _OtpState extends State<Otp> {
                   controller: _controller,
                   focusNode: _focusNode,
                   maxLength: 4,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: (value) {
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                 ),
               ),
@@ -96,7 +110,7 @@ class _OtpState extends State<Otp> {
                     ),
                     SizedBox(height: 15),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         _focusNode.requestFocus();
                       },
                       child: Row(
@@ -130,6 +144,24 @@ class _OtpState extends State<Otp> {
                     ),
                     SizedBox(height: 60),
                     GestureDetector(
+                      onTap: () async {
+                        try {
+                          final response = await _dio.post(
+                            'http://localhost:3000/api/code/verify-code',
+                            data: jsonEncode({
+                              'email': widget.email,
+                              'code': _controller.text,
+                            }),
+                          );
+                          await _storage.write(
+                            key: 'token',
+                            value: response.data['token'],
+                          );
+                          Navigator.pushNamed(context, '/profile');
+                        } on DioException catch (e) {
+                          Alerts.showError(context, e.response?.data['error']);
+                        }
+                      },
                       child: IntrinsicWidth(
                         child: Container(
                           height: 50,
@@ -155,9 +187,20 @@ class _OtpState extends State<Otp> {
                     SizedBox(height: 7.5),
                     GestureDetector(
                       child: Text(
-                        'Отправить код ещё раз',
+                        seconds != 0
+                            ? 'Отправить код ещё раз через $seconds'
+                            : 'Отправить код ещё раз',
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
+                      onTap: () async {
+                        await _dio.post(
+                          'http://localhost:3000/api/code/resend-code',
+                          data: jsonEncode({'email': widget.email}),
+                        );
+                        setState(() {
+                          seconds = 60;
+                        });
+                      },
                     ),
                   ],
                 ),
