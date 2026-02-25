@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,15 +18,43 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool _isEnter = true;
+  final _controllerEmail = TextEditingController();
+  final _controllerPassword = TextEditingController();
+  final _controllerName = TextEditingController();
+  final _controllerSurname = TextEditingController();
+
+  Future<void> _enter() async {
+    if (_controllerPassword.text.isEmpty || _controllerEmail.text.isEmpty) {
+      Alerts.showError(context, 'Заполните все поля');
+    } else {
+      final dio = Dio();
+      final storage = FlutterSecureStorage();
+      print({
+        'email': _controllerEmail.text,
+        'password': _controllerPassword.text,
+      });
+      try {
+        final response = await dio.post(
+          'http://localhost:3000/api/user/enter',
+          data: jsonEncode({
+            'email': _controllerEmail.text,
+            'password': _controllerPassword.text,
+          }),
+        );
+        final data = response.data;
+        print(data['token']);
+        await storage.write(key: 'token', value: data['token']);
+        Navigator.pushNamed(context, '/profile');
+      } catch (e) {
+        Alerts.showError(context, 'Неверный логин или пароль');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final _controllerEmail = TextEditingController();
-    final _controllerPassword = TextEditingController();
-    final _controllerName = TextEditingController();
-    final _controllerSurname = TextEditingController();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -127,17 +158,7 @@ class _HomeState extends State<Home> {
                               SizedBox(height: _isEnter ? 15 : 30),
                               GestureDetector(
                                 onTap: _isEnter
-                                    ? () async {
-                                        final dio = Dio();
-                                        final response = await dio.post(
-                                          'http://localhost:3000/api/enter',
-                                          data: jsonEncode({
-                                            'email': _controllerEmail.text,
-                                            'password': _controllerPassword.text
-                                          })
-                                        );
-                                        print(response.data);
-                                      }
+                                    ? _enter
                                     : () {
                                         Navigator.pushNamed(context, '/otp');
                                       },
@@ -351,7 +372,7 @@ class _HomeState extends State<Home> {
                             Center(
                               child: GestureDetector(
                                 onTap: _isEnter
-                                    ? () {}
+                                    ? _enter
                                     : () {
                                         Navigator.pushNamed(context, '/otp');
                                       },
