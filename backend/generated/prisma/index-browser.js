@@ -126,7 +126,21 @@ exports.Prisma.UsersScalarFieldEnum = {
   password: 'password',
   name: 'name',
   surname: 'surname',
-  is_verifyed: 'is_verifyed'
+  created_at: 'created_at'
+};
+
+exports.Prisma.SubscriptionsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  price: 'price',
+  flag_auto: 'flag_auto',
+  img: 'img',
+  id_user: 'id_user',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -139,9 +153,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  users: 'users'
+  users: 'users',
+  subscriptions: 'subscriptions'
 };
 
 /**

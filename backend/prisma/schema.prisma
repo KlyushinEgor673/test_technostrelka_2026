@@ -8,10 +8,26 @@ datasource db {
 }
 
 model users {
-  id          Int     @id @default(autoincrement())
-  email       String  @unique(map: "users_email_unique") @db.VarChar(255)
-  password    String  @db.VarChar(255)
-  name        String  @db.VarChar(255)
-  surname     String  @db.VarChar(255)
-  is_verifyed Boolean @default(false)
+  id            Int             @id @default(autoincrement())
+  email         String          @unique
+  password      String
+  name          String
+  surname       String
+  created_at    DateTime        @default(now())
+  subscriptions subscriptions[]
+}
+
+model subscriptions {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  description String?
+  start_date  DateTime  @db.Date
+  end_date    DateTime  @db.Date
+  price       Decimal   @db.Decimal(10, 2)
+  flag_auto   Boolean?  @default(false)
+  img         String?
+  id_user     Int
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+  users       users     @relation(fields: [id_user], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }

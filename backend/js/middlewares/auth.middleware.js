@@ -10,8 +10,6 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: "Нет токена или неверный формат" })
     }
 
-    console.log("authHeader:", authHeader)
-
     const token = authHeader.split(' ')[1]
 
     if(!token || token === 'undefined'){
