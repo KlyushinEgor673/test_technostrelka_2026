@@ -486,6 +486,39 @@ app.delete('/api/subscription', authMiddleware, async (req, res) => {
 })
 
 
+
+app.post('/api/exchange-token', authMiddleware, async  (req, res) => {
+  try {
+    const { code } = req.body;
+    
+    if (!code) {
+      return res.status(400).json({ error: 'Code is required' });
+    }
+
+    const response = await fetch('https://yoomoney.ru/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        code: code,
+        client_id: '6EFCC0255452172DD4C176A7429F2D4F71AFDE69F3EEAA18DFCCA727903F01F2',
+        grant_type: 'authorization_code',
+        redirect_uri: 'https://localhost.ru:8080',
+        client_secret: '455A0A2D77D5F9DC82D86586215E65ECA0255E265B270F7C35A2BE8DC5B314D12A8B2A124C2AB17300A9336BA3DA6BC1F75B2D85B7F0B70E7018EA399D2DCF67'
+      })
+    });
+    
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error exchanging token:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+})
+
+
 const PORT = process.env.PORT;
 
 app.listen(PORT || 3000, () => {
