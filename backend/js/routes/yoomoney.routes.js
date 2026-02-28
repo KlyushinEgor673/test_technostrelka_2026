@@ -5,7 +5,7 @@ const {
   getOperationHistory,
   getOperationDetails,
   yoomoneyLogin,
-  yoomoneyLogout,
+  // yoomoneyLogout,
   getCookies,
   getYoomoneySubscriptions
 } = require('../controllers/yoomoney.controller');
@@ -39,12 +39,12 @@ router.post("/enter", authMiddleware,
   yoomoneyLogin
 );
 
-// Выход из YooMoney
-router.post("/logout", authMiddleware, 
-  /* #swagger.tags = ['yoomoney'] */
-  /* #swagger.summary = 'Выход из аккауета yoomoney' */
-  yoomoneyLogout
-);
+// // Выход из YooMoney
+// router.post("/logout", authMiddleware, 
+//   /* #swagger.tags = ['yoomoney'] */
+//   /* #swagger.summary = 'Выход из аккауета yoomoney' */
+//   yoomoneyLogout
+// );
 
 // Получение cookies
 router.get("/getCookies", authMiddleware,

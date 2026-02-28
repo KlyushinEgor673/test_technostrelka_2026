@@ -142,7 +142,8 @@ exports.Prisma.SubscriptionsScalarFieldEnum = {
   img: 'img',
   id_user: 'id_user',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  url: 'url'
 };
 
 exports.Prisma.SortOrder = {

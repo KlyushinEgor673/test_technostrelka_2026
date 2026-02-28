@@ -3,7 +3,7 @@ const prisma = require("../client");
 // Создание подписки
 const createSubscription = async (req, res) => {
   try {
-    const { name, description, start_date, end_date, price, flag_auto, img } = req.body
+    const { name, description, start_date, end_date, price, flag_auto, img, url } = req.body
 
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
@@ -20,8 +20,11 @@ const createSubscription = async (req, res) => {
     if (flag_auto === undefined || flag_auto === null) {
       return res.status(400).json({ error: "Флаг автопродления обязателен" });
     }
+    if (!url) {
+      return res.status(200).json({ error: "URL оплаты обязателен" })
+    }
 
-    const subscription = await prisma.subscriptions.create({
+    await prisma.subscriptions.create({
       data: {
         name: name,
         description: description,
@@ -30,6 +33,7 @@ const createSubscription = async (req, res) => {
         price: price,
         flag_auto: flag_auto,
         img: img,
+        url: url,
         id_user: req.user.id
       }
     })
@@ -44,7 +48,7 @@ const createSubscription = async (req, res) => {
 // Изменение подписки
 const updateSubscription = async (req, res) => {
   try {
-    const { id, name, description, start_date, end_date, price, flag_auto, img } = req.body
+    const { id, name, description, start_date, end_date, price, flag_auto, img, url } = req.body
 
     if (!id) {
       return res.status(400).json({ error: "ID подписки обязателен" });
@@ -64,6 +68,9 @@ const updateSubscription = async (req, res) => {
     }
     if (flag_auto === undefined || flag_auto === null) {
       return res.status(400).json({ error: "Флаг автопродления обязателен" });
+    }
+    if (!url) {
+      return res.status(400).json({ error: "URL оплаты обязателен" });
     }
 
     const existingSubscription = await prisma.subscriptions.findUnique({
@@ -87,7 +94,8 @@ const updateSubscription = async (req, res) => {
         end_date: new Date(end_date),
         price: price,
         flag_auto: flag_auto,
-        img: img
+        img: img, 
+        url: url
       }
     })
 
@@ -136,9 +144,9 @@ const deleteSubscription = async (req, res) => {
     if(subscriptionValid.id_user !== req.user.id){
        return res.status(403).json({ error: "Нет доступа" })
     }
-
-    const subscription = await prisma.subscriptions.delete({
-      where: { id: parseInt(id) }
+    
+    await prisma.subscriptions.delete({
+      where: { id: id }
     })
     
     res.status(200).json({ status: "success" })

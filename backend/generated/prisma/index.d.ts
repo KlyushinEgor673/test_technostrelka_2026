@@ -2158,6 +2158,7 @@ export namespace Prisma {
     id_user: number | null
     created_at: Date | null
     updated_at: Date | null
+    url: string | null
   }
 
   export type SubscriptionsMaxAggregateOutputType = {
@@ -2172,6 +2173,7 @@ export namespace Prisma {
     id_user: number | null
     created_at: Date | null
     updated_at: Date | null
+    url: string | null
   }
 
   export type SubscriptionsCountAggregateOutputType = {
@@ -2186,6 +2188,7 @@ export namespace Prisma {
     id_user: number
     created_at: number
     updated_at: number
+    url: number
     _all: number
   }
 
@@ -2214,6 +2217,7 @@ export namespace Prisma {
     id_user?: true
     created_at?: true
     updated_at?: true
+    url?: true
   }
 
   export type SubscriptionsMaxAggregateInputType = {
@@ -2228,6 +2232,7 @@ export namespace Prisma {
     id_user?: true
     created_at?: true
     updated_at?: true
+    url?: true
   }
 
   export type SubscriptionsCountAggregateInputType = {
@@ -2242,6 +2247,7 @@ export namespace Prisma {
     id_user?: true
     created_at?: true
     updated_at?: true
+    url?: true
     _all?: true
   }
 
@@ -2343,6 +2349,7 @@ export namespace Prisma {
     id_user: number
     created_at: Date | null
     updated_at: Date | null
+    url: string | null
     _count: SubscriptionsCountAggregateOutputType | null
     _avg: SubscriptionsAvgAggregateOutputType | null
     _sum: SubscriptionsSumAggregateOutputType | null
@@ -2376,6 +2383,7 @@ export namespace Prisma {
     id_user?: boolean
     created_at?: boolean
     updated_at?: boolean
+    url?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
@@ -2391,6 +2399,7 @@ export namespace Prisma {
     id_user?: boolean
     created_at?: boolean
     updated_at?: boolean
+    url?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
@@ -2406,6 +2415,7 @@ export namespace Prisma {
     id_user?: boolean
     created_at?: boolean
     updated_at?: boolean
+    url?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
@@ -2421,9 +2431,10 @@ export namespace Prisma {
     id_user?: boolean
     created_at?: boolean
     updated_at?: boolean
+    url?: boolean
   }
 
-  export type subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "start_date" | "end_date" | "price" | "flag_auto" | "img" | "id_user" | "created_at" | "updated_at", ExtArgs["result"]["subscriptions"]>
+  export type subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "start_date" | "end_date" | "price" | "flag_auto" | "img" | "id_user" | "created_at" | "updated_at" | "url", ExtArgs["result"]["subscriptions"]>
   export type subscriptionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
@@ -2451,6 +2462,7 @@ export namespace Prisma {
       id_user: number
       created_at: Date | null
       updated_at: Date | null
+      url: string | null
     }, ExtArgs["result"]["subscriptions"]>
     composites: {}
   }
@@ -2886,6 +2898,7 @@ export namespace Prisma {
     readonly id_user: FieldRef<"subscriptions", 'Int'>
     readonly created_at: FieldRef<"subscriptions", 'DateTime'>
     readonly updated_at: FieldRef<"subscriptions", 'DateTime'>
+    readonly url: FieldRef<"subscriptions", 'String'>
   }
     
 
@@ -3339,7 +3352,8 @@ export namespace Prisma {
     img: 'img',
     id_user: 'id_user',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    url: 'url'
   };
 
   export type SubscriptionsScalarFieldEnum = (typeof SubscriptionsScalarFieldEnum)[keyof typeof SubscriptionsScalarFieldEnum]
@@ -3572,6 +3586,7 @@ export namespace Prisma {
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    url?: StringNullableFilter<"subscriptions"> | string | null
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
@@ -3587,6 +3602,7 @@ export namespace Prisma {
     id_user?: SortOrder
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
+    url?: SortOrderInput | SortOrder
     users?: usersOrderByWithRelationInput
   }
 
@@ -3605,6 +3621,7 @@ export namespace Prisma {
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    url?: StringNullableFilter<"subscriptions"> | string | null
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }, "id">
 
@@ -3620,6 +3637,7 @@ export namespace Prisma {
     id_user?: SortOrder
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
+    url?: SortOrderInput | SortOrder
     _count?: subscriptionsCountOrderByAggregateInput
     _avg?: subscriptionsAvgOrderByAggregateInput
     _max?: subscriptionsMaxOrderByAggregateInput
@@ -3642,6 +3660,7 @@ export namespace Prisma {
     id_user?: IntWithAggregatesFilter<"subscriptions"> | number
     created_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
+    url?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
   }
 
   export type usersCreateInput = {
@@ -3732,6 +3751,7 @@ export namespace Prisma {
     img?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
     users: usersCreateNestedOneWithoutSubscriptionsInput
   }
 
@@ -3747,6 +3767,7 @@ export namespace Prisma {
     id_user: number
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
   }
 
   export type subscriptionsUpdateInput = {
@@ -3759,6 +3780,7 @@ export namespace Prisma {
     img?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
     users?: usersUpdateOneRequiredWithoutSubscriptionsNestedInput
   }
 
@@ -3774,6 +3796,7 @@ export namespace Prisma {
     id_user?: IntFieldUpdateOperationsInput | number
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsCreateManyInput = {
@@ -3788,6 +3811,7 @@ export namespace Prisma {
     id_user: number
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
   }
 
   export type subscriptionsUpdateManyMutationInput = {
@@ -3800,6 +3824,7 @@ export namespace Prisma {
     img?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateManyInput = {
@@ -3814,6 +3839,7 @@ export namespace Prisma {
     id_user?: IntFieldUpdateOperationsInput | number
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -4081,6 +4107,7 @@ export namespace Prisma {
     id_user?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    url?: SortOrder
   }
 
   export type subscriptionsAvgOrderByAggregateInput = {
@@ -4101,6 +4128,7 @@ export namespace Prisma {
     id_user?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    url?: SortOrder
   }
 
   export type subscriptionsMinOrderByAggregateInput = {
@@ -4115,6 +4143,7 @@ export namespace Prisma {
     id_user?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    url?: SortOrder
   }
 
   export type subscriptionsSumOrderByAggregateInput = {
@@ -4487,6 +4516,7 @@ export namespace Prisma {
     img?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
   }
 
   export type subscriptionsUncheckedCreateWithoutUsersInput = {
@@ -4500,6 +4530,7 @@ export namespace Prisma {
     img?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
   }
 
   export type subscriptionsCreateOrConnectWithoutUsersInput = {
@@ -4543,6 +4574,7 @@ export namespace Prisma {
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    url?: StringNullableFilter<"subscriptions"> | string | null
   }
 
   export type usersCreateWithoutSubscriptionsInput = {
@@ -4614,6 +4646,7 @@ export namespace Prisma {
     img?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    url?: string | null
   }
 
   export type subscriptionsUpdateWithoutUsersInput = {
@@ -4626,6 +4659,7 @@ export namespace Prisma {
     img?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateWithoutUsersInput = {
@@ -4639,6 +4673,7 @@ export namespace Prisma {
     img?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateManyWithoutUsersInput = {
@@ -4652,6 +4687,7 @@ export namespace Prisma {
     img?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

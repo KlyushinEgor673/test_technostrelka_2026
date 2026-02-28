@@ -162,16 +162,16 @@ const yoomoneyLogin = async (req, res) => {
       return res.status(400).json({ error: "Почта и пароль обязательны" });
     }
 
-    const user = await prisma.users.findFirst({
-      where: { email: email },
-    });
+    // const user = await prisma.users.findFirst({
+    //   where: { email: email },
+    // });
 
-    if (!user) {
-      return res.status(400).json({ error: "Неверная почта" });
-    }
-    if(user.cookies){
-      return res.status(400).json({ error: "Вы уже в аккаунте" });
-    }
+    // if (!user) {
+    //   return res.status(400).json({ error: "Неверная почта" });
+    // }
+    // if(user.cookies){
+    //   return res.status(400).json({ error: "Вы уже в аккаунте" });
+    // }
     
     driver = await new Builder().forBrowser('chrome').build();
 
@@ -219,9 +219,9 @@ const yoomoneyLogin = async (req, res) => {
       return res.status(400).json({ error: "Неверная почта или пароль" });
     }
 
-    const cookies = await driver.manage().getCookies();
+    const cookiesWeb = await driver.manage().getCookies();
 
-    const authCookies = cookies.filter(c => 
+    const authCookies = cookiesWeb.filter(c => 
       ['__zzatw-ymoney', 'DAT', 'DL'].includes(c.name)
     );
     
@@ -231,14 +231,60 @@ const yoomoneyLogin = async (req, res) => {
     }
 
     await prisma.users.update({
-      where: { id: user.id },
+      where: { id: req.user.id },
       data: {
-        cookies: cookies
+        cookies: cookiesWeb
       }
     });
 
+    const user = await prisma.users.findMany({
+      where: {email: email}
+    })
+    const cookies = user.cookies;
+
+    if(!cookies || cookies.length === 0){
+      return res.status(400).json({ error: "Отсутствуют cookies" });
+    }
+
+    await driver.get("https://yoomoney.ru/cards/subscriptions");
+
+    for (let cookie of cookies) {
+      await driver.manage().addCookie(cookie);
+    }
+
+    await driver.navigate().refresh();
+
+    const iframe = await driver.wait(
+      until.elementLocated(By.tagName("iframe")),
+      10000
+    );
+
+    await driver.switchTo().frame(iframe);
+
+    const divs = await driver.wait(
+      until.elementsLocated(By.xpath("//div[@class='slide-data']")),
+      10000
+    );
+
+    const subs = [];
+
+    for (let div of divs) {
+      const name = await div.findElement(By.xpath(".//div[2]")).getText();
+      const days = await div.findElement(By.xpath(".//div[3]")).getText();
+      const price = await div.findElement(By.xpath(".//div[4]")).getText();
+      const end = await div.findElement(By.xpath(".//div[5]")).getText();
+
+      subs.push({
+        name,
+        days,
+        price,
+        end
+      });
+    }
+
     if (driver) await driver.quit();
-    res.json({ success: true, cookies: cookies });
+
+    res.json(subs);
   } catch (error) {
     if (driver) await driver.quit();
     console.error(error);
@@ -246,30 +292,30 @@ const yoomoneyLogin = async (req, res) => {
   }
 };
 
-// Выход из YooMoney
-const yoomoneyLogout = async (req, res) => {
-  try {
-    const user = await prisma.users.findFirst({
-      where: { id: req.user.id },
-    });
+// // Выход из YooMoney
+// const yoomoneyLogout = async (req, res) => {
+//   try {
+//     const user = await prisma.users.findFirst({
+//       where: { id: req.user.id },
+//     });
 
-    if(!user.cookies){
-      return res.status(400).json({ error: "Вы не в аккаунте" });
-    }
+//     if(!user.cookies){
+//       return res.status(400).json({ error: "Вы не в аккаунте" });
+//     }
 
-    await prisma.users.update({
-      where: { id: user.id },
-      data: {
-        cookies: null
-      }
-    });
+//     await prisma.users.update({
+//       where: { id: user.id },
+//       data: {
+//         cookies: null
+//       }
+//     });
 
-    res.status(200).json({ success: "Вы вышли из аккаунта" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+//     res.status(200).json({ success: "Вы вышли из аккаунта" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 // Получение cookies
 const getCookies = async (req, res) => {
@@ -350,7 +396,7 @@ module.exports = {
   getOperationHistory,
   getOperationDetails,
   yoomoneyLogin,
-  yoomoneyLogout,
+  // yoomoneyLogout,
   getCookies,
   getYoomoneySubscriptions
 };
