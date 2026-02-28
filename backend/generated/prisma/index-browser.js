@@ -126,8 +126,9 @@ exports.Prisma.UsersScalarFieldEnum = {
   password: 'password',
   name: 'name',
   surname: 'surname',
+  created_at: 'created_at',
   access_token_yoomoney: 'access_token_yoomoney',
-  created_at: 'created_at'
+  cookies: 'cookies'
 };
 
 exports.Prisma.SubscriptionsScalarFieldEnum = {
@@ -149,9 +150,20 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {

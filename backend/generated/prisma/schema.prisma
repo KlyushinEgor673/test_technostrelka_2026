@@ -13,8 +13,9 @@ model users {
   password              String
   name                  String
   surname               String
-  access_token_yoomoney String?
   created_at            DateTime        @default(now())
+  access_token_yoomoney String?
+  cookies               Json?           @db.Json
   subscriptions         subscriptions[]
 }
 
