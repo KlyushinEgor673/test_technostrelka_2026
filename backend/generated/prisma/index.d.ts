@@ -1011,6 +1011,8 @@ export namespace Prisma {
     surname: string | null
     created_at: Date | null
     access_token_yoomoney: string | null
+    email_ym: string | null
+    password_ym: string | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1021,6 +1023,8 @@ export namespace Prisma {
     surname: string | null
     created_at: Date | null
     access_token_yoomoney: string | null
+    email_ym: string | null
+    password_ym: string | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1032,6 +1036,8 @@ export namespace Prisma {
     created_at: number
     access_token_yoomoney: number
     cookies: number
+    email_ym: number
+    password_ym: number
     _all: number
   }
 
@@ -1052,6 +1058,8 @@ export namespace Prisma {
     surname?: true
     created_at?: true
     access_token_yoomoney?: true
+    email_ym?: true
+    password_ym?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -1062,6 +1070,8 @@ export namespace Prisma {
     surname?: true
     created_at?: true
     access_token_yoomoney?: true
+    email_ym?: true
+    password_ym?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -1073,6 +1083,8 @@ export namespace Prisma {
     created_at?: true
     access_token_yoomoney?: true
     cookies?: true
+    email_ym?: true
+    password_ym?: true
     _all?: true
   }
 
@@ -1171,6 +1183,8 @@ export namespace Prisma {
     created_at: Date
     access_token_yoomoney: string | null
     cookies: JsonValue | null
+    email_ym: string | null
+    password_ym: string | null
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
     _sum: UsersSumAggregateOutputType | null
@@ -1201,6 +1215,8 @@ export namespace Prisma {
     created_at?: boolean
     access_token_yoomoney?: boolean
     cookies?: boolean
+    email_ym?: boolean
+    password_ym?: boolean
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
@@ -1214,6 +1230,8 @@ export namespace Prisma {
     created_at?: boolean
     access_token_yoomoney?: boolean
     cookies?: boolean
+    email_ym?: boolean
+    password_ym?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1225,6 +1243,8 @@ export namespace Prisma {
     created_at?: boolean
     access_token_yoomoney?: boolean
     cookies?: boolean
+    email_ym?: boolean
+    password_ym?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectScalar = {
@@ -1236,9 +1256,11 @@ export namespace Prisma {
     created_at?: boolean
     access_token_yoomoney?: boolean
     cookies?: boolean
+    email_ym?: boolean
+    password_ym?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at" | "access_token_yoomoney" | "cookies", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at" | "access_token_yoomoney" | "cookies" | "email_ym" | "password_ym", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1260,6 +1282,8 @@ export namespace Prisma {
       created_at: Date
       access_token_yoomoney: string | null
       cookies: Prisma.JsonValue | null
+      email_ym: string | null
+      password_ym: string | null
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -1692,6 +1716,8 @@ export namespace Prisma {
     readonly created_at: FieldRef<"users", 'DateTime'>
     readonly access_token_yoomoney: FieldRef<"users", 'String'>
     readonly cookies: FieldRef<"users", 'Json'>
+    readonly email_ym: FieldRef<"users", 'String'>
+    readonly password_ym: FieldRef<"users", 'String'>
   }
     
 
@@ -3335,7 +3361,9 @@ export namespace Prisma {
     surname: 'surname',
     created_at: 'created_at',
     access_token_yoomoney: 'access_token_yoomoney',
-    cookies: 'cookies'
+    cookies: 'cookies',
+    email_ym: 'email_ym',
+    password_ym: 'password_ym'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -3511,6 +3539,8 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"users"> | Date | string
     access_token_yoomoney?: StringNullableFilter<"users"> | string | null
     cookies?: JsonNullableFilter<"users">
+    email_ym?: StringNullableFilter<"users"> | string | null
+    password_ym?: StringNullableFilter<"users"> | string | null
     subscriptions?: SubscriptionsListRelationFilter
   }
 
@@ -3523,6 +3553,8 @@ export namespace Prisma {
     created_at?: SortOrder
     access_token_yoomoney?: SortOrderInput | SortOrder
     cookies?: SortOrderInput | SortOrder
+    email_ym?: SortOrderInput | SortOrder
+    password_ym?: SortOrderInput | SortOrder
     subscriptions?: subscriptionsOrderByRelationAggregateInput
   }
 
@@ -3538,6 +3570,8 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"users"> | Date | string
     access_token_yoomoney?: StringNullableFilter<"users"> | string | null
     cookies?: JsonNullableFilter<"users">
+    email_ym?: StringNullableFilter<"users"> | string | null
+    password_ym?: StringNullableFilter<"users"> | string | null
     subscriptions?: SubscriptionsListRelationFilter
   }, "id" | "email">
 
@@ -3550,6 +3584,8 @@ export namespace Prisma {
     created_at?: SortOrder
     access_token_yoomoney?: SortOrderInput | SortOrder
     cookies?: SortOrderInput | SortOrder
+    email_ym?: SortOrderInput | SortOrder
+    password_ym?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
@@ -3569,6 +3605,8 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
     access_token_yoomoney?: StringNullableWithAggregatesFilter<"users"> | string | null
     cookies?: JsonNullableWithAggregatesFilter<"users">
+    email_ym?: StringNullableWithAggregatesFilter<"users"> | string | null
+    password_ym?: StringNullableWithAggregatesFilter<"users"> | string | null
   }
 
   export type subscriptionsWhereInput = {
@@ -3671,6 +3709,8 @@ export namespace Prisma {
     created_at?: Date | string
     access_token_yoomoney?: string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
     subscriptions?: subscriptionsCreateNestedManyWithoutUsersInput
   }
 
@@ -3683,6 +3723,8 @@ export namespace Prisma {
     created_at?: Date | string
     access_token_yoomoney?: string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -3694,6 +3736,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     subscriptions?: subscriptionsUpdateManyWithoutUsersNestedInput
   }
 
@@ -3706,6 +3750,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -3718,6 +3764,8 @@ export namespace Prisma {
     created_at?: Date | string
     access_token_yoomoney?: string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
   }
 
   export type usersUpdateManyMutationInput = {
@@ -3728,6 +3776,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -3739,6 +3789,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsCreateInput = {
@@ -3941,6 +3993,8 @@ export namespace Prisma {
     created_at?: SortOrder
     access_token_yoomoney?: SortOrder
     cookies?: SortOrder
+    email_ym?: SortOrder
+    password_ym?: SortOrder
   }
 
   export type usersAvgOrderByAggregateInput = {
@@ -3955,6 +4009,8 @@ export namespace Prisma {
     surname?: SortOrder
     created_at?: SortOrder
     access_token_yoomoney?: SortOrder
+    email_ym?: SortOrder
+    password_ym?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -3965,6 +4021,8 @@ export namespace Prisma {
     surname?: SortOrder
     created_at?: SortOrder
     access_token_yoomoney?: SortOrder
+    email_ym?: SortOrder
+    password_ym?: SortOrder
   }
 
   export type usersSumOrderByAggregateInput = {
@@ -4585,6 +4643,8 @@ export namespace Prisma {
     created_at?: Date | string
     access_token_yoomoney?: string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
   }
 
   export type usersUncheckedCreateWithoutSubscriptionsInput = {
@@ -4596,6 +4656,8 @@ export namespace Prisma {
     created_at?: Date | string
     access_token_yoomoney?: string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
   }
 
   export type usersCreateOrConnectWithoutSubscriptionsInput = {
@@ -4622,6 +4684,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUncheckedUpdateWithoutSubscriptionsInput = {
@@ -4633,6 +4697,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
     cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsCreateManyUsersInput = {

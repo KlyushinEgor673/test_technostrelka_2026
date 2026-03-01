@@ -2,5 +2,6 @@
 const tempStorage = new Map();
 const usedCodes = new Map();
 const driverStorage = new Map();
+const cookieStorage = new Map();
 
-module.exports = { tempStorage, usedCodes, driverStorage };
+module.exports = { tempStorage, usedCodes, driverStorage, cookieStorage };

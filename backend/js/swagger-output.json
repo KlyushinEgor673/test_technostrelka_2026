@@ -182,6 +182,9 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           },
@@ -301,6 +304,9 @@
                 },
                 "img": {
                   "example": "any"
+                },
+                "url": {
+                  "example": "any"
                 }
               }
             }
@@ -361,6 +367,9 @@
                   "example": "any"
                 },
                 "img": {
+                  "example": "any"
+                },
+                "url": {
                   "example": "any"
                 }
               }
@@ -502,7 +511,7 @@
         }
       }
     },
-    "/api/yoomoney/operation/history": {
+    "/api/yoomoney/operation-history": {
       "post": {
         "tags": [
           "yoomoney"
@@ -567,7 +576,7 @@
         }
       }
     },
-    "/api/yoomoney/operation/details": {
+    "/api/yoomoney/operation-details": {
       "post": {
         "tags": [
           "yoomoney"
@@ -639,11 +648,98 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/yoomoney/check-session": {
+      "post": {
+        "tags": [
+          "yoomoney"
+        ],
+        "summary": "Проверка статуса сессии Yoomoney",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/yoomoney/check-code-yoomoney": {
+      "post": {
+        "tags": [
+          "yoomoney"
+        ],
+        "summary": "Подтверждение кода Yoomoney",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "code": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

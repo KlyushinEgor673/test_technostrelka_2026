@@ -16,6 +16,8 @@ model users {
   created_at            DateTime        @default(now())
   access_token_yoomoney String?
   cookies               Json?           @db.Json
+  email_ym              String?         @db.VarChar(255)
+  password_ym           String?         @db.VarChar(255)
   subscriptions         subscriptions[]
 }
 

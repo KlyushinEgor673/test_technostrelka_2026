@@ -114,6 +114,10 @@ const getMe = async (req, res) => {
     const user = await prisma.users.findUnique({
       where: { id: req.user.id },
     });
+
+    if(!user){
+      return res.status(400).json({ error: "Пользователь не найден" })
+    }
     res.status(200).json({
       user: {
         id: user.id,

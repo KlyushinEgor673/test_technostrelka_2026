@@ -5,7 +5,8 @@ const {
   getOperationHistory,
   getOperationDetails,
   yoomoneyLogin,
-  // yoomoneyLogout,
+  checkSessionStatus,
+  checkCodeYoomoney,
   getCookies,
   getYoomoneySubscriptions
 } = require('../controllers/yoomoney.controller');
@@ -19,14 +20,14 @@ router.post("/exchange-token", authMiddleware,
 );
 
 // История операций
-router.post("/operation/history", authMiddleware,
+router.post("/operation-history", authMiddleware,
   /* #swagger.tags = ['yoomoney'] */
   /* #swagger.summary = 'Получение истории операций' */
   getOperationHistory
 );
 
 // Детали операции
-router.post("/operation/details", authMiddleware,
+router.post("/operation-details", authMiddleware,
   /* #swagger.tags = ['yoomoney'] */
   /* #swagger.summary = 'Получение информации об операции' */
   getOperationDetails
@@ -39,12 +40,18 @@ router.post("/enter", authMiddleware,
   yoomoneyLogin
 );
 
-// // Выход из YooMoney
-// router.post("/logout", authMiddleware, 
-//   /* #swagger.tags = ['yoomoney'] */
-//   /* #swagger.summary = 'Выход из аккауета yoomoney' */
-//   yoomoneyLogout
-// );
+// Проверка статуса сессии
+router.post('/check-session',authMiddleware,
+  /* #swagger.tags = ['yoomoney'] */
+  /* #swagger.summary = 'Проверка статуса сессии Yoomoney' */
+  checkSessionStatus
+);
+// Подтверждение кода в YooMoney
+router.post("/check-code-yoomoney", authMiddleware, 
+  /* #swagger.tags = ['yoomoney'] */
+  /* #swagger.summary = 'Подтверждение кода Yoomoney' */
+  checkCodeYoomoney
+);
 
 // Получение cookies
 router.get("/getCookies", authMiddleware,
