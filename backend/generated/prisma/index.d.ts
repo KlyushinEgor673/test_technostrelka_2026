@@ -1013,6 +1013,7 @@ export namespace Prisma {
     access_token_yoomoney: string | null
     email_ym: string | null
     password_ym: string | null
+    is_enter_ym: boolean | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1025,6 +1026,7 @@ export namespace Prisma {
     access_token_yoomoney: string | null
     email_ym: string | null
     password_ym: string | null
+    is_enter_ym: boolean | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1038,6 +1040,7 @@ export namespace Prisma {
     cookies: number
     email_ym: number
     password_ym: number
+    is_enter_ym: number
     _all: number
   }
 
@@ -1060,6 +1063,7 @@ export namespace Prisma {
     access_token_yoomoney?: true
     email_ym?: true
     password_ym?: true
+    is_enter_ym?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -1072,6 +1076,7 @@ export namespace Prisma {
     access_token_yoomoney?: true
     email_ym?: true
     password_ym?: true
+    is_enter_ym?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -1085,6 +1090,7 @@ export namespace Prisma {
     cookies?: true
     email_ym?: true
     password_ym?: true
+    is_enter_ym?: true
     _all?: true
   }
 
@@ -1185,6 +1191,7 @@ export namespace Prisma {
     cookies: JsonValue | null
     email_ym: string | null
     password_ym: string | null
+    is_enter_ym: boolean | null
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
     _sum: UsersSumAggregateOutputType | null
@@ -1217,6 +1224,7 @@ export namespace Prisma {
     cookies?: boolean
     email_ym?: boolean
     password_ym?: boolean
+    is_enter_ym?: boolean
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
@@ -1232,6 +1240,7 @@ export namespace Prisma {
     cookies?: boolean
     email_ym?: boolean
     password_ym?: boolean
+    is_enter_ym?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1245,6 +1254,7 @@ export namespace Prisma {
     cookies?: boolean
     email_ym?: boolean
     password_ym?: boolean
+    is_enter_ym?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectScalar = {
@@ -1258,9 +1268,10 @@ export namespace Prisma {
     cookies?: boolean
     email_ym?: boolean
     password_ym?: boolean
+    is_enter_ym?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at" | "access_token_yoomoney" | "cookies" | "email_ym" | "password_ym", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at" | "access_token_yoomoney" | "cookies" | "email_ym" | "password_ym" | "is_enter_ym", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1284,6 +1295,7 @@ export namespace Prisma {
       cookies: Prisma.JsonValue | null
       email_ym: string | null
       password_ym: string | null
+      is_enter_ym: boolean | null
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -1718,6 +1730,7 @@ export namespace Prisma {
     readonly cookies: FieldRef<"users", 'Json'>
     readonly email_ym: FieldRef<"users", 'String'>
     readonly password_ym: FieldRef<"users", 'String'>
+    readonly is_enter_ym: FieldRef<"users", 'Boolean'>
   }
     
 
@@ -3363,7 +3376,8 @@ export namespace Prisma {
     access_token_yoomoney: 'access_token_yoomoney',
     cookies: 'cookies',
     email_ym: 'email_ym',
-    password_ym: 'password_ym'
+    password_ym: 'password_ym',
+    is_enter_ym: 'is_enter_ym'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -3490,6 +3504,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -3500,13 +3521,6 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -3541,6 +3555,7 @@ export namespace Prisma {
     cookies?: JsonNullableFilter<"users">
     email_ym?: StringNullableFilter<"users"> | string | null
     password_ym?: StringNullableFilter<"users"> | string | null
+    is_enter_ym?: BoolNullableFilter<"users"> | boolean | null
     subscriptions?: SubscriptionsListRelationFilter
   }
 
@@ -3555,6 +3570,7 @@ export namespace Prisma {
     cookies?: SortOrderInput | SortOrder
     email_ym?: SortOrderInput | SortOrder
     password_ym?: SortOrderInput | SortOrder
+    is_enter_ym?: SortOrderInput | SortOrder
     subscriptions?: subscriptionsOrderByRelationAggregateInput
   }
 
@@ -3572,6 +3588,7 @@ export namespace Prisma {
     cookies?: JsonNullableFilter<"users">
     email_ym?: StringNullableFilter<"users"> | string | null
     password_ym?: StringNullableFilter<"users"> | string | null
+    is_enter_ym?: BoolNullableFilter<"users"> | boolean | null
     subscriptions?: SubscriptionsListRelationFilter
   }, "id" | "email">
 
@@ -3586,6 +3603,7 @@ export namespace Prisma {
     cookies?: SortOrderInput | SortOrder
     email_ym?: SortOrderInput | SortOrder
     password_ym?: SortOrderInput | SortOrder
+    is_enter_ym?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
@@ -3607,6 +3625,7 @@ export namespace Prisma {
     cookies?: JsonNullableWithAggregatesFilter<"users">
     email_ym?: StringNullableWithAggregatesFilter<"users"> | string | null
     password_ym?: StringNullableWithAggregatesFilter<"users"> | string | null
+    is_enter_ym?: BoolNullableWithAggregatesFilter<"users"> | boolean | null
   }
 
   export type subscriptionsWhereInput = {
@@ -3711,6 +3730,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: string | null
     password_ym?: string | null
+    is_enter_ym?: boolean | null
     subscriptions?: subscriptionsCreateNestedManyWithoutUsersInput
   }
 
@@ -3725,6 +3745,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: string | null
     password_ym?: string | null
+    is_enter_ym?: boolean | null
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -3738,6 +3759,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
     subscriptions?: subscriptionsUpdateManyWithoutUsersNestedInput
   }
 
@@ -3752,6 +3774,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -3766,6 +3789,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: string | null
     password_ym?: string | null
+    is_enter_ym?: boolean | null
   }
 
   export type usersUpdateManyMutationInput = {
@@ -3778,6 +3802,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -3791,6 +3816,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type subscriptionsCreateInput = {
@@ -3969,6 +3995,11 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type SubscriptionsListRelationFilter = {
     every?: subscriptionsWhereInput
     some?: subscriptionsWhereInput
@@ -3995,6 +4026,7 @@ export namespace Prisma {
     cookies?: SortOrder
     email_ym?: SortOrder
     password_ym?: SortOrder
+    is_enter_ym?: SortOrder
   }
 
   export type usersAvgOrderByAggregateInput = {
@@ -4011,6 +4043,7 @@ export namespace Prisma {
     access_token_yoomoney?: SortOrder
     email_ym?: SortOrder
     password_ym?: SortOrder
+    is_enter_ym?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -4023,6 +4056,7 @@ export namespace Prisma {
     access_token_yoomoney?: SortOrder
     email_ym?: SortOrder
     password_ym?: SortOrder
+    is_enter_ym?: SortOrder
   }
 
   export type usersSumOrderByAggregateInput = {
@@ -4121,6 +4155,14 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -4130,11 +4172,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type BoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -4226,14 +4263,6 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4272,6 +4301,10 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type subscriptionsUpdateManyWithoutUsersNestedInput = {
@@ -4322,10 +4355,6 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -4388,6 +4417,11 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -4499,6 +4533,14 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -4508,11 +4550,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -4540,14 +4577,6 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -4645,6 +4674,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: string | null
     password_ym?: string | null
+    is_enter_ym?: boolean | null
   }
 
   export type usersUncheckedCreateWithoutSubscriptionsInput = {
@@ -4658,6 +4688,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: string | null
     password_ym?: string | null
+    is_enter_ym?: boolean | null
   }
 
   export type usersCreateOrConnectWithoutSubscriptionsInput = {
@@ -4686,6 +4717,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type usersUncheckedUpdateWithoutSubscriptionsInput = {
@@ -4699,6 +4731,7 @@ export namespace Prisma {
     cookies?: NullableJsonNullValueInput | InputJsonValue
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type subscriptionsCreateManyUsersInput = {

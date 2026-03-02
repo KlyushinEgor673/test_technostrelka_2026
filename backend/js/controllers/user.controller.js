@@ -18,9 +18,7 @@ const register = async (req, res) => {
     });
 
     if (existingUser) {
-      return res
-        .status(409)
-        .json({ error: "Пользователь с таким email уже существует" });
+      return res.status(409).json({ error: "Пользователь с таким email уже существует" });
     }
 
     if (tempStorage.has(email)) {
@@ -108,6 +106,23 @@ const editProfile = async (req, res) => {
   }
 };
 
+
+
+// Изменение почты пользователя
+const editEmail = async (req, res) => {
+  try {
+
+    const email = req.body.email
+
+
+  } catch (error) {
+    console.log("Ошибка: ", error);
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+
+
 // Получение текущего пользователя
 const getMe = async (req, res) => {
   try {
@@ -133,4 +148,4 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, editProfile, getMe };
+module.exports = { register, login, editProfile, editEmail, getMe };

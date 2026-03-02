@@ -130,7 +130,8 @@ exports.Prisma.UsersScalarFieldEnum = {
   access_token_yoomoney: 'access_token_yoomoney',
   cookies: 'cookies',
   email_ym: 'email_ym',
-  password_ym: 'password_ym'
+  password_ym: 'password_ym',
+  is_enter_ym: 'is_enter_ym'
 };
 
 exports.Prisma.SubscriptionsScalarFieldEnum = {

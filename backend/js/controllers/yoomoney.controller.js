@@ -1,5 +1,5 @@
 const prisma = require("../client");
-const { usedCodes, driverStorage, cookieStorage } = require("../utils/tempStorage");
+const { usedCodes, driverStorage, cookieStorage, userData } = require("../utils/tempStorage");
 const { Builder, By, until } = require('selenium-webdriver');
 
 
@@ -192,7 +192,7 @@ const yoomoneyLogin = async (req, res) => {
       await driver.manage().deleteAllCookies();
       driverStorage.set(email, driver);
     }
-    
+
     await driver.sleep(2000);
 
     const input = await driver.findElement(By.xpath("//input"));
@@ -226,6 +226,16 @@ const yoomoneyLogin = async (req, res) => {
       const cookiesCurrentSession = await driver.manage().getCookies();
       cookieStorage.set(email, cookiesCurrentSession);
       driverStorage.set(email, driver)
+
+      await prisma.users.update({
+        where: { id: req.user.id },
+        data: {
+          email_ym: email,
+          password_ym: password,
+          is_enter_ym: false
+        }
+      })
+
       return res.status(400).json({ error: "Необходим код подтверждения", is_enter: false, required_code: true });
     }
 
@@ -250,9 +260,20 @@ const yoomoneyLogin = async (req, res) => {
     await prisma.users.update({
       where: { id: req.user.id },
       data: {
+        email_ym: email,
+        password_ym: password,
         cookies: cookiesWeb
       }
     });
+
+    await prisma.users.update({
+      where: { id: req.user.id },
+      data: {
+        email_ym: email,
+        password_ym: password,
+        is_enter_ym: true
+      }
+    })
 
     res.status(200).json({ message: "Вы вошли в аккаунт yoomoney", is_enter: true})
   } catch (error) {
@@ -339,8 +360,20 @@ const checkCodeYoomoney = async (req, res) => {
     const currentUrl = await driver.getCurrentUrl()
 
     if(currentUrl.includes('confirmation')) {
+      await prisma.users.update({
+        where: { id: req.user.id },
+        data: {
+          is_enter_ym: false
+        }
+      })
       res.status(400).json({ error: "Неверный код", is_enter: false })
     } else if (currentUrl.includes('main')) {
+      await prisma.users.update({
+        where: { id: req.user.id },
+        data: {
+          is_enter_ym: true
+        }
+      })
       res.status(200).json({ message: "Вы успешно подключили yoomoney", is_enter: true })
     }
   } catch (error) {
@@ -368,7 +401,7 @@ const getCookies = async (req, res) => {
 
 
 const getYoomoneySubscriptions = async (req, res) => {
-  const driver = null;
+  let driver = null;
   
   try {
     const user = await prisma.users.findUnique({
@@ -379,40 +412,44 @@ const getYoomoneySubscriptions = async (req, res) => {
       return res.status(400).json({ error: "Нет cookies для входа" });
     }
 
+    const email = user.email_ym
+    const password = user.password_ym
+
     // Создаем driver
     driver = await new Builder().forBrowser('chrome').build();
+    await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
     
-    // 1. Открываем главную страницу (обязательно перед добавлением cookies)
-    await driver.get("https://yoomoney.ru");
     await driver.sleep(2000);
-    
-    // 2. Очищаем и добавляем ВСЕ cookies
-    await driver.manage().deleteAllCookies();
-    
-    for (const cookie of user.cookies) {
-      try {
-        await driver.manage().addCookie({
-          name: cookie.name,
-          value: cookie.value,
-          domain: cookie.domain || '.yoomoney.ru',
-          path: cookie.path || '/',
-          secure: cookie.secure || false,
-          httpOnly: cookie.httpOnly || false,
-          expiry: cookie.expiry ? Math.floor(cookie.expiry) : undefined
-        });
-        console.log(`✅ Cookie added: ${cookie.name}`);
-      } catch (e) {
-        console.log(`❌ Failed to add ${cookie.name}:`, e.message);
-      }
-    }
-    
-    // 3. Обновляем страницу для входа
-    await driver.navigate().refresh();
+
+    const input = await driver.findElement(By.xpath("//input"));
+    await input.sendKeys(email);
+
+    const button = await driver.findElement(
+      By.xpath('//button[.//span[text()="Дальше"]]')
+    );
+    await button.click();
+
     await driver.sleep(3000);
-    
-    // 4. Переходим на страницу подписок
+
+    const input2 = await driver.wait(
+      until.elementLocated(By.xpath("(//input)[2]")),
+      10000
+    );
+    await input2.sendKeys(password);
+
+    const button2 = await driver.wait(
+      until.elementLocated(By.xpath('//button[.//span[text()="Дальше"]]')),
+      10000
+    );
+    await button2.click();
+
+    await driver.sleep(5000);
+
+    const currentUrl = await driver.getCurrentUrl();
+    console.log('Current URL after login:', currentUrl);
+
+
     await driver.get("https://yoomoney.ru/cards/subscriptions");
-    await driver.sleep(3000);
 
     // 5. Ищем iframe
     const iframe = await driver.wait(
@@ -431,12 +468,13 @@ const getYoomoneySubscriptions = async (req, res) => {
       const days = await div.findElement(By.xpath(".//div[3]")).getText();
       const price = await div.findElement(By.xpath(".//div[4]")).getText();
       const end = await div.findElement(By.xpath(".//div[5]")).getText();
+      const img = await div.findElement(By.xpath(".//div[1]//img"));
+      const imgSrc = await img.getAttribute('src');
 
-      subs.push({ name: name.trim(), days: days.trim(), price: price.trim(), end: end.trim() });
+      subs.push({ name: name.trim(), days: days.trim(), price: price.trim(), end: end.trim(), img: imgSrc.trim() });
     }
 
     res.status(200).json({ subscriptions: subs });
-    
   } catch (error) {
     console.error("Ошибка:", error);
     res.status(500).json({ error: error.message });
