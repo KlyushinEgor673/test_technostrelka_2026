@@ -275,6 +275,8 @@ const yoomoneyLogin = async (req, res) => {
       }
     })
 
+    await driver.quit()
+
     res.status(200).json({ message: "Вы вошли в аккаунт yoomoney", is_enter: true})
   } catch (error) {
     if (driver) await driver.quit();
@@ -374,6 +376,7 @@ const checkCodeYoomoney = async (req, res) => {
           is_enter_ym: true
         }
       })
+      await driver.quit()
       res.status(200).json({ message: "Вы успешно подключили yoomoney", is_enter: true })
     }
   } catch (error) {
