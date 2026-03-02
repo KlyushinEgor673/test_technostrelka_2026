@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -27,23 +27,27 @@ class _ProfileState extends State<Profile> {
       options: Options(headers: {'authorization': 'Bearer $token'}),
     );
     final data = response.data['user'];
-    print(data);
     setState(() {
       _name = data['name'];
       _surname = data['surname'];
       _email = data['email'];
     });
-    if (Uri.base.queryParameters.containsKey('code')) {
-      final dio = Dio();
-      String? token = await _storage.read(key: 'token');
-      final response = await dio.post(
-        'http://localhost:3000/api/exchange-token',
-        data: {'code': Uri.base.queryParameters['code']},
-        options: Options(headers: {'authorization': 'Bearer $token'}),
-      );
-
-      print(response.data);
-    }
+    // if (Uri.base.queryParameters.containsKey('code')) {
+    //   final dio = Dio();
+    //   String? token = await _storage.read(key: 'token');
+    //   final response = await dio.post(
+    //     'http://localhost:3000/api/exchange-token',
+    //     data: {'code': Uri.base.queryParameters['code']},
+    //     options: Options(headers: {'authorization': 'Bearer $token'}),
+    //   );
+    //   final res = await _dio.post('http://localhost:3000/api/operation-history',
+    //     options: Options(headers: {'authorization': 'Bearer $token'}),);
+    //   print(res);
+    //   final res2 = await _dio.post('http://localhost:3000/api/operation-details',
+    //     data: jsonEncode({'operation_id': '825023305515984084'}),
+    //     options: Options(headers: {'authorization': 'Bearer $token'}),);
+    //   print(res2);
+    // }
   }
 
   @override
@@ -56,29 +60,52 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text(_name),
-          Text(_surname),
-          Text(_email),
-          FilledButton(
-            onPressed: () {
-              final url = Uri.parse(
-                'https://yoomoney.ru/oauth/authorize?'
-                'client_id=6EFCC0255452172DD4C176A7429F2D4F71AFDE69F3EEAA18DFCCA727903F01F2'
-                '&response_type=code'
-                '&redirect_uri=https://localhost.ru:8080'
-                '&scope=account-info%20operation-history%20operation-details%20incoming-transfers%20payment-p2p%20payment-shop',
-              );
-              html.window.location.href = url.toString();
-            },
-            child: Text('Подключить youmoney'),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, '/subscriptions');
+                  }, child: Text('Подписки')),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/profile');
+                    },
+                    child: Text(
+                      'Профиль',
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Text(_name),
+              Text(_surname),
+              Text(_email),
+              FilledButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/yoomoney');
+                },
+                child: Text('Подключить youmoney'),
+              ),
+              TextButton(onPressed: () async {
+                await Navigator.pushNamed(context, '/change_profile');
+                await _init();
+              }, child: Text('Изменить профиль')),
+              TextButton(
+                onPressed: () async {
+                  await _storage.delete(key: 'token');
+                  Navigator.pushNamed(context, '/entrance');
+                },
+                child: Text('Выйти'),
+              ),
+              Spacer(),
+            ],
           ),
-          TextButton(onPressed: () async {
-            await _storage.delete(key: 'token');
-            Navigator.pushNamed(context, '/entrance');
-          }, child: Text('Выйти'))
-        ],
+        ),
       ),
     );
   }

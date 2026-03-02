@@ -31,9 +31,7 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 20.w),
       height: 50,
-      // width: 316.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Color.fromRGBO(240, 240, 240, 1),
@@ -43,12 +41,15 @@ class _InputState extends State<Input> {
           SizedBox(width: 14),
           Expanded(
             child: TextField(
+              style: TextStyle(
+                fontSize: 16
+              ),
               controller: widget.controller,
               obscureText: _isPassword,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
           ),
