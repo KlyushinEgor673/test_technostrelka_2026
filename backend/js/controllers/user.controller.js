@@ -140,6 +140,7 @@ const getMe = async (req, res) => {
         name: user.name,
         surname: user.surname,
         created_at: user.created_at,
+        is_enter_ym: user.is_enter_ym
       },
     });
   } catch (error) {

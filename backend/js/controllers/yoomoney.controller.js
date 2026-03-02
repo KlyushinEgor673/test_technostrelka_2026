@@ -250,7 +250,7 @@ const yoomoneyLogin = async (req, res) => {
     const authCookies = cookiesWeb.filter(c => 
       ['__zzatw-ymoney', 'DAT', 'DL'].includes(c.name)
     );
-    
+
     if (authCookies.length === 0) {
       await driver.quit();
       driverStorage.delete(email);
@@ -262,18 +262,10 @@ const yoomoneyLogin = async (req, res) => {
       data: {
         email_ym: email,
         password_ym: password,
-        cookies: cookiesWeb
-      }
-    });
-
-    await prisma.users.update({
-      where: { id: req.user.id },
-      data: {
-        email_ym: email,
-        password_ym: password,
+        cookies: cookiesWeb,
         is_enter_ym: true
       }
-    })
+    });
 
     await driver.quit()
 
@@ -384,7 +376,6 @@ const checkCodeYoomoney = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" })
   }
 }
-
 
 
 
