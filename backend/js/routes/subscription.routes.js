@@ -6,10 +6,12 @@ const {
   getSubscriptions, 
   deleteSubscription 
 } = require('../controllers/subscription.controller');
+const multer = require('multer')
+const upload = multer()
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
 // Создание подписки
-router.post("/",  authMiddleware, 
+router.post("/", upload.single('image'), authMiddleware, 
   /* #swagger.tags = ['Subscription'] #swagger.summary = 'Создание новой подписки' */
   createSubscription
 );

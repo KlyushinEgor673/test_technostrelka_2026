@@ -3,7 +3,8 @@ const prisma = require("../client");
 // Создание подписки
 const createSubscription = async (req, res) => {
   try {
-    const { name, description, start_date, end_date, price, flag_auto, img, url } = req.body
+    const { name, description, start_date, end_date, price, flag_auto, url } = req.body
+    const img = req.file.buffer
 
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });

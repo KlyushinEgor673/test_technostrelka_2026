@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { tempStorage } = require("../utils/tempStorage");
 const { sendVerificationEmail } = require("../services/email.service");
 
+
 // Регистрация
 const register = async (req, res) => {
   try {
