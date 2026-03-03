@@ -121,6 +121,50 @@ const editEmail = async (req, res) => {
   }
 }
 
+// Изменение пароля пользователя
+const editPassword = async (req, res) => {
+  try {
+
+    const oldPassword = req.body.oldPassword
+    const newPassword = req.body.newPassword
+
+    if(!oldPassword || !newPassword) {
+      return res.status(400).json({ error: "Введите все данные" })
+    }
+
+    const user = await prisma.users.findUnique({
+      where: { id: req.user.id }
+    })
+    if (!user) {
+      return res.status(404).json({ error: "Пользователь не найден" })
+    }
+
+    const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if(!isOldPasswordValid){
+      return res.status(400).json({ error: "Неверный пароль" })
+    }
+
+    const newHashPassword = await bcrypt.hash(newPassword, 10)
+
+    const updateUser = await prisma.users.update({
+      where: { id: req.user.id },
+      data: { 
+        password: newHashPassword  
+      }
+    })
+
+    if (!updateUser) {
+      return res.status(404).json({ error: "Пользователь не найден" })
+    }
+
+    res.status(200).json({ message: "Пароль изменён" })
+  } catch (error) {
+    console.log("Ошибка: ", error);
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
 
 
 // Получение текущего пользователя
@@ -149,4 +193,11 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, editProfile, editEmail, getMe };
+module.exports = { 
+  register, 
+  login, 
+  editProfile, 
+  editEmail, 
+  editPassword, 
+  getMe 
+}; 

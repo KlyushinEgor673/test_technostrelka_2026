@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, editProfile, editEmail, getMe } = require('../controllers/user.controller');
+const { register, login, editProfile, editEmail, editPassword, getMe } = require('../controllers/user.controller');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
 // Регистрация
@@ -25,6 +25,12 @@ router.put("/edit-profile", authMiddleware,
 router.put("/edit-email", authMiddleware,
   /* #swagger.tags = ['Users'] #swagger.summary = 'Редактирование почты пользователя' */
   editEmail
+);
+
+// Редактирование профиля
+router.put("/edit-password", authMiddleware,
+  /* #swagger.tags = ['Users'] #swagger.summary = 'Редактирование пароля пользователя' */
+  editPassword
 );
 
 // Получение текущего пользователя
