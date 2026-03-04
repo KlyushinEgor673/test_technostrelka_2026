@@ -58,12 +58,12 @@ const createSubscription = async (req, res) => {
 // Изменение подписки
 const updateSubscription = async (req, res) => {
   try {
-    const { id, name, description, start_date, end_date, price, flag_auto, img, url } = req.body
+    const { id, name, description, start_date, end_date, price, flag_auto, url } = req.body
+    const img = req.file?.buffer
 
     if (!id) {
       return res.status(400).json({ error: "ID подписки обязателен" });
     }
-
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
@@ -95,7 +95,7 @@ const updateSubscription = async (req, res) => {
       return res.status(403).json({ error: "Нет доступа" })
     }
 
-    const subscription = await prisma.subscriptions.update({
+    await prisma.subscriptions.update({
       where: { id: parseInt(id) },
       data: {
         name: name,
@@ -130,8 +130,6 @@ const getSubscriptions = async (req, res) => {
 
     const subscriptionsWithBase64 = subscriptions.map(sub => {
       if (sub.img) {
-        // Определяем MIME тип (можно сохранять его в БД или определять по первым байтам)
-        // Для простоты предположим, что это JPEG
         sub.img = bytesToBase64(sub.img)
       }
       return sub;

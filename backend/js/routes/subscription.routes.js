@@ -12,10 +12,13 @@ const { authMiddleware } = require('../middlewares/auth.middleware');
 const upload = multer()
 
 // Создание подписки с файлом
-router.post("/", authMiddleware, upload.single('img'), createSubscription);
+router.post("/", upload.single('img'), authMiddleware, 
+  /* #swagger.tags = ['Subscription'] #swagger.summary = 'Создание подписки' */
+  createSubscription
+);
 
 // Изменение подписки
-router.put("/", authMiddleware,
+router.put("/", upload.single('img'), authMiddleware,
   /* #swagger.tags = ['Subscription'] #swagger.summary = 'Изменение данных подписки' */
   updateSubscription
 );

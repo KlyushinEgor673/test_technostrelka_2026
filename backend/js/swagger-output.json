@@ -358,6 +358,10 @@
     },
     "/api/subscription/": {
       "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Создание подписки",
         "description": "",
         "parameters": [
           {
