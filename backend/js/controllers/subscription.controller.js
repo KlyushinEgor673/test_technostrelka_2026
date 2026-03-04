@@ -34,7 +34,7 @@ const createSubscription = async (req, res) => {
     }
 
     try {
-      const formattedEndDate = end_date.slice(0,10)
+      const formattedEndDate = new Date(end_date.slice(0,10))
       console.log("formattedEndDate ", formattedEndDate)
 
       const formattedPeriod = parseInt(period)
