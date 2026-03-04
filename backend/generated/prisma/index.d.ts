@@ -2303,12 +2303,14 @@ export namespace Prisma {
 
   export type SubscriptionsAvgAggregateOutputType = {
     id: number | null
+    period: number | null
     price: Decimal | null
     id_user: number | null
   }
 
   export type SubscriptionsSumAggregateOutputType = {
     id: number | null
+    period: number | null
     price: Decimal | null
     id_user: number | null
   }
@@ -2316,58 +2318,54 @@ export namespace Prisma {
   export type SubscriptionsMinAggregateOutputType = {
     id: number | null
     name: string | null
-    description: string | null
-    start_date: Date | null
+    category: string | null
+    period: number | null
     end_date: Date | null
     price: Decimal | null
     flag_auto: boolean | null
     img: Bytes | null
-    id_user: number | null
-    created_at: Date | null
-    updated_at: Date | null
     url: string | null
+    id_user: number | null
   }
 
   export type SubscriptionsMaxAggregateOutputType = {
     id: number | null
     name: string | null
-    description: string | null
-    start_date: Date | null
+    category: string | null
+    period: number | null
     end_date: Date | null
     price: Decimal | null
     flag_auto: boolean | null
     img: Bytes | null
-    id_user: number | null
-    created_at: Date | null
-    updated_at: Date | null
     url: string | null
+    id_user: number | null
   }
 
   export type SubscriptionsCountAggregateOutputType = {
     id: number
     name: number
-    description: number
-    start_date: number
+    category: number
+    period: number
     end_date: number
     price: number
     flag_auto: number
     img: number
-    id_user: number
-    created_at: number
-    updated_at: number
     url: number
+    id_user: number
     _all: number
   }
 
 
   export type SubscriptionsAvgAggregateInputType = {
     id?: true
+    period?: true
     price?: true
     id_user?: true
   }
 
   export type SubscriptionsSumAggregateInputType = {
     id?: true
+    period?: true
     price?: true
     id_user?: true
   }
@@ -2375,46 +2373,40 @@ export namespace Prisma {
   export type SubscriptionsMinAggregateInputType = {
     id?: true
     name?: true
-    description?: true
-    start_date?: true
+    category?: true
+    period?: true
     end_date?: true
     price?: true
     flag_auto?: true
     img?: true
-    id_user?: true
-    created_at?: true
-    updated_at?: true
     url?: true
+    id_user?: true
   }
 
   export type SubscriptionsMaxAggregateInputType = {
     id?: true
     name?: true
-    description?: true
-    start_date?: true
+    category?: true
+    period?: true
     end_date?: true
     price?: true
     flag_auto?: true
     img?: true
-    id_user?: true
-    created_at?: true
-    updated_at?: true
     url?: true
+    id_user?: true
   }
 
   export type SubscriptionsCountAggregateInputType = {
     id?: true
     name?: true
-    description?: true
-    start_date?: true
+    category?: true
+    period?: true
     end_date?: true
     price?: true
     flag_auto?: true
     img?: true
-    id_user?: true
-    created_at?: true
-    updated_at?: true
     url?: true
+    id_user?: true
     _all?: true
   }
 
@@ -2507,16 +2499,14 @@ export namespace Prisma {
   export type SubscriptionsGroupByOutputType = {
     id: number
     name: string
-    description: string | null
-    start_date: Date
-    end_date: Date
-    price: Decimal
+    category: string | null
+    period: number | null
+    end_date: Date | null
+    price: Decimal | null
     flag_auto: boolean | null
     img: Bytes | null
-    id_user: number
-    created_at: Date | null
-    updated_at: Date | null
     url: string | null
+    id_user: number | null
     _count: SubscriptionsCountAggregateOutputType | null
     _avg: SubscriptionsAvgAggregateOutputType | null
     _sum: SubscriptionsSumAggregateOutputType | null
@@ -2541,95 +2531,85 @@ export namespace Prisma {
   export type subscriptionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    description?: boolean
-    start_date?: boolean
+    category?: boolean
+    period?: boolean
     end_date?: boolean
     price?: boolean
     flag_auto?: boolean
     img?: boolean
-    id_user?: boolean
-    created_at?: boolean
-    updated_at?: boolean
     url?: boolean
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    id_user?: boolean
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
   export type subscriptionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    description?: boolean
-    start_date?: boolean
+    category?: boolean
+    period?: boolean
     end_date?: boolean
     price?: boolean
     flag_auto?: boolean
     img?: boolean
-    id_user?: boolean
-    created_at?: boolean
-    updated_at?: boolean
     url?: boolean
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    id_user?: boolean
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
   export type subscriptionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    description?: boolean
-    start_date?: boolean
+    category?: boolean
+    period?: boolean
     end_date?: boolean
     price?: boolean
     flag_auto?: boolean
     img?: boolean
-    id_user?: boolean
-    created_at?: boolean
-    updated_at?: boolean
     url?: boolean
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    id_user?: boolean
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }, ExtArgs["result"]["subscriptions"]>
 
   export type subscriptionsSelectScalar = {
     id?: boolean
     name?: boolean
-    description?: boolean
-    start_date?: boolean
+    category?: boolean
+    period?: boolean
     end_date?: boolean
     price?: boolean
     flag_auto?: boolean
     img?: boolean
-    id_user?: boolean
-    created_at?: boolean
-    updated_at?: boolean
     url?: boolean
+    id_user?: boolean
   }
 
-  export type subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "start_date" | "end_date" | "price" | "flag_auto" | "img" | "id_user" | "created_at" | "updated_at" | "url", ExtArgs["result"]["subscriptions"]>
+  export type subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "category" | "period" | "end_date" | "price" | "flag_auto" | "img" | "url" | "id_user", ExtArgs["result"]["subscriptions"]>
   export type subscriptionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }
   export type subscriptionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }
   export type subscriptionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    users?: boolean | usersDefaultArgs<ExtArgs>
+    users?: boolean | subscriptions$usersArgs<ExtArgs>
   }
 
   export type $subscriptionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "subscriptions"
     objects: {
-      users: Prisma.$usersPayload<ExtArgs>
+      users: Prisma.$usersPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
-      description: string | null
-      start_date: Date
-      end_date: Date
-      price: Prisma.Decimal
+      category: string | null
+      period: number | null
+      end_date: Date | null
+      price: Prisma.Decimal | null
       flag_auto: boolean | null
       img: Prisma.Bytes | null
-      id_user: number
-      created_at: Date | null
-      updated_at: Date | null
       url: string | null
+      id_user: number | null
     }, ExtArgs["result"]["subscriptions"]>
     composites: {}
   }
@@ -3024,7 +3004,7 @@ export namespace Prisma {
    */
   export interface Prisma__subscriptionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    users<T extends subscriptions$usersArgs<ExtArgs> = {}>(args?: Subset<T, subscriptions$usersArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3056,16 +3036,14 @@ export namespace Prisma {
   interface subscriptionsFieldRefs {
     readonly id: FieldRef<"subscriptions", 'Int'>
     readonly name: FieldRef<"subscriptions", 'String'>
-    readonly description: FieldRef<"subscriptions", 'String'>
-    readonly start_date: FieldRef<"subscriptions", 'DateTime'>
+    readonly category: FieldRef<"subscriptions", 'String'>
+    readonly period: FieldRef<"subscriptions", 'Int'>
     readonly end_date: FieldRef<"subscriptions", 'DateTime'>
     readonly price: FieldRef<"subscriptions", 'Decimal'>
     readonly flag_auto: FieldRef<"subscriptions", 'Boolean'>
     readonly img: FieldRef<"subscriptions", 'Bytes'>
-    readonly id_user: FieldRef<"subscriptions", 'Int'>
-    readonly created_at: FieldRef<"subscriptions", 'DateTime'>
-    readonly updated_at: FieldRef<"subscriptions", 'DateTime'>
     readonly url: FieldRef<"subscriptions", 'String'>
+    readonly id_user: FieldRef<"subscriptions", 'Int'>
   }
     
 
@@ -3459,6 +3437,25 @@ export namespace Prisma {
      * Limit how many subscriptions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * subscriptions.users
+   */
+  export type subscriptions$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the users
+     */
+    select?: usersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the users
+     */
+    omit?: usersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: usersInclude<ExtArgs> | null
+    where?: usersWhereInput
   }
 
   /**
@@ -4584,16 +4581,14 @@ export namespace Prisma {
   export const SubscriptionsScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    description: 'description',
-    start_date: 'start_date',
+    category: 'category',
+    period: 'period',
     end_date: 'end_date',
     price: 'price',
     flag_auto: 'flag_auto',
     img: 'img',
-    id_user: 'id_user',
-    created_at: 'created_at',
-    updated_at: 'updated_at',
-    url: 'url'
+    url: 'url',
+    id_user: 'id_user'
   };
 
   export type SubscriptionsScalarFieldEnum = (typeof SubscriptionsScalarFieldEnum)[keyof typeof SubscriptionsScalarFieldEnum]
@@ -4858,32 +4853,28 @@ export namespace Prisma {
     NOT?: subscriptionsWhereInput | subscriptionsWhereInput[]
     id?: IntFilter<"subscriptions"> | number
     name?: StringFilter<"subscriptions"> | string
-    description?: StringNullableFilter<"subscriptions"> | string | null
-    start_date?: DateTimeFilter<"subscriptions"> | Date | string
-    end_date?: DateTimeFilter<"subscriptions"> | Date | string
-    price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: StringNullableFilter<"subscriptions"> | string | null
+    period?: IntNullableFilter<"subscriptions"> | number | null
+    end_date?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    price?: DecimalNullableFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string | null
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
     img?: BytesNullableFilter<"subscriptions"> | Bytes | null
-    id_user?: IntFilter<"subscriptions"> | number
-    created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
-    updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     url?: StringNullableFilter<"subscriptions"> | string | null
-    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
+    id_user?: IntNullableFilter<"subscriptions"> | number | null
+    users?: XOR<UsersNullableScalarRelationFilter, usersWhereInput> | null
   }
 
   export type subscriptionsOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    start_date?: SortOrder
-    end_date?: SortOrder
-    price?: SortOrder
+    category?: SortOrderInput | SortOrder
+    period?: SortOrderInput | SortOrder
+    end_date?: SortOrderInput | SortOrder
+    price?: SortOrderInput | SortOrder
     flag_auto?: SortOrderInput | SortOrder
     img?: SortOrderInput | SortOrder
-    id_user?: SortOrder
-    created_at?: SortOrderInput | SortOrder
-    updated_at?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
+    id_user?: SortOrderInput | SortOrder
     users?: usersOrderByWithRelationInput
   }
 
@@ -4893,32 +4884,28 @@ export namespace Prisma {
     OR?: subscriptionsWhereInput[]
     NOT?: subscriptionsWhereInput | subscriptionsWhereInput[]
     name?: StringFilter<"subscriptions"> | string
-    description?: StringNullableFilter<"subscriptions"> | string | null
-    start_date?: DateTimeFilter<"subscriptions"> | Date | string
-    end_date?: DateTimeFilter<"subscriptions"> | Date | string
-    price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: StringNullableFilter<"subscriptions"> | string | null
+    period?: IntNullableFilter<"subscriptions"> | number | null
+    end_date?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    price?: DecimalNullableFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string | null
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
     img?: BytesNullableFilter<"subscriptions"> | Bytes | null
-    id_user?: IntFilter<"subscriptions"> | number
-    created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
-    updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     url?: StringNullableFilter<"subscriptions"> | string | null
-    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
+    id_user?: IntNullableFilter<"subscriptions"> | number | null
+    users?: XOR<UsersNullableScalarRelationFilter, usersWhereInput> | null
   }, "id">
 
   export type subscriptionsOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    start_date?: SortOrder
-    end_date?: SortOrder
-    price?: SortOrder
+    category?: SortOrderInput | SortOrder
+    period?: SortOrderInput | SortOrder
+    end_date?: SortOrderInput | SortOrder
+    price?: SortOrderInput | SortOrder
     flag_auto?: SortOrderInput | SortOrder
     img?: SortOrderInput | SortOrder
-    id_user?: SortOrder
-    created_at?: SortOrderInput | SortOrder
-    updated_at?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
+    id_user?: SortOrderInput | SortOrder
     _count?: subscriptionsCountOrderByAggregateInput
     _avg?: subscriptionsAvgOrderByAggregateInput
     _max?: subscriptionsMaxOrderByAggregateInput
@@ -4932,16 +4919,14 @@ export namespace Prisma {
     NOT?: subscriptionsScalarWhereWithAggregatesInput | subscriptionsScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"subscriptions"> | number
     name?: StringWithAggregatesFilter<"subscriptions"> | string
-    description?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
-    start_date?: DateTimeWithAggregatesFilter<"subscriptions"> | Date | string
-    end_date?: DateTimeWithAggregatesFilter<"subscriptions"> | Date | string
-    price?: DecimalWithAggregatesFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
+    period?: IntNullableWithAggregatesFilter<"subscriptions"> | number | null
+    end_date?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
+    price?: DecimalNullableWithAggregatesFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string | null
     flag_auto?: BoolNullableWithAggregatesFilter<"subscriptions"> | boolean | null
     img?: BytesNullableWithAggregatesFilter<"subscriptions"> | Bytes | null
-    id_user?: IntWithAggregatesFilter<"subscriptions"> | number
-    created_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
-    updated_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
     url?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
+    id_user?: IntNullableWithAggregatesFilter<"subscriptions"> | number | null
   }
 
   export type debiting_subscriptionsWhereInput = {
@@ -5096,103 +5081,89 @@ export namespace Prisma {
 
   export type subscriptionsCreateInput = {
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
-    users: usersCreateNestedOneWithoutSubscriptionsInput
+    users?: usersCreateNestedOneWithoutSubscriptionsInput
   }
 
   export type subscriptionsUncheckedCreateInput = {
     id?: number
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    id_user: number
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
+    id_user?: number | null
   }
 
   export type subscriptionsUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
-    users?: usersUpdateOneRequiredWithoutSubscriptionsNestedInput
+    users?: usersUpdateOneWithoutSubscriptionsNestedInput
   }
 
   export type subscriptionsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    id_user?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
+    id_user?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type subscriptionsCreateManyInput = {
     id?: number
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    id_user: number
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
+    id_user?: number | null
   }
 
   export type subscriptionsUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    id_user?: IntFieldUpdateOperationsInput | number
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
+    id_user?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type debiting_subscriptionsCreateInput = {
@@ -5489,22 +5460,15 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type BytesNullableFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -5518,28 +5482,45 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type UsersScalarRelationFilter = {
-    is?: usersWhereInput
-    isNot?: usersWhereInput
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type BytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
+  export type UsersNullableScalarRelationFilter = {
+    is?: usersWhereInput | null
+    isNot?: usersWhereInput | null
   }
 
   export type subscriptionsCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrder
-    start_date?: SortOrder
+    category?: SortOrder
+    period?: SortOrder
     end_date?: SortOrder
     price?: SortOrder
     flag_auto?: SortOrder
     img?: SortOrder
-    id_user?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
     url?: SortOrder
+    id_user?: SortOrder
   }
 
   export type subscriptionsAvgOrderByAggregateInput = {
     id?: SortOrder
+    period?: SortOrder
     price?: SortOrder
     id_user?: SortOrder
   }
@@ -5547,63 +5528,50 @@ export namespace Prisma {
   export type subscriptionsMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrder
-    start_date?: SortOrder
+    category?: SortOrder
+    period?: SortOrder
     end_date?: SortOrder
     price?: SortOrder
     flag_auto?: SortOrder
     img?: SortOrder
-    id_user?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
     url?: SortOrder
+    id_user?: SortOrder
   }
 
   export type subscriptionsMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    description?: SortOrder
-    start_date?: SortOrder
+    category?: SortOrder
+    period?: SortOrder
     end_date?: SortOrder
     price?: SortOrder
     flag_auto?: SortOrder
     img?: SortOrder
-    id_user?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
     url?: SortOrder
+    id_user?: SortOrder
   }
 
   export type subscriptionsSumOrderByAggregateInput = {
     id?: SortOrder
+    period?: SortOrder
     price?: SortOrder
     id_user?: SortOrder
   }
 
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBytesNullableFilter<$PrismaModel>
-    _max?: NestedBytesNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5618,6 +5586,48 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type UsersScalarRelationFilter = {
+    is?: usersWhereInput
+    isNot?: usersWhereInput
   }
 
   export type debiting_subscriptionsCountOrderByAggregateInput = {
@@ -5646,6 +5656,22 @@ export namespace Prisma {
   export type debiting_subscriptionsSumOrderByAggregateInput = {
     price?: SortOrder
     user_id?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type debiting_subscriptionsCreateNestedManyWithoutUsersInput = {
@@ -5762,8 +5788,20 @@ export namespace Prisma {
     connect?: usersWhereUniqueInput
   }
 
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
     increment?: Decimal | DecimalJsLike | number | string
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
@@ -5774,14 +5812,12 @@ export namespace Prisma {
     set?: Bytes | null
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type usersUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+  export type usersUpdateOneWithoutSubscriptionsNestedInput = {
     create?: XOR<usersCreateWithoutSubscriptionsInput, usersUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutSubscriptionsInput
     upsert?: usersUpsertWithoutSubscriptionsInput
+    disconnect?: usersWhereInput | boolean
+    delete?: usersWhereInput | boolean
     connect?: usersWhereUniqueInput
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutSubscriptionsInput, usersUpdateWithoutSubscriptionsInput>, usersUncheckedUpdateWithoutSubscriptionsInput>
   }
@@ -5790,6 +5826,14 @@ export namespace Prisma {
     create?: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutDebiting_subscriptionsInput
     connect?: usersWhereUniqueInput
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput = {
@@ -5972,24 +6016,6 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type NestedBytesNullableFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
-  }
-
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -5999,6 +6025,102 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedBytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -6015,30 +6137,6 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBytesNullableFilter<$PrismaModel>
-    _max?: NestedBytesNullableFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type debiting_subscriptionsCreateWithoutUsersInput = {
@@ -6063,28 +6161,24 @@ export namespace Prisma {
 
   export type subscriptionsCreateWithoutUsersInput = {
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
   }
 
   export type subscriptionsUncheckedCreateWithoutUsersInput = {
     id?: number
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
   }
 
@@ -6145,16 +6239,14 @@ export namespace Prisma {
     NOT?: subscriptionsScalarWhereInput | subscriptionsScalarWhereInput[]
     id?: IntFilter<"subscriptions"> | number
     name?: StringFilter<"subscriptions"> | string
-    description?: StringNullableFilter<"subscriptions"> | string | null
-    start_date?: DateTimeFilter<"subscriptions"> | Date | string
-    end_date?: DateTimeFilter<"subscriptions"> | Date | string
-    price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: StringNullableFilter<"subscriptions"> | string | null
+    period?: IntNullableFilter<"subscriptions"> | number | null
+    end_date?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
+    price?: DecimalNullableFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string | null
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
     img?: BytesNullableFilter<"subscriptions"> | Bytes | null
-    id_user?: IntFilter<"subscriptions"> | number
-    created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
-    updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     url?: StringNullableFilter<"subscriptions"> | string | null
+    id_user?: IntNullableFilter<"subscriptions"> | number | null
   }
 
   export type usersCreateWithoutSubscriptionsInput = {
@@ -6313,14 +6405,12 @@ export namespace Prisma {
   export type subscriptionsCreateManyUsersInput = {
     id?: number
     name: string
-    description?: string | null
-    start_date: Date | string
-    end_date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category?: string | null
+    period?: number | null
+    end_date?: Date | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
     flag_auto?: boolean | null
     img?: Bytes | null
-    created_at?: Date | string | null
-    updated_at?: Date | string | null
     url?: string | null
   }
 
@@ -6341,42 +6431,36 @@ export namespace Prisma {
 
   export type subscriptionsUpdateWithoutUsersInput = {
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsUncheckedUpdateManyWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    start_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    period?: NullableIntFieldUpdateOperationsInput | number | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
-    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

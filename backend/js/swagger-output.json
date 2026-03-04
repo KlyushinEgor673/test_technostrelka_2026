@@ -370,11 +370,6 @@
             "type": "string"
           },
           {
-            "name": "content-type",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "schema": {
@@ -383,10 +378,10 @@
                 "name": {
                   "example": "any"
                 },
-                "description": {
+                "category": {
                   "example": "any"
                 },
-                "start_date": {
+                "period": {
                   "example": "any"
                 },
                 "end_date": {

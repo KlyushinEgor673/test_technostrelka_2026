@@ -44,8 +44,7 @@ const verifyCode = async (req, res) => {
 
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "24h" },
+      process.env.JWT_SECRET
     );
 
     res.status(201).json({
