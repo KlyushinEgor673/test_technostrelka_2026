@@ -3,9 +3,17 @@ const prisma = require("../client");
 // Создание подписки
 const createSubscription = async (req, res) => {
   try {
+    console.log('req.file:', req.file); // Что тут?
+    console.log('req.body:', req.body); // Что тут?
+    console.log('req.headers.content-type:', req.headers['content-type']);
+
     const { name, description, start_date, end_date, price, flag_auto, url } = req.body
     const img = req.file?.buffer
 
+    if (!req.file) {
+      return res.status(400).json({ error: "Файл не получен. Проверьте FormData" });
+    }
+    
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
@@ -110,7 +118,7 @@ const updateSubscription = async (req, res) => {
 // Получение всех подписок пользователя
 const getSubscriptions = async (req, res) => {
   try {
-    
+
 
     const subscriptions = await prisma.subscriptions.findMany({
       where: {
