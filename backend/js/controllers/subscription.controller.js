@@ -72,8 +72,8 @@ const createSubscription = async (req, res) => {
       await prisma.subscriptions.create({
         data: {
           name: name,
-          description: description,
-          start_date: new Date(start_date),
+          category: category,
+          period: period,
           end_date: new Date(end_date),
           price: price,
           flag_auto: !!flag_auto,
