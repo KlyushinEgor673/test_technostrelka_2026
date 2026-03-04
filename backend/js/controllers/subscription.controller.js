@@ -1,4 +1,5 @@
 const prisma = require("../client");
+const { bytesToBase64 } = require('byte-base64')
 
 // Создание подписки
 const createSubscription = async (req, res) => {
@@ -131,13 +132,8 @@ const getSubscriptions = async (req, res) => {
       if (sub.img) {
         // Определяем MIME тип (можно сохранять его в БД или определять по первым байтам)
         // Для простоты предположим, что это JPEG
-        const base64Image = sub.img.toString('base64');
-        return {
-          ...sub,
-          img: `data:image/jpeg;base64,${base64Image}`
-        };
+        sub.img = bytesToBase64(sub.img)
       }
-      return sub;
     });
 
     res.status(200).json({ subscriptions: subscriptionsWithBase64 })
