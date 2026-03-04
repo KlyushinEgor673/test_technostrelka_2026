@@ -7,6 +7,8 @@ const doc = {
   },
   host: 'localhost:3000',
   schemes: ['http'],
+  consumes: ['application/json', 'multipart/form-data'],
+  produces: ['application/json'],
   securityDefinitions: {
     bearerAuth: {
       type: 'apiKey', // Меняем на apiKey

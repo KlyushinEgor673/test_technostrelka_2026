@@ -4,7 +4,7 @@ const prisma = require("../client");
 const createSubscription = async (req, res) => {
   try {
     const { name, description, start_date, end_date, price, flag_auto, url } = req.body
-    const img = req.file.buffer
+    const img = req.file?.buffer
 
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
@@ -22,7 +22,7 @@ const createSubscription = async (req, res) => {
       return res.status(400).json({ error: "Флаг автопродления обязателен" });
     }
     if (!url) {
-      return res.status(200).json({ error: "URL оплаты обязателен" })
+      return res.status(400).json({ error: "URL оплаты обязателен" }) // исправил 200 на 400
     }
 
     await prisma.subscriptions.create({
@@ -110,6 +110,8 @@ const updateSubscription = async (req, res) => {
 // Получение всех подписок пользователя
 const getSubscriptions = async (req, res) => {
   try {
+    
+
     const subscriptions = await prisma.subscriptions.findMany({
       where: {
       id_user: req.user.id

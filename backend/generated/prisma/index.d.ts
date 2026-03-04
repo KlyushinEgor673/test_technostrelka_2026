@@ -23,6 +23,11 @@ export type users = $Result.DefaultSelection<Prisma.$usersPayload>
  * 
  */
 export type subscriptions = $Result.DefaultSelection<Prisma.$subscriptionsPayload>
+/**
+ * Model debiting_subscriptions
+ * 
+ */
+export type debiting_subscriptions = $Result.DefaultSelection<Prisma.$debiting_subscriptionsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -160,6 +165,16 @@ export class PrismaClient<
     * ```
     */
   get subscriptions(): Prisma.subscriptionsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.debiting_subscriptions`: Exposes CRUD operations for the **debiting_subscriptions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Debiting_subscriptions
+    * const debiting_subscriptions = await prisma.debiting_subscriptions.findMany()
+    * ```
+    */
+  get debiting_subscriptions(): Prisma.debiting_subscriptionsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -595,7 +610,8 @@ export namespace Prisma {
 
   export const ModelName: {
     users: 'users',
-    subscriptions: 'subscriptions'
+    subscriptions: 'subscriptions',
+    debiting_subscriptions: 'debiting_subscriptions'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -611,7 +627,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users" | "subscriptions"
+      modelProps: "users" | "subscriptions" | "debiting_subscriptions"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -763,6 +779,80 @@ export namespace Prisma {
           }
         }
       }
+      debiting_subscriptions: {
+        payload: Prisma.$debiting_subscriptionsPayload<ExtArgs>
+        fields: Prisma.debiting_subscriptionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.debiting_subscriptionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.debiting_subscriptionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          findFirst: {
+            args: Prisma.debiting_subscriptionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.debiting_subscriptionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          findMany: {
+            args: Prisma.debiting_subscriptionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>[]
+          }
+          create: {
+            args: Prisma.debiting_subscriptionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          createMany: {
+            args: Prisma.debiting_subscriptionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.debiting_subscriptionsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>[]
+          }
+          delete: {
+            args: Prisma.debiting_subscriptionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          update: {
+            args: Prisma.debiting_subscriptionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.debiting_subscriptionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.debiting_subscriptionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.debiting_subscriptionsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>[]
+          }
+          upsert: {
+            args: Prisma.debiting_subscriptionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$debiting_subscriptionsPayload>
+          }
+          aggregate: {
+            args: Prisma.Debiting_subscriptionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDebiting_subscriptions>
+          }
+          groupBy: {
+            args: Prisma.debiting_subscriptionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Debiting_subscriptionsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.debiting_subscriptionsCountArgs<ExtArgs>
+            result: $Utils.Optional<Debiting_subscriptionsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -873,6 +963,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     users?: usersOmit
     subscriptions?: subscriptionsOmit
+    debiting_subscriptions?: debiting_subscriptionsOmit
   }
 
   /* Types for Logging */
@@ -953,10 +1044,12 @@ export namespace Prisma {
    */
 
   export type UsersCountOutputType = {
+    debiting_subscriptions: number
     subscriptions: number
   }
 
   export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    debiting_subscriptions?: boolean | UsersCountOutputTypeCountDebiting_subscriptionsArgs
     subscriptions?: boolean | UsersCountOutputTypeCountSubscriptionsArgs
   }
 
@@ -969,6 +1062,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UsersCountOutputType
      */
     select?: UsersCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UsersCountOutputType without action
+   */
+  export type UsersCountOutputTypeCountDebiting_subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: debiting_subscriptionsWhereInput
   }
 
   /**
@@ -1225,6 +1325,7 @@ export namespace Prisma {
     email_ym?: boolean
     password_ym?: boolean
     is_enter_ym?: boolean
+    debiting_subscriptions?: boolean | users$debiting_subscriptionsArgs<ExtArgs>
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
@@ -1273,6 +1374,7 @@ export namespace Prisma {
 
   export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "surname" | "created_at" | "access_token_yoomoney" | "cookies" | "email_ym" | "password_ym" | "is_enter_ym", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    debiting_subscriptions?: boolean | users$debiting_subscriptionsArgs<ExtArgs>
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1282,6 +1384,7 @@ export namespace Prisma {
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
     objects: {
+      debiting_subscriptions: Prisma.$debiting_subscriptionsPayload<ExtArgs>[]
       subscriptions: Prisma.$subscriptionsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1690,6 +1793,7 @@ export namespace Prisma {
    */
   export interface Prisma__usersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    debiting_subscriptions<T extends users$debiting_subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, users$debiting_subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptions<T extends users$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, users$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2119,6 +2223,30 @@ export namespace Prisma {
   }
 
   /**
+   * users.debiting_subscriptions
+   */
+  export type users$debiting_subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    where?: debiting_subscriptionsWhereInput
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Debiting_subscriptionsScalarFieldEnum | Debiting_subscriptionsScalarFieldEnum[]
+  }
+
+  /**
    * users.subscriptions
    */
   export type users$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2193,7 +2321,7 @@ export namespace Prisma {
     end_date: Date | null
     price: Decimal | null
     flag_auto: boolean | null
-    img: string | null
+    img: Bytes | null
     id_user: number | null
     created_at: Date | null
     updated_at: Date | null
@@ -2208,7 +2336,7 @@ export namespace Prisma {
     end_date: Date | null
     price: Decimal | null
     flag_auto: boolean | null
-    img: string | null
+    img: Bytes | null
     id_user: number | null
     created_at: Date | null
     updated_at: Date | null
@@ -2384,7 +2512,7 @@ export namespace Prisma {
     end_date: Date
     price: Decimal
     flag_auto: boolean | null
-    img: string | null
+    img: Bytes | null
     id_user: number
     created_at: Date | null
     updated_at: Date | null
@@ -2497,7 +2625,7 @@ export namespace Prisma {
       end_date: Date
       price: Prisma.Decimal
       flag_auto: boolean | null
-      img: string | null
+      img: Prisma.Bytes | null
       id_user: number
       created_at: Date | null
       updated_at: Date | null
@@ -2933,7 +3061,7 @@ export namespace Prisma {
     readonly end_date: FieldRef<"subscriptions", 'DateTime'>
     readonly price: FieldRef<"subscriptions", 'Decimal'>
     readonly flag_auto: FieldRef<"subscriptions", 'Boolean'>
-    readonly img: FieldRef<"subscriptions", 'String'>
+    readonly img: FieldRef<"subscriptions", 'Bytes'>
     readonly id_user: FieldRef<"subscriptions", 'Int'>
     readonly created_at: FieldRef<"subscriptions", 'DateTime'>
     readonly updated_at: FieldRef<"subscriptions", 'DateTime'>
@@ -3353,6 +3481,1076 @@ export namespace Prisma {
 
 
   /**
+   * Model debiting_subscriptions
+   */
+
+  export type AggregateDebiting_subscriptions = {
+    _count: Debiting_subscriptionsCountAggregateOutputType | null
+    _avg: Debiting_subscriptionsAvgAggregateOutputType | null
+    _sum: Debiting_subscriptionsSumAggregateOutputType | null
+    _min: Debiting_subscriptionsMinAggregateOutputType | null
+    _max: Debiting_subscriptionsMaxAggregateOutputType | null
+  }
+
+  export type Debiting_subscriptionsAvgAggregateOutputType = {
+    price: Decimal | null
+    user_id: number | null
+  }
+
+  export type Debiting_subscriptionsSumAggregateOutputType = {
+    price: Decimal | null
+    user_id: number | null
+  }
+
+  export type Debiting_subscriptionsMinAggregateOutputType = {
+    date: Date | null
+    price: Decimal | null
+    user_id: number | null
+  }
+
+  export type Debiting_subscriptionsMaxAggregateOutputType = {
+    date: Date | null
+    price: Decimal | null
+    user_id: number | null
+  }
+
+  export type Debiting_subscriptionsCountAggregateOutputType = {
+    date: number
+    price: number
+    user_id: number
+    _all: number
+  }
+
+
+  export type Debiting_subscriptionsAvgAggregateInputType = {
+    price?: true
+    user_id?: true
+  }
+
+  export type Debiting_subscriptionsSumAggregateInputType = {
+    price?: true
+    user_id?: true
+  }
+
+  export type Debiting_subscriptionsMinAggregateInputType = {
+    date?: true
+    price?: true
+    user_id?: true
+  }
+
+  export type Debiting_subscriptionsMaxAggregateInputType = {
+    date?: true
+    price?: true
+    user_id?: true
+  }
+
+  export type Debiting_subscriptionsCountAggregateInputType = {
+    date?: true
+    price?: true
+    user_id?: true
+    _all?: true
+  }
+
+  export type Debiting_subscriptionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which debiting_subscriptions to aggregate.
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of debiting_subscriptions to fetch.
+     */
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` debiting_subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` debiting_subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned debiting_subscriptions
+    **/
+    _count?: true | Debiting_subscriptionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Debiting_subscriptionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Debiting_subscriptionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Debiting_subscriptionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Debiting_subscriptionsMaxAggregateInputType
+  }
+
+  export type GetDebiting_subscriptionsAggregateType<T extends Debiting_subscriptionsAggregateArgs> = {
+        [P in keyof T & keyof AggregateDebiting_subscriptions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDebiting_subscriptions[P]>
+      : GetScalarType<T[P], AggregateDebiting_subscriptions[P]>
+  }
+
+
+
+
+  export type debiting_subscriptionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: debiting_subscriptionsWhereInput
+    orderBy?: debiting_subscriptionsOrderByWithAggregationInput | debiting_subscriptionsOrderByWithAggregationInput[]
+    by: Debiting_subscriptionsScalarFieldEnum[] | Debiting_subscriptionsScalarFieldEnum
+    having?: debiting_subscriptionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Debiting_subscriptionsCountAggregateInputType | true
+    _avg?: Debiting_subscriptionsAvgAggregateInputType
+    _sum?: Debiting_subscriptionsSumAggregateInputType
+    _min?: Debiting_subscriptionsMinAggregateInputType
+    _max?: Debiting_subscriptionsMaxAggregateInputType
+  }
+
+  export type Debiting_subscriptionsGroupByOutputType = {
+    date: Date
+    price: Decimal
+    user_id: number
+    _count: Debiting_subscriptionsCountAggregateOutputType | null
+    _avg: Debiting_subscriptionsAvgAggregateOutputType | null
+    _sum: Debiting_subscriptionsSumAggregateOutputType | null
+    _min: Debiting_subscriptionsMinAggregateOutputType | null
+    _max: Debiting_subscriptionsMaxAggregateOutputType | null
+  }
+
+  type GetDebiting_subscriptionsGroupByPayload<T extends debiting_subscriptionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Debiting_subscriptionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Debiting_subscriptionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Debiting_subscriptionsGroupByOutputType[P]>
+            : GetScalarType<T[P], Debiting_subscriptionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type debiting_subscriptionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    price?: boolean
+    user_id?: boolean
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debiting_subscriptions"]>
+
+  export type debiting_subscriptionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    price?: boolean
+    user_id?: boolean
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debiting_subscriptions"]>
+
+  export type debiting_subscriptionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    price?: boolean
+    user_id?: boolean
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debiting_subscriptions"]>
+
+  export type debiting_subscriptionsSelectScalar = {
+    date?: boolean
+    price?: boolean
+    user_id?: boolean
+  }
+
+  export type debiting_subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"date" | "price" | "user_id", ExtArgs["result"]["debiting_subscriptions"]>
+  export type debiting_subscriptionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type debiting_subscriptionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }
+  export type debiting_subscriptionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | usersDefaultArgs<ExtArgs>
+  }
+
+  export type $debiting_subscriptionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "debiting_subscriptions"
+    objects: {
+      users: Prisma.$usersPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      date: Date
+      price: Prisma.Decimal
+      user_id: number
+    }, ExtArgs["result"]["debiting_subscriptions"]>
+    composites: {}
+  }
+
+  type debiting_subscriptionsGetPayload<S extends boolean | null | undefined | debiting_subscriptionsDefaultArgs> = $Result.GetResult<Prisma.$debiting_subscriptionsPayload, S>
+
+  type debiting_subscriptionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<debiting_subscriptionsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Debiting_subscriptionsCountAggregateInputType | true
+    }
+
+  export interface debiting_subscriptionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['debiting_subscriptions'], meta: { name: 'debiting_subscriptions' } }
+    /**
+     * Find zero or one Debiting_subscriptions that matches the filter.
+     * @param {debiting_subscriptionsFindUniqueArgs} args - Arguments to find a Debiting_subscriptions
+     * @example
+     * // Get one Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends debiting_subscriptionsFindUniqueArgs>(args: SelectSubset<T, debiting_subscriptionsFindUniqueArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Debiting_subscriptions that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {debiting_subscriptionsFindUniqueOrThrowArgs} args - Arguments to find a Debiting_subscriptions
+     * @example
+     * // Get one Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends debiting_subscriptionsFindUniqueOrThrowArgs>(args: SelectSubset<T, debiting_subscriptionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Debiting_subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsFindFirstArgs} args - Arguments to find a Debiting_subscriptions
+     * @example
+     * // Get one Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends debiting_subscriptionsFindFirstArgs>(args?: SelectSubset<T, debiting_subscriptionsFindFirstArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Debiting_subscriptions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsFindFirstOrThrowArgs} args - Arguments to find a Debiting_subscriptions
+     * @example
+     * // Get one Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends debiting_subscriptionsFindFirstOrThrowArgs>(args?: SelectSubset<T, debiting_subscriptionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Debiting_subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findMany()
+     * 
+     * // Get first 10 Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.findMany({ take: 10 })
+     * 
+     * // Only select the `date`
+     * const debiting_subscriptionsWithDateOnly = await prisma.debiting_subscriptions.findMany({ select: { date: true } })
+     * 
+     */
+    findMany<T extends debiting_subscriptionsFindManyArgs>(args?: SelectSubset<T, debiting_subscriptionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Debiting_subscriptions.
+     * @param {debiting_subscriptionsCreateArgs} args - Arguments to create a Debiting_subscriptions.
+     * @example
+     * // Create one Debiting_subscriptions
+     * const Debiting_subscriptions = await prisma.debiting_subscriptions.create({
+     *   data: {
+     *     // ... data to create a Debiting_subscriptions
+     *   }
+     * })
+     * 
+     */
+    create<T extends debiting_subscriptionsCreateArgs>(args: SelectSubset<T, debiting_subscriptionsCreateArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Debiting_subscriptions.
+     * @param {debiting_subscriptionsCreateManyArgs} args - Arguments to create many Debiting_subscriptions.
+     * @example
+     * // Create many Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends debiting_subscriptionsCreateManyArgs>(args?: SelectSubset<T, debiting_subscriptionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Debiting_subscriptions and returns the data saved in the database.
+     * @param {debiting_subscriptionsCreateManyAndReturnArgs} args - Arguments to create many Debiting_subscriptions.
+     * @example
+     * // Create many Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Debiting_subscriptions and only return the `date`
+     * const debiting_subscriptionsWithDateOnly = await prisma.debiting_subscriptions.createManyAndReturn({
+     *   select: { date: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends debiting_subscriptionsCreateManyAndReturnArgs>(args?: SelectSubset<T, debiting_subscriptionsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Debiting_subscriptions.
+     * @param {debiting_subscriptionsDeleteArgs} args - Arguments to delete one Debiting_subscriptions.
+     * @example
+     * // Delete one Debiting_subscriptions
+     * const Debiting_subscriptions = await prisma.debiting_subscriptions.delete({
+     *   where: {
+     *     // ... filter to delete one Debiting_subscriptions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends debiting_subscriptionsDeleteArgs>(args: SelectSubset<T, debiting_subscriptionsDeleteArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Debiting_subscriptions.
+     * @param {debiting_subscriptionsUpdateArgs} args - Arguments to update one Debiting_subscriptions.
+     * @example
+     * // Update one Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends debiting_subscriptionsUpdateArgs>(args: SelectSubset<T, debiting_subscriptionsUpdateArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Debiting_subscriptions.
+     * @param {debiting_subscriptionsDeleteManyArgs} args - Arguments to filter Debiting_subscriptions to delete.
+     * @example
+     * // Delete a few Debiting_subscriptions
+     * const { count } = await prisma.debiting_subscriptions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends debiting_subscriptionsDeleteManyArgs>(args?: SelectSubset<T, debiting_subscriptionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Debiting_subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends debiting_subscriptionsUpdateManyArgs>(args: SelectSubset<T, debiting_subscriptionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Debiting_subscriptions and returns the data updated in the database.
+     * @param {debiting_subscriptionsUpdateManyAndReturnArgs} args - Arguments to update many Debiting_subscriptions.
+     * @example
+     * // Update many Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Debiting_subscriptions and only return the `date`
+     * const debiting_subscriptionsWithDateOnly = await prisma.debiting_subscriptions.updateManyAndReturn({
+     *   select: { date: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends debiting_subscriptionsUpdateManyAndReturnArgs>(args: SelectSubset<T, debiting_subscriptionsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Debiting_subscriptions.
+     * @param {debiting_subscriptionsUpsertArgs} args - Arguments to update or create a Debiting_subscriptions.
+     * @example
+     * // Update or create a Debiting_subscriptions
+     * const debiting_subscriptions = await prisma.debiting_subscriptions.upsert({
+     *   create: {
+     *     // ... data to create a Debiting_subscriptions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Debiting_subscriptions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends debiting_subscriptionsUpsertArgs>(args: SelectSubset<T, debiting_subscriptionsUpsertArgs<ExtArgs>>): Prisma__debiting_subscriptionsClient<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Debiting_subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsCountArgs} args - Arguments to filter Debiting_subscriptions to count.
+     * @example
+     * // Count the number of Debiting_subscriptions
+     * const count = await prisma.debiting_subscriptions.count({
+     *   where: {
+     *     // ... the filter for the Debiting_subscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends debiting_subscriptionsCountArgs>(
+      args?: Subset<T, debiting_subscriptionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Debiting_subscriptionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Debiting_subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Debiting_subscriptionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Debiting_subscriptionsAggregateArgs>(args: Subset<T, Debiting_subscriptionsAggregateArgs>): Prisma.PrismaPromise<GetDebiting_subscriptionsAggregateType<T>>
+
+    /**
+     * Group by Debiting_subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {debiting_subscriptionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends debiting_subscriptionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: debiting_subscriptionsGroupByArgs['orderBy'] }
+        : { orderBy?: debiting_subscriptionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, debiting_subscriptionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDebiting_subscriptionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the debiting_subscriptions model
+   */
+  readonly fields: debiting_subscriptionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for debiting_subscriptions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__debiting_subscriptionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the debiting_subscriptions model
+   */
+  interface debiting_subscriptionsFieldRefs {
+    readonly date: FieldRef<"debiting_subscriptions", 'DateTime'>
+    readonly price: FieldRef<"debiting_subscriptions", 'Decimal'>
+    readonly user_id: FieldRef<"debiting_subscriptions", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * debiting_subscriptions findUnique
+   */
+  export type debiting_subscriptionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter, which debiting_subscriptions to fetch.
+     */
+    where: debiting_subscriptionsWhereUniqueInput
+  }
+
+  /**
+   * debiting_subscriptions findUniqueOrThrow
+   */
+  export type debiting_subscriptionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter, which debiting_subscriptions to fetch.
+     */
+    where: debiting_subscriptionsWhereUniqueInput
+  }
+
+  /**
+   * debiting_subscriptions findFirst
+   */
+  export type debiting_subscriptionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter, which debiting_subscriptions to fetch.
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of debiting_subscriptions to fetch.
+     */
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for debiting_subscriptions.
+     */
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` debiting_subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` debiting_subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of debiting_subscriptions.
+     */
+    distinct?: Debiting_subscriptionsScalarFieldEnum | Debiting_subscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * debiting_subscriptions findFirstOrThrow
+   */
+  export type debiting_subscriptionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter, which debiting_subscriptions to fetch.
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of debiting_subscriptions to fetch.
+     */
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for debiting_subscriptions.
+     */
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` debiting_subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` debiting_subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of debiting_subscriptions.
+     */
+    distinct?: Debiting_subscriptionsScalarFieldEnum | Debiting_subscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * debiting_subscriptions findMany
+   */
+  export type debiting_subscriptionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter, which debiting_subscriptions to fetch.
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of debiting_subscriptions to fetch.
+     */
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing debiting_subscriptions.
+     */
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` debiting_subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` debiting_subscriptions.
+     */
+    skip?: number
+    distinct?: Debiting_subscriptionsScalarFieldEnum | Debiting_subscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * debiting_subscriptions create
+   */
+  export type debiting_subscriptionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a debiting_subscriptions.
+     */
+    data: XOR<debiting_subscriptionsCreateInput, debiting_subscriptionsUncheckedCreateInput>
+  }
+
+  /**
+   * debiting_subscriptions createMany
+   */
+  export type debiting_subscriptionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many debiting_subscriptions.
+     */
+    data: debiting_subscriptionsCreateManyInput | debiting_subscriptionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * debiting_subscriptions createManyAndReturn
+   */
+  export type debiting_subscriptionsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * The data used to create many debiting_subscriptions.
+     */
+    data: debiting_subscriptionsCreateManyInput | debiting_subscriptionsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * debiting_subscriptions update
+   */
+  export type debiting_subscriptionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a debiting_subscriptions.
+     */
+    data: XOR<debiting_subscriptionsUpdateInput, debiting_subscriptionsUncheckedUpdateInput>
+    /**
+     * Choose, which debiting_subscriptions to update.
+     */
+    where: debiting_subscriptionsWhereUniqueInput
+  }
+
+  /**
+   * debiting_subscriptions updateMany
+   */
+  export type debiting_subscriptionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update debiting_subscriptions.
+     */
+    data: XOR<debiting_subscriptionsUpdateManyMutationInput, debiting_subscriptionsUncheckedUpdateManyInput>
+    /**
+     * Filter which debiting_subscriptions to update
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * Limit how many debiting_subscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * debiting_subscriptions updateManyAndReturn
+   */
+  export type debiting_subscriptionsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * The data used to update debiting_subscriptions.
+     */
+    data: XOR<debiting_subscriptionsUpdateManyMutationInput, debiting_subscriptionsUncheckedUpdateManyInput>
+    /**
+     * Filter which debiting_subscriptions to update
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * Limit how many debiting_subscriptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * debiting_subscriptions upsert
+   */
+  export type debiting_subscriptionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the debiting_subscriptions to update in case it exists.
+     */
+    where: debiting_subscriptionsWhereUniqueInput
+    /**
+     * In case the debiting_subscriptions found by the `where` argument doesn't exist, create a new debiting_subscriptions with this data.
+     */
+    create: XOR<debiting_subscriptionsCreateInput, debiting_subscriptionsUncheckedCreateInput>
+    /**
+     * In case the debiting_subscriptions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<debiting_subscriptionsUpdateInput, debiting_subscriptionsUncheckedUpdateInput>
+  }
+
+  /**
+   * debiting_subscriptions delete
+   */
+  export type debiting_subscriptionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    /**
+     * Filter which debiting_subscriptions to delete.
+     */
+    where: debiting_subscriptionsWhereUniqueInput
+  }
+
+  /**
+   * debiting_subscriptions deleteMany
+   */
+  export type debiting_subscriptionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which debiting_subscriptions to delete
+     */
+    where?: debiting_subscriptionsWhereInput
+    /**
+     * Limit how many debiting_subscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * debiting_subscriptions without action
+   */
+  export type debiting_subscriptionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3399,6 +4597,15 @@ export namespace Prisma {
   };
 
   export type SubscriptionsScalarFieldEnum = (typeof SubscriptionsScalarFieldEnum)[keyof typeof SubscriptionsScalarFieldEnum]
+
+
+  export const Debiting_subscriptionsScalarFieldEnum: {
+    date: 'date',
+    price: 'price',
+    user_id: 'user_id'
+  };
+
+  export type Debiting_subscriptionsScalarFieldEnum = (typeof Debiting_subscriptionsScalarFieldEnum)[keyof typeof Debiting_subscriptionsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3525,6 +4732,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes[]'
+   */
+  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3556,6 +4777,7 @@ export namespace Prisma {
     email_ym?: StringNullableFilter<"users"> | string | null
     password_ym?: StringNullableFilter<"users"> | string | null
     is_enter_ym?: BoolNullableFilter<"users"> | boolean | null
+    debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
     subscriptions?: SubscriptionsListRelationFilter
   }
 
@@ -3571,6 +4793,7 @@ export namespace Prisma {
     email_ym?: SortOrderInput | SortOrder
     password_ym?: SortOrderInput | SortOrder
     is_enter_ym?: SortOrderInput | SortOrder
+    debiting_subscriptions?: debiting_subscriptionsOrderByRelationAggregateInput
     subscriptions?: subscriptionsOrderByRelationAggregateInput
   }
 
@@ -3589,6 +4812,7 @@ export namespace Prisma {
     email_ym?: StringNullableFilter<"users"> | string | null
     password_ym?: StringNullableFilter<"users"> | string | null
     is_enter_ym?: BoolNullableFilter<"users"> | boolean | null
+    debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
     subscriptions?: SubscriptionsListRelationFilter
   }, "id" | "email">
 
@@ -3639,7 +4863,7 @@ export namespace Prisma {
     end_date?: DateTimeFilter<"subscriptions"> | Date | string
     price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
-    img?: StringNullableFilter<"subscriptions"> | string | null
+    img?: BytesNullableFilter<"subscriptions"> | Bytes | null
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
@@ -3674,7 +4898,7 @@ export namespace Prisma {
     end_date?: DateTimeFilter<"subscriptions"> | Date | string
     price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
-    img?: StringNullableFilter<"subscriptions"> | string | null
+    img?: BytesNullableFilter<"subscriptions"> | Bytes | null
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
@@ -3713,11 +4937,58 @@ export namespace Prisma {
     end_date?: DateTimeWithAggregatesFilter<"subscriptions"> | Date | string
     price?: DecimalWithAggregatesFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
     flag_auto?: BoolNullableWithAggregatesFilter<"subscriptions"> | boolean | null
-    img?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
+    img?: BytesNullableWithAggregatesFilter<"subscriptions"> | Bytes | null
     id_user?: IntWithAggregatesFilter<"subscriptions"> | number
     created_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableWithAggregatesFilter<"subscriptions"> | Date | string | null
     url?: StringNullableWithAggregatesFilter<"subscriptions"> | string | null
+  }
+
+  export type debiting_subscriptionsWhereInput = {
+    AND?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
+    OR?: debiting_subscriptionsWhereInput[]
+    NOT?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
+    date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    user_id?: IntFilter<"debiting_subscriptions"> | number
+    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }
+
+  export type debiting_subscriptionsOrderByWithRelationInput = {
+    date?: SortOrder
+    price?: SortOrder
+    user_id?: SortOrder
+    users?: usersOrderByWithRelationInput
+  }
+
+  export type debiting_subscriptionsWhereUniqueInput = Prisma.AtLeast<{
+    date?: Date | string
+    AND?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
+    OR?: debiting_subscriptionsWhereInput[]
+    NOT?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    user_id?: IntFilter<"debiting_subscriptions"> | number
+    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
+  }, "date">
+
+  export type debiting_subscriptionsOrderByWithAggregationInput = {
+    date?: SortOrder
+    price?: SortOrder
+    user_id?: SortOrder
+    _count?: debiting_subscriptionsCountOrderByAggregateInput
+    _avg?: debiting_subscriptionsAvgOrderByAggregateInput
+    _max?: debiting_subscriptionsMaxOrderByAggregateInput
+    _min?: debiting_subscriptionsMinOrderByAggregateInput
+    _sum?: debiting_subscriptionsSumOrderByAggregateInput
+  }
+
+  export type debiting_subscriptionsScalarWhereWithAggregatesInput = {
+    AND?: debiting_subscriptionsScalarWhereWithAggregatesInput | debiting_subscriptionsScalarWhereWithAggregatesInput[]
+    OR?: debiting_subscriptionsScalarWhereWithAggregatesInput[]
+    NOT?: debiting_subscriptionsScalarWhereWithAggregatesInput | debiting_subscriptionsScalarWhereWithAggregatesInput[]
+    date?: DateTimeWithAggregatesFilter<"debiting_subscriptions"> | Date | string
+    price?: DecimalWithAggregatesFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    user_id?: IntWithAggregatesFilter<"debiting_subscriptions"> | number
   }
 
   export type usersCreateInput = {
@@ -3731,6 +5002,7 @@ export namespace Prisma {
     email_ym?: string | null
     password_ym?: string | null
     is_enter_ym?: boolean | null
+    debiting_subscriptions?: debiting_subscriptionsCreateNestedManyWithoutUsersInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUsersInput
   }
 
@@ -3746,6 +5018,7 @@ export namespace Prisma {
     email_ym?: string | null
     password_ym?: string | null
     is_enter_ym?: boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedCreateNestedManyWithoutUsersInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -3760,6 +5033,7 @@ export namespace Prisma {
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUpdateManyWithoutUsersNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUsersNestedInput
   }
 
@@ -3775,6 +5049,7 @@ export namespace Prisma {
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -3826,7 +5101,7 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
     url?: string | null
@@ -3841,7 +5116,7 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     id_user: number
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -3855,7 +5130,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -3870,7 +5145,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     id_user?: IntFieldUpdateOperationsInput | number
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3885,7 +5160,7 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     id_user: number
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -3899,7 +5174,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -3913,11 +5188,52 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     id_user?: IntFieldUpdateOperationsInput | number
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type debiting_subscriptionsCreateInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+    users: usersCreateNestedOneWithoutDebiting_subscriptionsInput
+  }
+
+  export type debiting_subscriptionsUncheckedCreateInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+    user_id: number
+  }
+
+  export type debiting_subscriptionsUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    users?: usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    user_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type debiting_subscriptionsCreateManyInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+    user_id: number
+  }
+
+  export type debiting_subscriptionsUpdateManyMutationInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateManyInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    user_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -4000,6 +5316,12 @@ export namespace Prisma {
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
+  export type Debiting_subscriptionsListRelationFilter = {
+    every?: debiting_subscriptionsWhereInput
+    some?: debiting_subscriptionsWhereInput
+    none?: debiting_subscriptionsWhereInput
+  }
+
   export type SubscriptionsListRelationFilter = {
     every?: subscriptionsWhereInput
     some?: subscriptionsWhereInput
@@ -4009,6 +5331,10 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type debiting_subscriptionsOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type subscriptionsOrderByRelationAggregateInput = {
@@ -4174,6 +5500,13 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type BytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4263,6 +5596,16 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4277,11 +5620,53 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type debiting_subscriptionsCountOrderByAggregateInput = {
+    date?: SortOrder
+    price?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type debiting_subscriptionsAvgOrderByAggregateInput = {
+    price?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type debiting_subscriptionsMaxOrderByAggregateInput = {
+    date?: SortOrder
+    price?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type debiting_subscriptionsMinOrderByAggregateInput = {
+    date?: SortOrder
+    price?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type debiting_subscriptionsSumOrderByAggregateInput = {
+    price?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type debiting_subscriptionsCreateNestedManyWithoutUsersInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput> | debiting_subscriptionsCreateWithoutUsersInput[] | debiting_subscriptionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutUsersInput | debiting_subscriptionsCreateOrConnectWithoutUsersInput[]
+    createMany?: debiting_subscriptionsCreateManyUsersInputEnvelope
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+  }
+
   export type subscriptionsCreateNestedManyWithoutUsersInput = {
     create?: XOR<subscriptionsCreateWithoutUsersInput, subscriptionsUncheckedCreateWithoutUsersInput> | subscriptionsCreateWithoutUsersInput[] | subscriptionsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: subscriptionsCreateOrConnectWithoutUsersInput | subscriptionsCreateOrConnectWithoutUsersInput[]
     createMany?: subscriptionsCreateManyUsersInputEnvelope
     connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+  }
+
+  export type debiting_subscriptionsUncheckedCreateNestedManyWithoutUsersInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput> | debiting_subscriptionsCreateWithoutUsersInput[] | debiting_subscriptionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutUsersInput | debiting_subscriptionsCreateOrConnectWithoutUsersInput[]
+    createMany?: debiting_subscriptionsCreateManyUsersInputEnvelope
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
   }
 
   export type subscriptionsUncheckedCreateNestedManyWithoutUsersInput = {
@@ -4307,6 +5692,20 @@ export namespace Prisma {
     set?: boolean | null
   }
 
+  export type debiting_subscriptionsUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput> | debiting_subscriptionsCreateWithoutUsersInput[] | debiting_subscriptionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutUsersInput | debiting_subscriptionsCreateOrConnectWithoutUsersInput[]
+    upsert?: debiting_subscriptionsUpsertWithWhereUniqueWithoutUsersInput | debiting_subscriptionsUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: debiting_subscriptionsCreateManyUsersInputEnvelope
+    set?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    disconnect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    delete?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    update?: debiting_subscriptionsUpdateWithWhereUniqueWithoutUsersInput | debiting_subscriptionsUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: debiting_subscriptionsUpdateManyWithWhereWithoutUsersInput | debiting_subscriptionsUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
+  }
+
   export type subscriptionsUpdateManyWithoutUsersNestedInput = {
     create?: XOR<subscriptionsCreateWithoutUsersInput, subscriptionsUncheckedCreateWithoutUsersInput> | subscriptionsCreateWithoutUsersInput[] | subscriptionsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: subscriptionsCreateOrConnectWithoutUsersInput | subscriptionsCreateOrConnectWithoutUsersInput[]
@@ -4327,6 +5726,20 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput> | debiting_subscriptionsCreateWithoutUsersInput[] | debiting_subscriptionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutUsersInput | debiting_subscriptionsCreateOrConnectWithoutUsersInput[]
+    upsert?: debiting_subscriptionsUpsertWithWhereUniqueWithoutUsersInput | debiting_subscriptionsUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: debiting_subscriptionsCreateManyUsersInputEnvelope
+    set?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    disconnect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    delete?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    update?: debiting_subscriptionsUpdateWithWhereUniqueWithoutUsersInput | debiting_subscriptionsUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: debiting_subscriptionsUpdateManyWithWhereWithoutUsersInput | debiting_subscriptionsUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
   }
 
   export type subscriptionsUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -4357,6 +5770,10 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type NullableBytesFieldUpdateOperationsInput = {
+    set?: Bytes | null
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
@@ -4367,6 +5784,20 @@ export namespace Prisma {
     upsert?: usersUpsertWithoutSubscriptionsInput
     connect?: usersWhereUniqueInput
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutSubscriptionsInput, usersUpdateWithoutSubscriptionsInput>, usersUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type usersCreateNestedOneWithoutDebiting_subscriptionsInput = {
+    create?: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
+    connectOrCreate?: usersCreateOrConnectWithoutDebiting_subscriptionsInput
+    connect?: usersWhereUniqueInput
+  }
+
+  export type usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput = {
+    create?: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
+    connectOrCreate?: usersCreateOrConnectWithoutDebiting_subscriptionsInput
+    upsert?: usersUpsertWithoutDebiting_subscriptionsInput
+    connect?: usersWhereUniqueInput
+    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutDebiting_subscriptionsInput, usersUpdateWithoutDebiting_subscriptionsInput>, usersUncheckedUpdateWithoutDebiting_subscriptionsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4552,6 +5983,13 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type NestedBytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4579,6 +6017,16 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4593,6 +6041,26 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type debiting_subscriptionsCreateWithoutUsersInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUncheckedCreateWithoutUsersInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsCreateOrConnectWithoutUsersInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    create: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput>
+  }
+
+  export type debiting_subscriptionsCreateManyUsersInputEnvelope = {
+    data: debiting_subscriptionsCreateManyUsersInput | debiting_subscriptionsCreateManyUsersInput[]
+    skipDuplicates?: boolean
+  }
+
   export type subscriptionsCreateWithoutUsersInput = {
     name: string
     description?: string | null
@@ -4600,7 +6068,7 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
     url?: string | null
@@ -4614,7 +6082,7 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
     url?: string | null
@@ -4628,6 +6096,31 @@ export namespace Prisma {
   export type subscriptionsCreateManyUsersInputEnvelope = {
     data: subscriptionsCreateManyUsersInput | subscriptionsCreateManyUsersInput[]
     skipDuplicates?: boolean
+  }
+
+  export type debiting_subscriptionsUpsertWithWhereUniqueWithoutUsersInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    update: XOR<debiting_subscriptionsUpdateWithoutUsersInput, debiting_subscriptionsUncheckedUpdateWithoutUsersInput>
+    create: XOR<debiting_subscriptionsCreateWithoutUsersInput, debiting_subscriptionsUncheckedCreateWithoutUsersInput>
+  }
+
+  export type debiting_subscriptionsUpdateWithWhereUniqueWithoutUsersInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    data: XOR<debiting_subscriptionsUpdateWithoutUsersInput, debiting_subscriptionsUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type debiting_subscriptionsUpdateManyWithWhereWithoutUsersInput = {
+    where: debiting_subscriptionsScalarWhereInput
+    data: XOR<debiting_subscriptionsUpdateManyMutationInput, debiting_subscriptionsUncheckedUpdateManyWithoutUsersInput>
+  }
+
+  export type debiting_subscriptionsScalarWhereInput = {
+    AND?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
+    OR?: debiting_subscriptionsScalarWhereInput[]
+    NOT?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
+    date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    user_id?: IntFilter<"debiting_subscriptions"> | number
   }
 
   export type subscriptionsUpsertWithWhereUniqueWithoutUsersInput = {
@@ -4657,7 +6150,7 @@ export namespace Prisma {
     end_date?: DateTimeFilter<"subscriptions"> | Date | string
     price?: DecimalFilter<"subscriptions"> | Decimal | DecimalJsLike | number | string
     flag_auto?: BoolNullableFilter<"subscriptions"> | boolean | null
-    img?: StringNullableFilter<"subscriptions"> | string | null
+    img?: BytesNullableFilter<"subscriptions"> | Bytes | null
     id_user?: IntFilter<"subscriptions"> | number
     created_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"subscriptions"> | Date | string | null
@@ -4675,6 +6168,7 @@ export namespace Prisma {
     email_ym?: string | null
     password_ym?: string | null
     is_enter_ym?: boolean | null
+    debiting_subscriptions?: debiting_subscriptionsCreateNestedManyWithoutUsersInput
   }
 
   export type usersUncheckedCreateWithoutSubscriptionsInput = {
@@ -4689,6 +6183,7 @@ export namespace Prisma {
     email_ym?: string | null
     password_ym?: string | null
     is_enter_ym?: boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedCreateNestedManyWithoutUsersInput
   }
 
   export type usersCreateOrConnectWithoutSubscriptionsInput = {
@@ -4718,6 +6213,7 @@ export namespace Prisma {
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUpdateManyWithoutUsersNestedInput
   }
 
   export type usersUncheckedUpdateWithoutSubscriptionsInput = {
@@ -4732,6 +6228,86 @@ export namespace Prisma {
     email_ym?: NullableStringFieldUpdateOperationsInput | string | null
     password_ym?: NullableStringFieldUpdateOperationsInput | string | null
     is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type usersCreateWithoutDebiting_subscriptionsInput = {
+    email: string
+    password: string
+    name: string
+    surname: string
+    created_at?: Date | string
+    access_token_yoomoney?: string | null
+    cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
+    is_enter_ym?: boolean | null
+    subscriptions?: subscriptionsCreateNestedManyWithoutUsersInput
+  }
+
+  export type usersUncheckedCreateWithoutDebiting_subscriptionsInput = {
+    id?: number
+    email: string
+    password: string
+    name: string
+    surname: string
+    created_at?: Date | string
+    access_token_yoomoney?: string | null
+    cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: string | null
+    password_ym?: string | null
+    is_enter_ym?: boolean | null
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type usersCreateOrConnectWithoutDebiting_subscriptionsInput = {
+    where: usersWhereUniqueInput
+    create: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
+  }
+
+  export type usersUpsertWithoutDebiting_subscriptionsInput = {
+    update: XOR<usersUpdateWithoutDebiting_subscriptionsInput, usersUncheckedUpdateWithoutDebiting_subscriptionsInput>
+    create: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
+    where?: usersWhereInput
+  }
+
+  export type usersUpdateToOneWithWhereWithoutDebiting_subscriptionsInput = {
+    where?: usersWhereInput
+    data: XOR<usersUpdateWithoutDebiting_subscriptionsInput, usersUncheckedUpdateWithoutDebiting_subscriptionsInput>
+  }
+
+  export type usersUpdateWithoutDebiting_subscriptionsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    surname?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
+    cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    subscriptions?: subscriptionsUpdateManyWithoutUsersNestedInput
+  }
+
+  export type usersUncheckedUpdateWithoutDebiting_subscriptionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    surname?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    access_token_yoomoney?: NullableStringFieldUpdateOperationsInput | string | null
+    cookies?: NullableJsonNullValueInput | InputJsonValue
+    email_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    password_ym?: NullableStringFieldUpdateOperationsInput | string | null
+    is_enter_ym?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type debiting_subscriptionsCreateManyUsersInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type subscriptionsCreateManyUsersInput = {
@@ -4742,10 +6318,25 @@ export namespace Prisma {
     end_date: Date | string
     price: Decimal | DecimalJsLike | number | string
     flag_auto?: boolean | null
-    img?: string | null
+    img?: Bytes | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
     url?: string | null
+  }
+
+  export type debiting_subscriptionsUpdateWithoutUsersInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateWithoutUsersInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateManyWithoutUsersInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type subscriptionsUpdateWithoutUsersInput = {
@@ -4755,7 +6346,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4769,7 +6360,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4783,7 +6374,7 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    img?: NullableStringFieldUpdateOperationsInput | string | null
+    img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null

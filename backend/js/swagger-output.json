@@ -18,6 +18,13 @@
       "description": "Введите JWT токен в формате: Bearer {token}"
     }
   },
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/test": {
       "get": {
@@ -351,10 +358,6 @@
     },
     "/api/subscription/": {
       "post": {
-        "tags": [
-          "Subscription"
-        ],
-        "summary": "Создание новой подписки",
         "description": "",
         "parameters": [
           {
@@ -384,9 +387,6 @@
                   "example": "any"
                 },
                 "flag_auto": {
-                  "example": "any"
-                },
-                "img": {
                   "example": "any"
                 },
                 "url": {
@@ -556,7 +556,7 @@
     "/api/yoomoney/exchange-token": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Получение access-токена для yoomoney (используется только с фронта 1 раз)",
         "description": "",
@@ -598,7 +598,7 @@
     "/api/yoomoney/operation-history": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Получение истории операций",
         "description": "",
@@ -663,7 +663,7 @@
     "/api/yoomoney/operation-details": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Получение информации об операции",
         "description": "",
@@ -705,7 +705,7 @@
     "/api/yoomoney/enter": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Вход в yoomoney",
         "description": "",
@@ -750,7 +750,7 @@
     "/api/yoomoney/check-session": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Проверка статуса сессии Yoomoney",
         "description": "",
@@ -789,7 +789,7 @@
     "/api/yoomoney/check-code-yoomoney": {
       "post": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Подтверждение кода Yoomoney",
         "description": "",
@@ -834,7 +834,7 @@
     "/api/yoomoney/getCookies": {
       "get": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Получение cookies вошедших пользователей",
         "description": "",
@@ -861,7 +861,7 @@
     "/api/yoomoney/subscription": {
       "get": {
         "tags": [
-          "yoomoney"
+          "Yoomoney"
         ],
         "summary": "Получение подписок из YooMoney",
         "description": "",

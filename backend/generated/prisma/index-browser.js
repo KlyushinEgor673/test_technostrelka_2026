@@ -149,6 +149,12 @@ exports.Prisma.SubscriptionsScalarFieldEnum = {
   url: 'url'
 };
 
+exports.Prisma.Debiting_subscriptionsScalarFieldEnum = {
+  date: 'date',
+  price: 'price',
+  user_id: 'user_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -178,7 +184,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   users: 'users',
-  subscriptions: 'subscriptions'
+  subscriptions: 'subscriptions',
+  debiting_subscriptions: 'debiting_subscriptions'
 };
 
 /**
