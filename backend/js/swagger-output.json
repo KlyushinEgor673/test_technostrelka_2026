@@ -459,9 +459,6 @@
                 "flag_auto": {
                   "example": "any"
                 },
-                "img": {
-                  "example": "any"
-                },
                 "url": {
                   "example": "any"
                 }

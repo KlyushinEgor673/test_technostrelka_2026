@@ -103,7 +103,7 @@ const updateSubscription = async (req, res) => {
         start_date: new Date(start_date),
         end_date: new Date(end_date),
         price: price,
-        flag_auto: flag_auto,
+        flag_auto: !!flag_auto,
         img: img, 
         url: url
       }
