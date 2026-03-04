@@ -33,66 +33,80 @@ const createSubscription = async (req, res) => {
       return res.status(400).json({ error: "URL оплаты обязателен" })
     }
 
-    try {
-      const formattedEndDate = new Date(end_date)
-      console.log("formattedEndDate ", formattedEndDate)
+    const formattedEndDate = new Date(end_date);
+    const formattedPeriod = parseInt(period);
+    const formattedPrice = parseFloat(price);
+    const flagAutoBool = flag_auto === 'true' || flag_auto === true;
+    
+    console.log("formattedEndDate:", formattedEndDate);
+    console.log("formattedPeriod:", formattedPeriod);
+    console.log("formattedPrice:", formattedPrice);
+    
+    // Вычисляем дату списания
+    let debitDate = new Date(formattedEndDate);
+    debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
+    
+    console.log("Дата списания: ", debitDate);
 
-      const formattedPeriod = parseInt(period)
-      console.log("formattedPeriod ", formattedPeriod)
-      
-      let date = new Date(formattedEndDate);
-      date.setDate(formattedEndDate.getDate() - formattedPeriod);
-      
-      const checkData = prisma.debiting_subscriptions.findFirst({
-        where: { date: date }
-      })
+    // Работа с debiting_subscriptions (ОБЯЗАТЕЛЬНО await!)
+    const existingDebit = await prisma.debiting_subscriptions.findFirst({
+      where: { date: debitDate }
+    });
 
-      if(!checkData){
-        await prisma.debiting_subscriptions.create({
-          data: {
-            date: date,
-            price: parseFloat(price),
-            user_id: req.user.id
-          }
-        })
-      } else {
-        const sumPrice = price + checkData.price
-        await prisma.debiting_subscriptions.update({
-          where: {
-            date: date
-          },
-          data: {
-            date: date,
-            price: sumPrice,
-            user_id: req.user.id
-          }
-        })
-      }
-
-      await prisma.subscriptions.create({
+    if (!existingDebit) {
+      // Создаем новую запись
+      await prisma.debiting_subscriptions.create({
         data: {
-          name: name,
-          category: category,
-          period: period,
-          end_date: new Date(end_date),
-          price: price,
-          flag_auto: !!flag_auto,
-          img: img,
-          url: url,
-          id_user: req.user.id
+          date: debitDate,
+          price: formattedPrice,
+          user_id: req.user.id
         }
-      })
-    } catch (error) {
-      console.error("Ошибка при создании подписки:", error);
-      res.status(400).json({ error: "Произошла ошибка при создании подписки" });
+      });
+    } else {
+      // Обновляем существующую
+      const sumPrice = formattedPrice + existingDebit.price;
+      await prisma.debiting_subscriptions.update({
+        where: {
+          date: debitDate // Используйте id, а не date!
+        },
+        data: {
+          price: sumPrice
+          // user_id не обновляем, он должен быть тот же
+        }
+      });
     }
 
-    
+    // Создаем подписку
+    await prisma.subscriptions.create({
+      data: {
+        name: name,
+        category: category,
+        period: formattedPeriod, // используем число
+        end_date: formattedEndDate,
+        price: formattedPrice, // используем число
+        flag_auto: flagAutoBool,
+        img: img,
+        url: url,
+        id_user: req.user.id
+      }
+    });
 
-    res.status(200).json({ status: "success" })
+    // Один ответ в конце
+    return res.status(201).json({ 
+      status: "success",
+      message: "Подписка успешно создана" 
+    });
+
   } catch (error) {
     console.error("Ошибка:", error);
-    res.status(500).json({ error: "Internal server error" });
+    
+    // Проверяем, не отправлен ли уже ответ
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: "Internal server error",
+        details: error.message 
+      });
+    }
   }
 };
 
