@@ -93,122 +93,123 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Spacer(),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 20, bottom: 20),
-                          child: Text(
-                            'Создание подписки',
-                            style: TextStyle(fontSize: 24),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 20, bottom: 20),
+                            child: Text(
+                              'Создание подписки',
+                              style: TextStyle(fontSize: 24),
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Input(
+                              isPassword: false,
+                              hintText: 'Имя',
+                              controller: _controllerName,
+                            ),
                           ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: Input(
-                            isPassword: false,
-                            hintText: 'Имя',
-                            controller: _controllerName,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Input(
+                              isPassword: false,
+                              hintText: 'Описание',
+                              controller: _controllerDescription,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: SelectDate(
+                              hintText: 'Начальная дата',
+                              change: (newValue) {
+                                _dateStart = newValue;
+                              },
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2100),
+                              value: _dateStart,
+                            ),
                           ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: Input(
-                            isPassword: false,
-                            hintText: 'Описание',
-                            controller: _controllerDescription,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: SelectDate(
+                              hintText: 'Конечная дата',
+                              change: (newValue) {
+                                _dateEnd = newValue;
+                              },
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2100),
+                              value: _dateEnd,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Input(
+                              isPassword: false,
+                              hintText: 'Цена',
+                              controller: _controllerPrice,
+                            ),
                           ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: SelectDate(
-                            hintText: 'Начальная дата',
-                            change: (newValue) {
-                              _dateStart = newValue;
-                            },
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2100),
-                            value: _dateStart,
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 15,
+                              left: 20,
+                              right: 20,
+                            ),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Input(
+                              isPassword: false,
+                              hintText: 'url сайта',
+                              controller: _controllerUrl,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
+                          Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: _isAuto,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _isAuto = !_isAuto;
+                                    });
+                                  },
+                                ),
+                                Text('Автопродление'),
+                              ],
+                            ),
                           ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: SelectDate(
-                            hintText: 'Конечная дата',
-                            change: (newValue) {
-                              _dateEnd = newValue;
-                            },
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2100),
-                            value: _dateEnd,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
-                          ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: Input(
-                            isPassword: false,
-                            hintText: 'Цена',
-                            controller: _controllerPrice,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 15,
-                            left: 20,
-                            right: 20,
-                          ),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: Input(
-                            isPassword: false,
-                            hintText: 'url сайта',
-                            controller: _controllerUrl,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20),
-                          constraints: BoxConstraints(maxWidth: 500),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: _isAuto,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _isAuto = !_isAuto;
-                                  });
-                                },
-                              ),
-                              Text('Автопродление'),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     GestureDetector(
                       child: Center(
@@ -241,74 +242,89 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                         }
                       },
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 15, left: 20, right: 20),
-                      width: double.infinity,
-                      constraints: BoxConstraints(maxWidth: 500),
-                      height: 50,
-                      child: FilledButton(
-                        onPressed: widget.id != null
-                            ? () async {
-                                String? token = await _storage.read(
-                                  key: 'token',
-                                );
-                                final base64String = base64Encode(bytes);
-                                await _dio.put(
-                                  'http://localhost:3000/api/subscription',
-                                  data: jsonEncode({
-                                    'id': widget.id,
-                                    'name': _controllerName.text,
-                                    'description': _controllerDescription.text,
-                                    'start_date': _dateStart.toString(),
-                                    'end_date': _dateEnd.toString(),
-                                    'price': double.parse(
-                                      _controllerPrice.text,
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+                        width: double.infinity,
+                        constraints: BoxConstraints(maxWidth: 500),
+                        height: 50,
+                        child: FilledButton(
+                          onPressed: widget.id != null
+                              ? () async {
+                                  String? token = await _storage.read(
+                                    key: 'token',
+                                  );
+                                  final base64String = base64Encode(bytes);
+                                  await _dio.put(
+                                    'http://localhost:3000/api/subscription',
+                                    data: FormData.fromMap({
+                                      'id': widget.id,
+                                      'name': _controllerName.text,
+                                      'description':
+                                          _controllerDescription.text,
+                                      'start_date': _dateStart.toString(),
+                                      'end_date': _dateEnd.toString(),
+                                      'price': double.parse(
+                                        _controllerPrice.text,
+                                      ),
+                                      'flag_auto': _isAuto,
+                                      'img': MultipartFile.fromBytes(
+                                        bytes,
+                                        filename: 'image.png',
+                                      ),
+                                      'url': _controllerUrl.text,
+                                    }),
+                                    options: Options(
+                                      headers: {
+                                        'Authorization': 'Bearer $token',
+                                      },
                                     ),
-                                    'flag_auto': _isAuto,
-                                    'img': base64String,
-                                    'url': _controllerUrl.text,
-                                  }),
-                                  options: Options(
-                                    headers: {'Authorization': 'Bearer $token'},
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              }
-                            : () async {
-                                String? token = await _storage.read(
-                                  key: 'token',
-                                );
-                                // final base64String = base64Encode(bytes);
-                                await _dio.post(
-                                  'http://localhost:3000/api/subscription/',
-                                  data: FormData.fromMap({
-                                    'name': _controllerName.text,
-                                    'description': _controllerDescription.text,
-                                    'start_date': _dateStart.toString(),
-                                    'end_date': _dateEnd.toString(),
-                                    'price': double.parse(
-                                      _controllerPrice.text,
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              : () async {
+                                  String? token = await _storage.read(
+                                    key: 'token',
+                                  );
+                                  // final base64String = base64Encode(bytes);
+                                  await _dio.post(
+                                    'http://localhost:3000/api/subscription/',
+                                    data: FormData.fromMap({
+                                      'name': _controllerName.text,
+                                      'description':
+                                          _controllerDescription.text,
+                                      'start_date': _dateStart.toString(),
+                                      'end_date': _dateEnd.toString(),
+                                      'price': double.parse(
+                                        _controllerPrice.text,
+                                      ),
+                                      'flag_auto': _isAuto,
+                                      'img': MultipartFile.fromBytes(
+                                        bytes,
+                                        filename: 'image.png',
+                                      ),
+                                      'url': _controllerUrl.text,
+                                    }),
+                                    options: Options(
+                                      headers: {
+                                        'Authorization': 'Bearer $token',
+                                      },
                                     ),
-                                    'flag_auto': _isAuto,
-                                    'img': MultipartFile.fromBytes(bytes, filename: 'image.png'),
-                                    'url': _controllerUrl.text,
-                                  }),
-                                  options: Options(
-                                    headers: {'Authorization': 'Bearer $token'},
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              },
-                        child: Text(widget.id == null ? 'Создать' : 'Изменить'),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                          child: Text(
+                            widget.id == null ? 'Создать' : 'Изменить',
+                          ),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Color.fromRGBO(89, 65, 174, 1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    Spacer(),
                   ],
                 ),
               )

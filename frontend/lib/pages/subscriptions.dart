@@ -116,9 +116,13 @@ class _SubscriptionsState extends State<Subscriptions> {
           child: Column(
             children: [
               Header(id: 2),
+              if (MediaQuery.of(context).size.width > 768) SizedBox(height: 20),
               Container(
                 height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                width: MediaQuery.of(context).size.width > 1040 ? 1000 : null,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width > 1040 ? 0 : 10,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(245, 245, 249, 1),
@@ -218,9 +222,14 @@ class _SubscriptionsState extends State<Subscriptions> {
               //     ),
               //   ),
               // ),
+              SizedBox(height: 15),
               Container(
-                margin: EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                width: MediaQuery.of(context).size.width > 1040 ? 1000 : null,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width > 1040 ? 0 : 10,
+                ),
                 child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ChipButton(
                       text: 'Все',
@@ -396,6 +405,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                           ),
                         );
                       }
+                      print(_subscriptions[i]['end_date']);
                       return GestureDetector(
                         child: Container(
                           decoration: BoxDecoration(

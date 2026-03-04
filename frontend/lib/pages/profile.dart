@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
+import 'package:s_webview/s_webview.dart';
 // import 'dart:html' as html;
 
 class Profile extends StatefulWidget {
@@ -21,6 +22,7 @@ class _ProfileState extends State<Profile> {
   String _name = '';
   String _surname = '';
   String _email = '';
+  bool _isEnterYm = true;
 
   Future<void> _init() async {
     String? token = await _storage.read(key: 'token');
@@ -33,6 +35,7 @@ class _ProfileState extends State<Profile> {
       _name = data['name'];
       _surname = data['surname'];
       _email = data['email'];
+      _isEnterYm = data['is_enter_ym'];
     });
     // if (Uri.base.queryParameters.containsKey('code')) {
     //   final dio = Dio();
@@ -57,7 +60,6 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     _init();
-
   }
 
   @override
@@ -69,7 +71,7 @@ class _ProfileState extends State<Profile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Header(id: 1),
-            SizedBox(height: 35,),
+            SizedBox(height: 35),
             Container(
               margin: EdgeInsets.only(left: 20),
               child: Text(
@@ -83,17 +85,35 @@ class _ProfileState extends State<Profile> {
             ),
             Spacer(),
             Center(
-              child: FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(104, 51, 235, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
+              child: GestureDetector(
+                child: Container(
+                  width: 200,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: _isEnterYm ? Colors.white : Color.fromRGBO(104, 51, 235, 1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: _isEnterYm ? Border.all(
+                      width: 2,
+                      color: Color.fromRGBO(104, 51, 235, 1)
+                    ) : null
+                  ),
+                  child: Center(
+                    child: !_isEnterYm
+                        ? Text(
+                      'Подключить юMoney',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    )
+                        : Text(
+                      'Отключить юMoney',
+                      style: TextStyle(color: Color.fromRGBO(104, 51, 235, 1)),
+                    ),
+                  ) ,
                 ),
-                onPressed: () {
+                onTap: () {
                   Navigator.pushNamed(context, '/yoomoney');
                 },
-                child: Text('Подключить youmoney'),
               ),
             ),
             Center(
@@ -107,9 +127,7 @@ class _ProfileState extends State<Profile> {
             ),
             Center(
               child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.red
-                ),
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
                 onPressed: () async {
                   await _storage.delete(key: 'token');
                   Navigator.pushNamed(context, '/entrance');

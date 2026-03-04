@@ -6,6 +6,8 @@ import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
 import 'package:frontend/widgets/select_date.dart';
 
+import '../widgets/chip_button.dart';
+
 class Charts extends StatefulWidget {
   const Charts({super.key});
 
@@ -19,7 +21,6 @@ class _ChartsState extends State<Charts> {
   Map _subscriptions = {};
   List<PieChartSectionData> _sections = [];
   List<BarChartGroupData> _barGroups = [];
-
 
   Future<void> _init() async {
     //
@@ -51,15 +52,15 @@ class _ChartsState extends State<Charts> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
             Header(id: 3),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  constraints: BoxConstraints(maxWidth: 300),
-                  margin: EdgeInsets.only(left: 20, right: 10),
+                  constraints: BoxConstraints(maxWidth: 500),
+                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: SelectDate(
                     hintText: 'Выберете начальную дату',
                     change: (newValue) {},
@@ -68,8 +69,8 @@ class _ChartsState extends State<Charts> {
                   ),
                 ),
                 Container(
-                  constraints: BoxConstraints(maxWidth: 300),
-                  margin: EdgeInsets.only(left: 10, right: 20),
+                  constraints: BoxConstraints(maxWidth: 500),
+                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: SelectDate(
                     hintText: 'Выберете начальную дату',
                     change: (newValue) {},
@@ -77,40 +78,40 @@ class _ChartsState extends State<Charts> {
                     lastDate: DateTime(2100),
                   ),
                 ),
-                FilledButton(
-                  onPressed: () async {
-                    _barGroups = [];
-                    String? token = await _storage.read(key: 'token');
-                    final response = await _dio.get(
-                      'http://localhost:3000/api/subscription/',
-                      options: Options(
-                        headers: {'Authorization': 'Bearer $token'},
-                      ),
-                    );
-                    print(response.data['subscriptions']);
-                    List subscriptions = response.data['subscriptions'];
-                    for (int i = 0; i < subscriptions.length; ++i) {
-                      // if (subscriptions[i]['date_start'])
-                      _barGroups.add(
-                        BarChartGroupData(
-                          x: i,
-                          barRods: [
-                            BarChartRodData(
-                              toY: double.parse(subscriptions[i]['price']),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    setState(() {
-
-                    });
-                  },
-                  child: Text('Построить'),
-                ),
+                // FilledButton(
+                //   onPressed: () async {
+                //     _barGroups = [];
+                //     String? token = await _storage.read(key: 'token');
+                //     final response = await _dio.get(
+                //       'http://localhost:3000/api/subscription/',
+                //       options: Options(
+                //         headers: {'Authorization': 'Bearer $token'},
+                //       ),
+                //     );
+                //     print(response.data['subscriptions']);
+                //     List subscriptions = response.data['subscriptions'];
+                //     for (int i = 0; i < subscriptions.length; ++i) {
+                //       // if (subscriptions[i]['date_start'])
+                //       _barGroups.add(
+                //         BarChartGroupData(
+                //           x: i,
+                //           barRods: [
+                //             BarChartRodData(
+                //               toY: double.parse(subscriptions[i]['price']),
+                //             ),
+                //           ],
+                //         ),
+                //       );
+                //     }
+                //     setState(() {
+                //
+                //     });
+                //   },
+                //   child: Text('Построить'),
+                // ),
               ],
             ),
-            Spacer(),
+            // Spacer(),
             Center(
               child: SizedBox(
                 height: 500,
@@ -131,7 +132,16 @@ class _ChartsState extends State<Charts> {
                 ),
               ),
             ),
-            Spacer(),
+            Container(
+              constraints: BoxConstraints(maxWidth: 500),
+              margin: EdgeInsets.only(left: 20, right: 20),
+              height: 50,
+              child: ChipButton(
+                text: 'Построить',
+                isActive: true,
+                onTap: () {},
+              ),
+            ),
           ],
         ),
       ),
