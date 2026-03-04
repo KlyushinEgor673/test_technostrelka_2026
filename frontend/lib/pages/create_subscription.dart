@@ -6,6 +6,7 @@ import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:frontend/widgets/select_date.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:s_webview/s_webview.dart';
 
 class CreateSubscription extends StatefulWidget {
@@ -19,15 +20,17 @@ class CreateSubscription extends StatefulWidget {
 
 class _CreateSubscriptionState extends State<CreateSubscription> {
   final _controllerName = TextEditingController();
-  final _controllerDescription = TextEditingController();
+  final _controllerCategory = TextEditingController();
   final _controllerPrice = TextEditingController();
+  final _controllerPeriod = TextEditingController();
   final _controllerUrl = TextEditingController();
-  String? _dateStart;
+
+  // String? _dateStart;
   String? _dateEnd;
   bool _isAuto = false;
   var bytes;
   final _picker = ImagePicker();
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
   bool _isLoaded = false;
 
@@ -35,7 +38,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
     if (widget.id != null) {
       String? token = await _storage.read(key: 'token');
       final response = await _dio.get(
-        'http://localhost:3000/api/subscription/',
+        '/api/subscription/',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       for (final subscription in response.data['subscriptions']) {
@@ -43,15 +46,14 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
           print('Aaaaaaaaaaa');
           setState(() {
             _controllerName.text = subscription['name'];
-            _controllerDescription.text = subscription['description'];
+            _controllerCategory.text = subscription['category'];
             _controllerPrice.text = subscription['price'].toString();
-            _dateStart = subscription['start_date'];
+            _controllerPeriod.text = subscription['period'].toString();
             _dateEnd = subscription['end_date'];
             _controllerUrl.text = subscription['url'];
             _isAuto = subscription['flag_auto'];
             bytes = base64Decode(subscription['img']);
           });
-          print(_dateStart);
           break;
         }
       }
@@ -65,6 +67,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
     _init();
   }
 
@@ -116,6 +119,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                               isPassword: false,
                               hintText: 'Имя',
                               controller: _controllerName,
+                              type: InputTypeCustom.inputText,
                             ),
                           ),
                           Container(
@@ -127,8 +131,9 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                             constraints: BoxConstraints(maxWidth: 500),
                             child: Input(
                               isPassword: false,
-                              hintText: 'Описание',
-                              controller: _controllerDescription,
+                              hintText: 'Категория',
+                              controller: _controllerCategory,
+                              type: InputTypeCustom.inputText,
                             ),
                           ),
                           Container(
@@ -138,14 +143,11 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                               right: 20,
                             ),
                             constraints: BoxConstraints(maxWidth: 500),
-                            child: SelectDate(
-                              hintText: 'Начальная дата',
-                              change: (newValue) {
-                                _dateStart = newValue;
-                              },
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(2100),
-                              value: _dateStart,
+                            child: Input(
+                              isPassword: false,
+                              hintText: 'Период',
+                              controller: _controllerPeriod,
+                              type: InputTypeCustom.inputInt,
                             ),
                           ),
                           Container(
@@ -176,6 +178,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                               isPassword: false,
                               hintText: 'Цена',
                               controller: _controllerPrice,
+                              type: InputTypeCustom.inputDouble,
                             ),
                           ),
                           Container(
@@ -189,6 +192,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                               isPassword: false,
                               hintText: 'url сайта',
                               controller: _controllerUrl,
+                              type: InputTypeCustom.inputText,
                             ),
                           ),
                           Container(
@@ -256,13 +260,14 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                   );
                                   final base64String = base64Encode(bytes);
                                   await _dio.put(
-                                    'http://localhost:3000/api/subscription',
+                                    '/api/subscription',
                                     data: FormData.fromMap({
                                       'id': widget.id,
                                       'name': _controllerName.text,
-                                      'description':
-                                          _controllerDescription.text,
-                                      'start_date': _dateStart.toString(),
+                                      'category': _controllerCategory.text,
+                                      'period': int.parse(
+                                        _controllerPeriod.text,
+                                      ),
                                       'end_date': _dateEnd.toString(),
                                       'price': double.parse(
                                         _controllerPrice.text,
@@ -288,12 +293,13 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                   );
                                   // final base64String = base64Encode(bytes);
                                   await _dio.post(
-                                    'http://localhost:3000/api/subscription/',
+                                    '/api/subscription/',
                                     data: FormData.fromMap({
                                       'name': _controllerName.text,
-                                      'description':
-                                          _controllerDescription.text,
-                                      'start_date': _dateStart.toString(),
+                                      'category': _controllerCategory.text,
+                                      'period': int.parse(
+                                        _controllerPeriod.text,
+                                      ),
                                       'end_date': _dateEnd.toString(),
                                       'price': double.parse(
                                         _controllerPrice.text,

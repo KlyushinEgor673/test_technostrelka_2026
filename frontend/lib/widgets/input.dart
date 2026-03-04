@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum InputTypeCustom {inputText, inputInt, inputDouble}
+
 class Input extends StatefulWidget {
   const Input({
     super.key,
     required this.isPassword,
     required this.hintText,
-    required this.controller,
+    required this.controller, required this.type,
   });
 
   final String hintText;
-
   final bool isPassword;
   final TextEditingController controller;
+  final InputTypeCustom type;
 
   @override
   State<Input> createState() => _InputState();
@@ -41,6 +43,8 @@ class _InputState extends State<Input> {
           SizedBox(width: 14),
           Expanded(
             child: TextField(
+              keyboardType: widget.type != InputTypeCustom.inputText ? TextInputType.number : null,
+              inputFormatters: [],
               style: TextStyle(fontSize: 16),
               controller: widget.controller,
               obscureText: _isPassword,

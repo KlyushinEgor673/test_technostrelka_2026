@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:s_webview/s_webview.dart';
 
 class Home extends StatefulWidget {
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
   final _controllerName = TextEditingController();
   final _controllerSurname = TextEditingController();
 
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
 
   Future<void> _enter() async {
@@ -31,7 +32,7 @@ class _HomeState extends State<Home> {
     } else {
       try {
         final response = await _dio.post(
-          'http://localhost:3000/api/user/enter',
+          '/api/user/enter',
           data: jsonEncode({
             'email': _controllerEmail.text,
             'password': _controllerPassword.text,
@@ -57,7 +58,7 @@ class _HomeState extends State<Home> {
     } else {
       try {
         await _dio.post(
-          'http://localhost:3000/api/user/register',
+          '/api/user/register',
           data: jsonEncode({
             'email': _controllerEmail.text,
             'password': _controllerPassword.text,
@@ -74,6 +75,13 @@ class _HomeState extends State<Home> {
         }
       }
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
   }
 
   @override
@@ -136,6 +144,7 @@ class _HomeState extends State<Home> {
                                   hintText: 'Email',
                                   isPassword: false,
                                   controller: _controllerEmail,
+                                  type: InputTypeCustom.inputText,
                                 ),
                               ),
                               SizedBox(height: 15),
@@ -147,6 +156,7 @@ class _HomeState extends State<Home> {
                                   hintText: 'Пароль',
                                   isPassword: true,
                                   controller: _controllerPassword,
+                                  type: InputTypeCustom.inputText,
                                 ),
                               ),
                               SizedBox(height: 15),
@@ -159,6 +169,7 @@ class _HomeState extends State<Home> {
                                     hintText: 'Имя',
                                     isPassword: false,
                                     controller: _controllerName,
+                                    type: InputTypeCustom.inputText,
                                   ),
                                 ),
                               if (!_isEnter) SizedBox(height: 15),
@@ -171,6 +182,7 @@ class _HomeState extends State<Home> {
                                     hintText: 'Фамилия',
                                     isPassword: false,
                                     controller: _controllerSurname,
+                                    type: InputTypeCustom.inputText,
                                   ),
                                 ),
                               if (_isEnter)
@@ -346,6 +358,7 @@ class _HomeState extends State<Home> {
                                 isPassword: false,
                                 hintText: 'Email',
                                 controller: _controllerEmail,
+                                type: InputTypeCustom.inputText,
                               ),
                             ),
                             SizedBox(height: 15),
@@ -355,6 +368,7 @@ class _HomeState extends State<Home> {
                                 isPassword: true,
                                 hintText: 'Пароль',
                                 controller: _controllerPassword,
+                                type: InputTypeCustom.inputText,
                               ),
                             ),
                             if (!_isEnter) SizedBox(height: 15),
@@ -365,6 +379,7 @@ class _HomeState extends State<Home> {
                                   isPassword: false,
                                   hintText: 'Имя',
                                   controller: _controllerName,
+                                  type: InputTypeCustom.inputText,
                                 ),
                               ),
                             if (!_isEnter) SizedBox(height: 15),
@@ -375,6 +390,7 @@ class _HomeState extends State<Home> {
                                   isPassword: false,
                                   hintText: 'Фамилия',
                                   controller: _controllerSurname,
+                                  type: InputTypeCustom.inputText,
                                 ),
                               ),
                             SizedBox(height: 7.5),

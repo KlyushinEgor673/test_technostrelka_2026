@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/otp_box.dart';
+import 'package:provider/provider.dart';
 
 class Otp extends StatefulWidget {
   const Otp({super.key, required this.email});
@@ -21,13 +22,14 @@ class _OtpState extends State<Otp> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
   int seconds = 60;
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         _focusNode.requestFocus();
@@ -41,6 +43,7 @@ class _OtpState extends State<Otp> {
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +150,7 @@ class _OtpState extends State<Otp> {
                       onTap: () async {
                         try {
                           final response = await _dio.post(
-                            'http://localhost:3000/api/code/verify-code',
+                            '/api/code/verify-code',
                             data: jsonEncode({
                               'email': widget.email,
                               'code': _controller.text,
@@ -194,7 +197,7 @@ class _OtpState extends State<Otp> {
                       ),
                       onTap: () async {
                         await _dio.post(
-                          'http://localhost:3000/api/code/resend-code',
+                          '/api/code/resend-code',
                           data: jsonEncode({'email': widget.email}),
                         );
                         setState(() {

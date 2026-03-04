@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
+import 'package:frontend/widgets/yoomoney_button.dart';
+import 'package:provider/provider.dart';
+import 'package:s_webview/s_webview.dart';
 
 class Yoomoney extends StatefulWidget {
   const Yoomoney({super.key});
@@ -15,52 +19,107 @@ class Yoomoney extends StatefulWidget {
 class _YoomoneyState extends State<Yoomoney> {
   final _controllerEmail = TextEditingController();
   final _controllerPassword = TextEditingController();
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
+  bool _isNotEmpty = false;
+  bool _isSent = false;
+
+  void _checkNotEmpty() {
+    if (_controllerPassword.text.isNotEmpty &&
+        _controllerEmail.text.isNotEmpty) {
+      setState(() {
+        _isNotEmpty = true;
+      });
+    } else {
+      setState(() {
+        _isNotEmpty = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
+    _controllerPassword.addListener(() => _checkNotEmpty());
+    _controllerEmail.addListener(() => _checkNotEmpty());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+      ),
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InputYoomoney(controller: _controllerEmail),
-            SizedBox(height: 15),
-            InputYoomoney(controller: _controllerPassword),
-            SizedBox(height: 15),
-            GestureDetector(
-              child: Container(
-                height: 42,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                constraints: BoxConstraints(maxWidth: 500),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color.fromRGBO(104, 51, 235, 1),
-                ),
-                child: Center(
-                  child: Text('Далее', style: TextStyle(color: Colors.white)),
-                ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'Вход в юMoney',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               ),
-              onTap: () async {
-                final token = await _storage.read(key: 'token');
-                final response = await _dio.post(
-                  'http://localhost:3000/api/yoomoney/enter',
-                  data: jsonEncode({
-                    'email': _controllerEmail.text,
-                    'password': _controllerPassword.text
-                  }),
-                  options: Options(
-                    headers: {
-                      'Authorization': 'Bearer $token'
+            ),
+            SizedBox(height: 15),
+            InputYoomoney(controller: _controllerEmail, isPassword: false),
+            SizedBox(height: 15),
+            InputYoomoney(controller: _controllerPassword, isPassword: true),
+            SizedBox(height: 15),
+            YoomoneyButton(
+              isCircular: _isSent,
+              isActive: _isNotEmpty,
+              onTap: _isNotEmpty
+                  ? () async {
+                      print(EmailValidator.validate(_controllerEmail.text));
+                      if (!EmailValidator.validate(_controllerEmail.text)) {
+                        Alerts.showError(context, 'Введите коректный email');
+                      } else {
+                        setState(() {
+                          _isSent = true;
+                          _isNotEmpty = false;
+                        });
+                        final token = await _storage.read(key: 'token');
+                        try {
+                          final response = await _dio.post(
+                            '/api/yoomoney/enter',
+                            data: jsonEncode({
+                              'email': _controllerEmail.text,
+                              'password': _controllerPassword.text,
+                            }),
+                            options: Options(
+                              headers: {'Authorization': 'Bearer $token'},
+                            ),
+                          );
+                          if (response.data['is_enter']) {
+                            Navigator.pushNamed(context, '/profile');
+                          }
+                        } on DioException catch (e) {
+                          if (e.response?.data['error'] ==
+                              'Необходим код подтверждения') {
+                            Navigator.pushNamed(
+                              context,
+                              '/yoomoney_code',
+                              arguments: {'email': _controllerEmail.text},
+                            );
+                          } else {
+                            Alerts.showError(
+                              context,
+                              'Неверный логин или пароль',
+                            );
+                            setState(() {
+                              _isSent = false;
+                              _isNotEmpty = true;
+                            });
+                          }
+                        }
+                      }
                     }
-                  )
-                );
-                print(response.data);
-              },
+                  : () {},
             ),
           ],
         ),

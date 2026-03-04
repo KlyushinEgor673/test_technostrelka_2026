@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
 import 'package:frontend/widgets/select_date.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/chip_button.dart';
 
@@ -16,7 +17,7 @@ class Charts extends StatefulWidget {
 }
 
 class _ChartsState extends State<Charts> {
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
   Map _subscriptions = {};
   List<PieChartSectionData> _sections = [];
@@ -44,6 +45,7 @@ class _ChartsState extends State<Charts> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
     _init();
   }
 
@@ -83,7 +85,7 @@ class _ChartsState extends State<Charts> {
                 //     _barGroups = [];
                 //     String? token = await _storage.read(key: 'token');
                 //     final response = await _dio.get(
-                //       'http://localhost:3000/api/subscription/',
+                //       '/api/subscription/',
                 //       options: Options(
                 //         headers: {'Authorization': 'Bearer $token'},
                 //       ),

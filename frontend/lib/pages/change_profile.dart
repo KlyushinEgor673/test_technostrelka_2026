@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/input.dart';
 
@@ -17,12 +18,12 @@ class _ChangeProfileState extends State<ChangeProfile> {
   final _controllerName = TextEditingController();
   final _controllerSurname = TextEditingController();
   final _storage = FlutterSecureStorage();
-  final _dio = Dio();
+  late final _dio;
 
   Future<void> _init() async {
     String? token = await _storage.read(key: 'token');
     final response = await _dio.get(
-      'http://localhost:3000/api/user/me',
+      '/api/user/me',
       options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
     setState(() {
@@ -35,6 +36,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
     _init();
   }
 
@@ -58,6 +60,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 isPassword: false,
                 hintText: 'Имя',
                 controller: _controllerName,
+                type: InputTypeCustom.inputText,
               ),
             ),
             Container(
@@ -67,6 +70,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 isPassword: false,
                 hintText: 'Фамилия',
                 controller: _controllerSurname,
+                type: InputTypeCustom.inputText,
               ),
             ),
             Container(
@@ -77,7 +81,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 onPressed: () async {
                   String? token = await _storage.read(key: 'token');
                   await _dio.put(
-                    'http://localhost:3000/api/user/edit-profile',
+                    '/api/user/edit-profile',
                     data: jsonEncode({
                       'name': _controllerName.text,
                       'surname': _controllerSurname.text,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
+import 'package:provider/provider.dart';
 import 'package:s_webview/s_webview.dart';
 // import 'dart:html' as html;
 
@@ -16,7 +17,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final _dio = Dio();
+  late final _dio;
   final _storage = FlutterSecureStorage();
 
   String _name = '';
@@ -27,7 +28,7 @@ class _ProfileState extends State<Profile> {
   Future<void> _init() async {
     String? token = await _storage.read(key: 'token');
     final response = await _dio.get(
-      'http://localhost:3000/api/user/me',
+      '/api/user/me',
       options: Options(headers: {'authorization': 'Bearer $token'}),
     );
     final data = response.data['user'];
@@ -37,28 +38,13 @@ class _ProfileState extends State<Profile> {
       _email = data['email'];
       _isEnterYm = data['is_enter_ym'];
     });
-    // if (Uri.base.queryParameters.containsKey('code')) {
-    //   final dio = Dio();
-    //   String? token = await _storage.read(key: 'token');
-    //   final response = await dio.post(
-    //     'http://localhost:3000/api/exchange-token',
-    //     data: {'code': Uri.base.queryParameters['code']},
-    //     options: Options(headers: {'authorization': 'Bearer $token'}),
-    //   );
-    //   final res = await _dio.post('http://localhost:3000/api/operation-history',
-    //     options: Options(headers: {'authorization': 'Bearer $token'}),);
-    //   print(res);
-    //   final res2 = await _dio.post('http://localhost:3000/api/operation-details',
-    //     data: jsonEncode({'operation_id': '825023305515984084'}),
-    //     options: Options(headers: {'authorization': 'Bearer $token'}),);
-    //   print(res2);
-    // }
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dio = Provider.of<Dio>(context, listen: false);
     _init();
   }
 
@@ -90,30 +76,47 @@ class _ProfileState extends State<Profile> {
                   width: 200,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: _isEnterYm ? Colors.white : Color.fromRGBO(104, 51, 235, 1),
+                    color: _isEnterYm
+                        ? Colors.white
+                        : Color.fromRGBO(104, 51, 235, 1),
                     borderRadius: BorderRadius.circular(10),
-                    border: _isEnterYm ? Border.all(
-                      width: 2,
-                      color: Color.fromRGBO(104, 51, 235, 1)
-                    ) : null
+                    border: _isEnterYm
+                        ? Border.all(
+                            width: 2,
+                            color: Color.fromRGBO(104, 51, 235, 1),
+                          )
+                        : null,
                   ),
                   child: Center(
                     child: !_isEnterYm
                         ? Text(
-                      'Подключить юMoney',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    )
+                            'Подключить юMoney',
+                            style: TextStyle(color: Colors.white),
+                          )
                         : Text(
-                      'Отключить юMoney',
-                      style: TextStyle(color: Color.fromRGBO(104, 51, 235, 1)),
-                    ),
-                  ) ,
+                            'Отключить юMoney',
+                            style: TextStyle(
+                              color: Color.fromRGBO(104, 51, 235, 1),
+                            ),
+                          ),
+                  ),
                 ),
-                onTap: () {
-                  Navigator.pushNamed(context, '/yoomoney');
-                },
+                onTap: _isEnterYm
+                    ? () async {
+                        String? token = await _storage.read(key: 'token');
+                        await _dio.delete(
+                          '/api/yoomoney/logout',
+                          options: Options(
+                            headers: {'Authorization': 'Bearer $token'},
+                          ),
+                        );
+                        setState(() {
+                          _isEnterYm = false;
+                        });
+                      }
+                    : () {
+                        Navigator.pushNamed(context, '/yoomoney');
+                      },
               ),
             ),
             Center(
