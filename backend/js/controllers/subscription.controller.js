@@ -34,14 +34,14 @@ const createSubscription = async (req, res) => {
     }
 
     try {
-      const formattedEndDate = new Date(end_date.slice(0,10))
+      const formattedEndDate = new Date(end_date)
       console.log("formattedEndDate ", formattedEndDate)
 
       const formattedPeriod = parseInt(period)
       console.log("formattedPeriod ", formattedPeriod)
       
       let date = new Date(formattedEndDate);
-      date.setDate(end_date.getDate() - period);
+      date.setDate(formattedEndDate.getDate() - formattedPeriod);
       
       const checkData = prisma.debiting_subscriptions.findFirst({
         where: { date: date }
