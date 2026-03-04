@@ -41,9 +41,7 @@ class _InputState extends State<Input> {
           SizedBox(width: 14),
           Expanded(
             child: TextField(
-              style: TextStyle(
-                fontSize: 16
-              ),
+              style: TextStyle(fontSize: 16),
               controller: widget.controller,
               obscureText: _isPassword,
               decoration: InputDecoration(

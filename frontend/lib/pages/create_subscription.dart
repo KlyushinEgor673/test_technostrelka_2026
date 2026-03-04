@@ -71,229 +71,246 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(225, 228, 234, 1),
-              Color.fromRGBO(211, 222, 250, 1),
-            ],
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       Color.fromRGBO(225, 228, 234, 1),
+        //       Color.fromRGBO(211, 222, 250, 1),
+        //     ],
+        //   ),
+        // ),
+        color: Colors.white,
         child: _isLoaded
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Spacer(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 20, bottom: 20),
-                        child: Text(
-                          'Создание подписки',
-                          style: TextStyle(fontSize: 24),
+            ? SafeArea(
+                child: ListView(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Spacer(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 20, bottom: 20),
+                          child: Text(
+                            'Создание подписки',
+                            style: TextStyle(fontSize: 24),
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: Input(
+                            isPassword: false,
+                            hintText: 'Имя',
+                            controller: _controllerName,
+                          ),
                         ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: Input(
-                          isPassword: false,
-                          hintText: 'Имя',
-                          controller: _controllerName,
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: Input(
+                            isPassword: false,
+                            hintText: 'Описание',
+                            controller: _controllerDescription,
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
-                        ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: Input(
-                          isPassword: false,
-                          hintText: 'Описание',
-                          controller: _controllerDescription,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
-                        ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: SelectDate(
-                          hintText: 'Начальная дата',
-                          change: (newValue) {
-                            _dateStart = newValue;
-                          },
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                          value: _dateStart,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
-                        ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: SelectDate(
-                          hintText: 'Конечная дата',
-                          change: (newValue) {
-                            _dateEnd = newValue;
-                          },
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                          value: _dateEnd,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
-                        ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: Input(
-                          isPassword: false,
-                          hintText: 'Цена',
-                          controller: _controllerPrice,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 15,
-                          left: 20,
-                          right: 20,
-                        ),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: Input(
-                          isPassword: false,
-                          hintText: 'url сайта',
-                          controller: _controllerUrl,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: _isAuto,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _isAuto = !_isAuto;
-                                });
-                              },
-                            ),
-                            Text('Автопродление'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      width: 170,
-                      height: 170,
-                      decoration: BoxDecoration(
-                        color: bytes != null
-                            ? Colors.black
-                            : Color.fromRGBO(240, 240, 240, 1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: bytes != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.memory(bytes, fit: BoxFit.cover),
-                            )
-                          : Center(child: Icon(Icons.add, size: 50)),
-                    ),
-                    onTap: () async {
-                      XFile? res = await _picker.pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (res != null) {
-                        var newBytes = await res.readAsBytes();
-                        setState(() {
-                          bytes = newBytes;
-                        });
-                      }
-                    },
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 15, left: 20, right: 20),
-                    width: double.infinity,
-                    constraints: BoxConstraints(maxWidth: 500),
-                    height: 50,
-                    child: FilledButton(
-                      onPressed: widget.id != null
-                          ? () async {
-                              String? token = await _storage.read(key: 'token');
-                              final base64String = base64Encode(bytes);
-                              await _dio.put(
-                                'http://localhost:3000/api/subscription',
-                                data: jsonEncode({
-                                  'id': widget.id,
-                                  'name': _controllerName.text,
-                                  'description': _controllerDescription.text,
-                                  'start_date': _dateStart.toString(),
-                                  'end_date': _dateEnd.toString(),
-                                  'price': double.parse(_controllerPrice.text),
-                                  'flag_auto': _isAuto,
-                                  'img': base64String,
-                                  'url': _controllerUrl.text,
-                                }),
-                                options: Options(
-                                  headers: {'Authorization': 'Bearer $token'},
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          : () async {
-                              String? token = await _storage.read(key: 'token');
-                              final base64String = base64Encode(bytes);
-                              await _dio.post(
-                                'http://localhost:3000/api/subscription/',
-                                data: jsonEncode({
-                                  'name': _controllerName.text,
-                                  'description': _controllerDescription.text,
-                                  'start_date': _dateStart.toString(),
-                                  'end_date': _dateEnd.toString(),
-                                  'price': double.parse(_controllerPrice.text),
-                                  'flag_auto': _isAuto,
-                                  'img': base64String,
-                                  'url': _controllerUrl.text,
-                                }),
-                                options: Options(
-                                  headers: {'Authorization': 'Bearer $token'},
-                                ),
-                              );
-                              Navigator.pop(context);
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: SelectDate(
+                            hintText: 'Начальная дата',
+                            change: (newValue) {
+                              _dateStart = newValue;
                             },
-                      child: Text(widget.id == null ? 'Создать' : 'Изменить'),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2100),
+                            value: _dateStart,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: SelectDate(
+                            hintText: 'Конечная дата',
+                            change: (newValue) {
+                              _dateEnd = newValue;
+                            },
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2100),
+                            value: _dateEnd,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: Input(
+                            isPassword: false,
+                            hintText: 'Цена',
+                            controller: _controllerPrice,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: 15,
+                            left: 20,
+                            right: 20,
+                          ),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: Input(
+                            isPassword: false,
+                            hintText: 'url сайта',
+                            controller: _controllerUrl,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          constraints: BoxConstraints(maxWidth: 500),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: _isAuto,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _isAuto = !_isAuto;
+                                  });
+                                },
+                              ),
+                              Text('Автопродление'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      child: Center(
+                        child: Container(
+                          width: 170,
+                          height: 170,
+                          decoration: BoxDecoration(
+                            color: bytes != null
+                                ? Colors.black
+                                : Color.fromRGBO(240, 240, 240, 1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: bytes != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.memory(bytes, fit: BoxFit.cover),
+                                )
+                              : Center(child: Icon(Icons.add, size: 50)),
+                        ),
+                      ),
+                      onTap: () async {
+                        XFile? res = await _picker.pickImage(
+                          source: ImageSource.gallery,
+                        );
+                        if (res != null) {
+                          var newBytes = await res.readAsBytes();
+                          setState(() {
+                            bytes = newBytes;
+                          });
+                        }
+                      },
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+                      width: double.infinity,
+                      constraints: BoxConstraints(maxWidth: 500),
+                      height: 50,
+                      child: FilledButton(
+                        onPressed: widget.id != null
+                            ? () async {
+                                String? token = await _storage.read(
+                                  key: 'token',
+                                );
+                                final base64String = base64Encode(bytes);
+                                await _dio.put(
+                                  'http://localhost:3000/api/subscription',
+                                  data: jsonEncode({
+                                    'id': widget.id,
+                                    'name': _controllerName.text,
+                                    'description': _controllerDescription.text,
+                                    'start_date': _dateStart.toString(),
+                                    'end_date': _dateEnd.toString(),
+                                    'price': double.parse(
+                                      _controllerPrice.text,
+                                    ),
+                                    'flag_auto': _isAuto,
+                                    'img': base64String,
+                                    'url': _controllerUrl.text,
+                                  }),
+                                  options: Options(
+                                    headers: {'Authorization': 'Bearer $token'},
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            : () async {
+                                String? token = await _storage.read(
+                                  key: 'token',
+                                );
+                                final base64String = base64Encode(bytes);
+                                await _dio.post(
+                                  'http://localhost:3000/api/subscription/',
+                                  data: jsonEncode({
+                                    'name': _controllerName.text,
+                                    'description': _controllerDescription.text,
+                                    'start_date': _dateStart.toString(),
+                                    'end_date': _dateEnd.toString(),
+                                    'price': double.parse(
+                                      _controllerPrice.text,
+                                    ),
+                                    'flag_auto': _isAuto,
+                                    'img': base64String,
+                                    'url': _controllerUrl.text,
+                                  }),
+                                  options: Options(
+                                    headers: {'Authorization': 'Bearer $token'},
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              },
+                        child: Text(widget.id == null ? 'Создать' : 'Изменить'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(89, 65, 174, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Spacer(),
-                ],
+                    Spacer(),
+                  ],
+                ),
               )
             : Center(child: CircularProgressIndicator()),
       ),

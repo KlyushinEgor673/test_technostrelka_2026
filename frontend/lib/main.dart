@@ -1,18 +1,42 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/pages/change_profile.dart';
+import 'package:frontend/pages/charts.dart';
 import 'package:frontend/pages/create_subscription.dart';
 import 'package:frontend/pages/home.dart';
 import 'package:frontend/pages/otp.dart';
 import 'package:frontend/pages/profile.dart';
 import 'package:frontend/pages/subscriptions.dart';
 import 'package:frontend/pages/yoomoney.dart';
+import 'package:frontend/pages/yoomoney_subscriptions.dart';
+
+Future<void> init() async {
+  final storage = FlutterSecureStorage();
+  String? token = await storage.read(key: 'token');
+  final dio = Dio();
+  if (token != null) {
+    final token = await storage.read(key: 'token');
+    final response = await dio.get(
+      'http://localhost:3000/api/yoomoney/subscription',
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+    await storage.write(
+      key: 'yoomoney_subscriptions',
+      value: jsonEncode(response.data['subscriptions']),
+    );
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = FlutterSecureStorage();
   String? token = await storage.read(key: 'token');
+  print(token);
+  init();
   runApp(
     ScreenUtilInit(
       designSize: const Size(428, 926),
@@ -54,6 +78,12 @@ void main() async {
               return PageRouteBuilder(
                 pageBuilder: (_, __, ___) => ChangeProfile(),
               );
+            case '/yoomoney_subscriptions':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => YoomoneySubscriptions(),
+              );
+            case '/charts':
+              return PageRouteBuilder(pageBuilder: (_, __, ___) => Charts());
           }
         },
       ),

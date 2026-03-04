@@ -19,7 +19,12 @@ class InputYoomoney extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 14),
-          child: TextField(controller: controller),
+          child: Center(
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(border: InputBorder.none),
+            ),
+          ),
         ),
       ),
     );

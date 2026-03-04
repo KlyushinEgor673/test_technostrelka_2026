@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/widgets/header.dart';
 // import 'dart:html' as html;
 
 class Profile extends StatefulWidget {
@@ -65,22 +66,7 @@ class _ProfileState extends State<Profile> {
         child: Center(
           child: Column(
             children: [
-              Row(
-                children: [
-                  TextButton(onPressed: () {
-                    Navigator.pushNamed(context, '/subscriptions');
-                  }, child: Text('Подписки')),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/profile');
-                    },
-                    child: Text(
-                      'Профиль',
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ],
-              ),
+              Header(id: 1),
               Spacer(),
               Text(_name),
               Text(_surname),
@@ -91,10 +77,13 @@ class _ProfileState extends State<Profile> {
                 },
                 child: Text('Подключить youmoney'),
               ),
-              TextButton(onPressed: () async {
-                await Navigator.pushNamed(context, '/change_profile');
-                await _init();
-              }, child: Text('Изменить профиль')),
+              TextButton(
+                onPressed: () async {
+                  await Navigator.pushNamed(context, '/change_profile');
+                  await _init();
+                },
+                child: Text('Изменить профиль'),
+              ),
               TextButton(
                 onPressed: () async {
                   await _storage.delete(key: 'token');

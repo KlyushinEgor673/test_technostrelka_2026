@@ -87,7 +87,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 onPressed: () async {
                   String? token = await _storage.read(key: 'token');
                   await _dio.put(
-                    'http://localhost:3000/api/user/edit',
+                    'http://localhost:3000/api/user/edit-profile',
                     data: jsonEncode({
                       'name': _controllerName.text,
                       'surname': _controllerSurname.text
