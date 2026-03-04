@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
 import 'package:frontend/widgets/select_date.dart';
 
@@ -48,11 +49,13 @@ class _ChartsState extends State<Charts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
             Header(id: 3),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   constraints: BoxConstraints(maxWidth: 300),
@@ -110,7 +113,6 @@ class _ChartsState extends State<Charts> {
             Spacer(),
             Center(
               child: SizedBox(
-                width: 1000,
                 height: 500,
                 child: BarChart(
                   BarChartData(
@@ -133,6 +135,7 @@ class _ChartsState extends State<Charts> {
           ],
         ),
       ),
+      bottomNavigationBar: Footer(currentIndex: 0),
     );
   }
 }

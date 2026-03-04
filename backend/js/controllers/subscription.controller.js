@@ -134,6 +134,7 @@ const getSubscriptions = async (req, res) => {
         // Для простоты предположим, что это JPEG
         sub.img = bytesToBase64(sub.img)
       }
+      return sub;
     });
 
     res.status(200).json({ subscriptions: subscriptionsWithBase64 })

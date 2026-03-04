@@ -13,6 +13,9 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).size.width < 768) {
+      return SizedBox.shrink();
+    }
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/chip_button.dart';
+import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:s_webview/s_webview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,10 +45,53 @@ class _SubscriptionsState extends State<Subscriptions> {
     setState(() {});
   }
 
+  void _checkSearch() {
+    final _subscriptionsCopy = List.from(_subscriptions);
+    for (final item in _subscriptionsCopy) {
+      // print(item['name']);
+      if (!item['name'].toLowerCase().contains(
+        _controllerSearch.text.toLowerCase(),
+      )) {
+        _subscriptions.remove(item);
+        print(item['name']);
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _controllerSearch.addListener(() async {
+      String? token = await _storage.read(key: 'token');
+      if (_dropdownValue == 'Все') {
+        final response = await _dio.get(
+          'http://localhost:3000/api/subscription/',
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+        _subscriptions = response.data['subscriptions'];
+        String? subscriptions_yoomoney = await _storage.read(
+          key: 'yoomoney_subscriptions',
+        );
+        List subscriptions_yoomoney_list = jsonDecode(subscriptions_yoomoney!);
+        for (int i = 0; i < subscriptions_yoomoney_list!.length; ++i) {
+          _subscriptions.add(subscriptions_yoomoney_list[i]);
+        }
+      } else if (_dropdownValue == 'Сoздaнныe') {
+        final response = await _dio.get(
+          'http://localhost:3000/api/subscription/',
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+        _subscriptions = response.data['subscriptions'];
+      } else {
+        String? subscriptions_yoomoney = await _storage.read(
+          key: 'yoomoney_subscriptions',
+        );
+        _subscriptions = jsonDecode(subscriptions_yoomoney!);
+      }
+      _checkSearch();
+      setState(() {});
+    });
     _init();
   }
 
@@ -71,7 +115,7 @@ class _SubscriptionsState extends State<Subscriptions> {
         child: SafeArea(
           child: Column(
             children: [
-              if (MediaQuery.of(context).size.width > 768) Header(id: 2),
+              Header(id: 2),
               Container(
                 height: 50,
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -203,6 +247,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                         ) {
                           _subscriptions.add(subscriptions_yoomoney_list[i]);
                         }
+                        _checkSearch();
                         setState(() {
                           _dropdownValue = 'Все';
                         });
@@ -211,7 +256,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                     SizedBox(width: 15),
                     ChipButton(
                       text: 'Созданные',
-                      isActive: _dropdownValue == 'Созданные' ? true: false,
+                      isActive: _dropdownValue == 'Созданные' ? true : false,
                       onTap: () async {
                         String? token = await _storage.read(key: 'token');
                         final response = await _dio.get(
@@ -220,6 +265,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                             headers: {'Authorization': 'Bearer $token'},
                           ),
                         );
+                        _checkSearch();
                         setState(() {
                           _subscriptions = response.data['subscriptions'];
                           _dropdownValue = 'Созданные';
@@ -234,6 +280,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                         String? subscriptions_yoomoney = await _storage.read(
                           key: 'yoomoney_subscriptions',
                         );
+                        _checkSearch();
                         setState(() {
                           _subscriptions = jsonDecode(subscriptions_yoomoney!);
                           _dropdownValue = 'юMoney';
@@ -252,7 +299,12 @@ class _SubscriptionsState extends State<Subscriptions> {
                         : 10,
                   ),
                   child: GridView.builder(
-                    padding: EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 10),
+                    padding: EdgeInsets.only(
+                      right: 10,
+                      left: 10,
+                      bottom: 20,
+                      top: 10,
+                    ),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: MediaQuery.of(context).size.width > 1040
                           ? 3
@@ -266,6 +318,9 @@ class _SubscriptionsState extends State<Subscriptions> {
                     ),
                     itemCount: _subscriptions.length,
                     itemBuilder: (context, i) {
+                      // if (!_subscriptions[i]['name'].contains(_controllerSearch.text)){
+                      //   return SizedBox.shrink();
+                      // }
                       if (_subscriptions[i]['url'] == null) {
                         return Container(
                           decoration: BoxDecoration(
@@ -486,49 +541,7 @@ class _SubscriptionsState extends State<Subscriptions> {
         backgroundColor: Color.fromRGBO(89, 65, 174, 1),
         child: Icon(Icons.add, color: Colors.white),
       ),
-      bottomNavigationBar: MediaQuery.of(context).size.width < 768
-          ? Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(160, 160, 160, 0.3),
-                    offset: Offset(0, -0.5),
-                  ),
-                ],
-              ),
-              child: BottomNavigationBar(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                selectedItemColor: Color.fromRGBO(89, 65, 174, 1),
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.ssid_chart),
-                    label: 'Аналитика',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.subscriptions),
-                    label: 'Подписки',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Профиль',
-                  ),
-                ],
-                currentIndex: 1,
-                onTap: (value){
-                  if (value == 0){
-                    Navigator.pushNamed(context, '/charts');
-                  } else if (value == 1){
-                    Navigator.pushNamed(context, '/subscriptions');
-                  }
-                  if (value == 2){
-                    Navigator.pushNamed(context, '/profile');
-                  }
-                },
-
-              ),
-            )
-          : null,
+      bottomNavigationBar: Footer(currentIndex: 1),
     );
   }
 }

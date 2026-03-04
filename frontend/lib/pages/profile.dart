@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
 // import 'dart:html' as html;
 
@@ -56,6 +57,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     _init();
+
   }
 
   @override
@@ -63,39 +65,63 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Header(id: 1),
-              Spacer(),
-              Text(_name),
-              Text(_surname),
-              Text(_email),
-              FilledButton(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Header(id: 1),
+            SizedBox(height: 35,),
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Text(
+                '$_name $_surname',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 20, top: 8),
+              child: Text(_email, style: TextStyle(fontSize: 16)),
+            ),
+            Spacer(),
+            Center(
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(104, 51, 235, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/yoomoney');
                 },
                 child: Text('Подключить youmoney'),
               ),
-              TextButton(
+            ),
+            Center(
+              child: TextButton(
                 onPressed: () async {
                   await Navigator.pushNamed(context, '/change_profile');
                   await _init();
                 },
                 child: Text('Изменить профиль'),
               ),
-              TextButton(
+            ),
+            Center(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.red
+                ),
                 onPressed: () async {
                   await _storage.delete(key: 'token');
                   Navigator.pushNamed(context, '/entrance');
                 },
                 child: Text('Выйти'),
               ),
-              Spacer(),
-            ],
-          ),
+            ),
+            Spacer(),
+          ],
         ),
       ),
+      bottomNavigationBar: Footer(currentIndex: 2),
     );
   }
 }

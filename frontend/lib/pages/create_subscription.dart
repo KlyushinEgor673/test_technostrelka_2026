@@ -278,10 +278,10 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                 String? token = await _storage.read(
                                   key: 'token',
                                 );
-                                final base64String = base64Encode(bytes);
+                                // final base64String = base64Encode(bytes);
                                 await _dio.post(
                                   'http://localhost:3000/api/subscription/',
-                                  data: jsonEncode({
+                                  data: FormData.fromMap({
                                     'name': _controllerName.text,
                                     'description': _controllerDescription.text,
                                     'start_date': _dateStart.toString(),
@@ -290,7 +290,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       _controllerPrice.text,
                                     ),
                                     'flag_auto': _isAuto,
-                                    'img': base64String,
+                                    'img': MultipartFile.fromBytes(bytes, filename: 'image.png'),
                                     'url': _controllerUrl.text,
                                   }),
                                   options: Options(
