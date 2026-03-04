@@ -34,7 +34,7 @@ const createSubscription = async (req, res) => {
     }
 
     try {
-      const formattedEndDate = end_date.slice(10)
+      const formattedEndDate = end_date.slice(0,10)
       console.log("formattedEndDate ", formattedEndDate)
 
       const formattedPeriod = parseInt(period)
@@ -99,7 +99,7 @@ const createSubscription = async (req, res) => {
 // Изменение подписки
 const updateSubscription = async (req, res) => {
   try {
-    const { id, name, description, start_date, end_date, price, flag_auto, url } = req.body
+    const { id, name, category, period, end_date, price, flag_auto, url } = req.body
     const img = req.file?.buffer
 
     if (!id) {
@@ -108,8 +108,11 @@ const updateSubscription = async (req, res) => {
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
-    if (!start_date) {
-      return res.status(400).json({ error: "Дата начала обязательна" });
+    if (!category) {
+      return res.status(400).json({ error: "Категория подписки обязательна" });
+    }
+    if (!period) {
+      return res.status(400).json({ error: "Период подписки обязателен" });
     }
     if (!end_date) {
       return res.status(400).json({ error: "Дата окончания обязательна" });
@@ -136,12 +139,52 @@ const updateSubscription = async (req, res) => {
       return res.status(403).json({ error: "Нет доступа" })
     }
 
+
+
+
+    const formattedEndDate = end_date.slice(10)
+    console.log("formattedEndDate ", formattedEndDate)
+
+    const formattedPeriod = parseInt(period)
+    console.log("formattedPeriod ", formattedPeriod)
+
+    let date = new Date(formattedEndDate);
+    date.setDate(end_date.getDate() - period);
+
+    const checkData = prisma.debiting_subscriptions.findFirst({
+      where: { date: date }
+    })
+
+    if(!checkData){
+      await prisma.debiting_subscriptions.create({
+        data: {
+          date: date,
+          price: price,
+          user_id: req.user.id
+        }
+      })
+    } else {
+      const sumPrice = price + checkData.price
+      await prisma.debiting_subscriptions.update({
+        where: {
+          date: date
+        },
+        data: {
+          date: date,
+          price: sumPrice,
+          user_id: req.user.id
+        }
+      })
+    }
+      
+    
+
     await prisma.subscriptions.update({
       where: { id: parseInt(id) },
       data: {
         name: name,
-        description: description,
-        start_date: new Date(start_date),
+        category: category,
+        period: period,
         end_date: new Date(end_date),
         price: price,
         flag_auto: !!flag_auto,
