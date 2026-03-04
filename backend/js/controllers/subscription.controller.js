@@ -51,7 +51,7 @@ const createSubscription = async (req, res) => {
         await prisma.debiting_subscriptions.create({
           data: {
             date: date,
-            price: price,
+            price: parseFloat(price),
             user_id: req.user.id
           }
         })
