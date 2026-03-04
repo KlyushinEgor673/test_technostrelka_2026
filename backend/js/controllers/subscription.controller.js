@@ -13,7 +13,7 @@ const createSubscription = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "Файл не получен. Проверьте FormData" });
     }
-    
+
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
@@ -40,7 +40,7 @@ const createSubscription = async (req, res) => {
         start_date: new Date(start_date),
         end_date: new Date(end_date),
         price: price,
-        flag_auto: flag_auto,
+        flag_auto: !!flag_auto,
         img: img,
         url: url,
         id_user: req.user.id
