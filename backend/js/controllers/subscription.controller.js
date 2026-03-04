@@ -58,13 +58,13 @@ const createSubscription = async (req, res) => {
       await prisma.debiting_subscriptions.create({
         data: {
           date: debitDate,
-          price: formattedPrice,
+          price: parseFloat(formattedPrice),
           user_id: req.user.id
         }
       });
     } else {
       // Обновляем существующую
-      const sumPrice = formattedPrice + existingDebit.price;
+      const sumPrice = parseFloat(formattedPrice) + parseFloat(existingDebit.price);
       await prisma.debiting_subscriptions.update({
         where: {
           date: debitDate // Используйте id, а не date!
