@@ -479,6 +479,38 @@ const getYoomoneySubscriptions = async (req, res) => {
 
 
 
+// Выход из yoomoney
+const yoomoneyLogout = async (req, res) => {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { id: req.user.id },
+    });
+
+    if(!user){
+      return res.status(404).json({ error: "Пользователь не найден" })
+    }
+    if(!user.email_ym || !user.password_ym || user.is_enter_ym === false){
+      return res.status(400).json({ error: "Вы не в аккаунте" })
+    }
+
+    await prisma.users.update({
+      where: { id: req.user.id },
+      data: {
+        email_ym: null,
+        password_ym: null,
+        is_enter_ym: false
+      }
+    });
+
+    res.status(200).json({ success: "Вы успешно вышли из аккаунта Yoomoney" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+
 module.exports = { 
   exchangeToken,
   getOperationHistory,
@@ -487,5 +519,6 @@ module.exports = {
   checkSessionStatus,
   checkCodeYoomoney,
   getCookies,
-  getYoomoneySubscriptions
+  getYoomoneySubscriptions,
+  yoomoneyLogout
 };

@@ -8,14 +8,15 @@ const {
   checkSessionStatus,
   checkCodeYoomoney,
   getCookies,
-  getYoomoneySubscriptions
+  getYoomoneySubscriptions,
+  yoomoneyLogout
 } = require('../controllers/yoomoney.controller');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
 // Обмен токена
 router.post("/exchange-token", authMiddleware, 
   /* #swagger.tags = ['Yoomoney'] */
-  /* #swagger.summary = 'Получение access-токена для yoomoney (используется только с фронта 1 раз)' */
+  /* #swagger.summary = 'Получение access-токена для Yoomoney (используется только с фронта 1 раз)' */
   exchangeToken
 );
 
@@ -36,7 +37,7 @@ router.post("/operation-details", authMiddleware,
 // Вход в YooMoney
 router.post("/enter", authMiddleware,
   /* #swagger.tags = ['Yoomoney'] */
-  /* #swagger.summary = 'Вход в yoomoney' */
+  /* #swagger.summary = 'Вход в Yoomoney' */
   yoomoneyLogin
 );
 
@@ -65,6 +66,13 @@ router.get("/subscription", authMiddleware,
   /* #swagger.tags = ['Yoomoney'] */
   /* #swagger.summary = 'Получение подписок из YooMoney' */
   getYoomoneySubscriptions
+);
+
+// Выход из YooMoney
+router.delete("/logout", authMiddleware,
+  /* #swagger.tags = ['Yoomoney'] */
+  /* #swagger.summary = 'Выход из Yoomoney' */
+  yoomoneyLogout
 );
 
 module.exports = router;
