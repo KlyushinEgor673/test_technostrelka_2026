@@ -366,6 +366,11 @@
             "type": "string"
           },
           {
+            "name": "content-type",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {

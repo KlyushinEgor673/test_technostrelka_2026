@@ -118,17 +118,29 @@ const updateSubscription = async (req, res) => {
 // Получение всех подписок пользователя
 const getSubscriptions = async (req, res) => {
   try {
-
-
     const subscriptions = await prisma.subscriptions.findMany({
       where: {
-      id_user: req.user.id
+        id_user: req.user.id
       },
       orderBy: {
         id: "asc"
       }
     })
-    res.status(200).json({ subscriptions: subscriptions })
+
+    const subscriptionsWithBase64 = subscriptions.map(sub => {
+      if (sub.img) {
+        // Определяем MIME тип (можно сохранять его в БД или определять по первым байтам)
+        // Для простоты предположим, что это JPEG
+        const base64Image = sub.img.toString('base64');
+        return {
+          ...sub,
+          img: `data:image/jpeg;base64,${base64Image}`
+        };
+      }
+      return sub;
+    });
+
+    res.status(200).json({ subscriptions: subscriptionsWithBase64 })
   } catch (error) {
     console.error("Ошибка:", error);
     res.status(500).json({ error: "Internal server error" });
