@@ -37,6 +37,10 @@ const createSubscription = async (req, res) => {
     const formattedPeriod = parseInt(period);
     const formattedPrice = parseFloat(price);
     const flagAutoBool = flag_auto === 'true' || flag_auto === true;
+
+    console.log("end_date:", end_date);
+    console.log("period:", period);
+    
     
     console.log("formattedEndDate:", formattedEndDate);
     console.log("formattedPeriod:", formattedPeriod);
@@ -44,6 +48,8 @@ const createSubscription = async (req, res) => {
     
     let debitDate = new Date(formattedEndDate);
     debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
+
+    console.log("debitDate:", debitDate);
     
     console.log("Дата списания: ", debitDate);
 
