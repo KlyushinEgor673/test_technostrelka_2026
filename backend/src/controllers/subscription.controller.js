@@ -159,6 +159,7 @@ const updateSubscription = async (req, res) => {
     try {
 
       const formattedEndDate = new Date(end_date);
+      formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
@@ -195,14 +196,15 @@ const updateSubscription = async (req, res) => {
           await prisma.debiting_subscriptions.create({
             data: {
               date: newDate,
-              price: price,
+              price: formattedPrice,
               user_id: req.user.id
             }
           })
 
           //проверяем была ли это единственная подписка на старую дату (для того, чтобы удалять или оставить прошлую дату)
+          const dateSub = sub.end_date - sub.period;
           const checkUniqueSub = await prisma.debiting_subscriptions.findFirst({
-            where: { date: sub.date }
+            where: { date: dateSub }
           })
 
           //если вся сумма за тот день равна сумма нашей подписки (еще не измененной), то удаляем эту дату
