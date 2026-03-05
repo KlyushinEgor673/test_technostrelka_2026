@@ -202,7 +202,8 @@ const updateSubscription = async (req, res) => {
           })
 
           //проверяем была ли это единственная подписка на старую дату (для того, чтобы удалять или оставить прошлую дату)
-          const dateSub = sub.end_date - sub.period;
+          const dateSub = new Date(sub.end_date);
+          dateSub.setDate(dateSub.getDate() - sub.period);
           const checkUniqueSub = await prisma.debiting_subscriptions.findFirst({
             where: { date: dateSub }
           })
