@@ -1,12 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "js/server.js",
+  "main": "src/server.js",
   "scripts": {
     "prisma": "prisma",
-    "swagger": "node js/swagger.js",
-    "swagger:watch": "nodemon --watch ./server.js --exec \"npm run swagger\"",
-    "dev": "nodemon server.js",
+    "swagger": "node src/swagger.js",
+    "swagger:watch": "nodemon --watch ./src/server.js --exec \"npm run swagger\"",
+    "dev": "nodemon src/server.js",
     "dev:swagger": "concurrently \"npm run swagger:watch\" \"npm run dev\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

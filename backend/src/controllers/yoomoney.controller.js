@@ -191,9 +191,9 @@ const yoomoneyLogin = async (req, res) => {
     // }
 
     let driver = await new Builder().forBrowser('chrome').build();
-      await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
-      await driver.manage().deleteAllCookies();
-      driverStorage.set(email, driver);
+    await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
+    await driver.manage().deleteAllCookies();
+    driverStorage.set(email, driver);
 
     await driver.sleep(2000);
 
