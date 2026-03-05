@@ -159,7 +159,6 @@ const updateSubscription = async (req, res) => {
     try {
 
       const formattedEndDate = new Date(end_date);
-      formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
