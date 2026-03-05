@@ -362,12 +362,74 @@
           "Subscription"
         ],
         "summary": "Создание подписки",
-        "description": "",
+        "description": "Создание новой подписки с возможностью загрузки изображения",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Название подписки"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Категория подписки"
+          },
+          {
+            "name": "period",
+            "in": "formData",
+            "type": "integer",
+            "required": true,
+            "description": "Период оплаты подписки (в днях)"
+          },
+          {
+            "name": "end_date",
+            "in": "formData",
+            "type": "string",
+            "format": "date",
+            "required": true,
+            "description": "Дата окончания подписки (YYYY-MM-DD)"
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "number",
+            "format": "float",
+            "required": true,
+            "description": "Цена подписки"
+          },
+          {
+            "name": "flag_auto",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Флаг автопродления (true/false)"
+          },
+          {
+            "name": "url",
+            "in": "formData",
+            "type": "string",
+            "format": "uri",
+            "required": true,
+            "description": "URL оплаты"
+          },
+          {
+            "name": "profileImage",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Файл изображения (jpg, png, gif)"
           },
           {
             "name": "body",
@@ -402,16 +464,59 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Подписка успешно создана",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "success"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Подписка успешно создана"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Ошибка валидации - не все обязательные поля заполнены или неверный формат"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - отсутствует или недействителен JWT токен"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error - внутренняя ошибка сервера"
           }
         }
       },
@@ -420,12 +525,81 @@
           "Subscription"
         ],
         "summary": "Изменение данных подписки",
-        "description": "",
+        "description": "Изменение подписки с возможностью загрузки изображения",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "type": "integer",
+            "required": true,
+            "description": "id подписки"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Название подписки"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Категория подписки"
+          },
+          {
+            "name": "period",
+            "in": "formData",
+            "type": "integer",
+            "required": true,
+            "description": "Период оплаты подписки (в днях)"
+          },
+          {
+            "name": "end_date",
+            "in": "formData",
+            "type": "string",
+            "format": "date",
+            "required": true,
+            "description": "Дата окончания подписки (YYYY-MM-DD)"
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "number",
+            "format": "float",
+            "required": true,
+            "description": "Цена подписки"
+          },
+          {
+            "name": "flag_auto",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Флаг автопродления (true/false)"
+          },
+          {
+            "name": "url",
+            "in": "formData",
+            "type": "string",
+            "format": "uri",
+            "required": true,
+            "description": "URL оплаты"
+          },
+          {
+            "name": "profileImage",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Файл изображения (jpg, png, gif)"
           },
           {
             "name": "body",
@@ -463,13 +637,56 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Подписка успешно изменена",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "success"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Подписка успешно изменена"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Ошибка валидации - не все обязательные поля заполнены или неверный формат"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - отсутствует или недействителен JWT токен"
           },
           "403": {
             "description": "Forbidden"
@@ -478,7 +695,7 @@
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error - внутренняя ошибка сервера"
           }
         }
       },
@@ -544,6 +761,36 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/subscription/history": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Получение всей истории подписок пользователя",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
