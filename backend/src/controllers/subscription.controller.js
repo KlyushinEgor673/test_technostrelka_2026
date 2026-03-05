@@ -329,9 +329,12 @@ const deleteSubscription = async (req, res) => {
 
     try {
 
+      const sub = await prisma.subscriptions.findUnique({
+        where: { id: parseInt(id) }
+      })
 
-      const formattedEndDate = new Date(end_date);
-      const formattedPeriod = parseInt(period);
+      const formattedEndDate = new Date(sub.end_date);
+      const formattedPeriod = parseInt(sub.period);
       
       console.log("formattedEndDate:", formattedEndDate);
       console.log("formattedPeriod:", formattedPeriod);
