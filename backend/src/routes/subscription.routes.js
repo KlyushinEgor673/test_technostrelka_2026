@@ -15,7 +15,7 @@ const upload = multer()
 // Создание подписки с файлом
 router.post(
   "/", 
-  upload.single('profileImage'), authMiddleware, 
+  upload.single('img'), authMiddleware, 
   /* #swagger.tags = ['Subscription'] */
   /* #swagger.summary = 'Создание подписки' */
   /* #swagger.description = 'Создание новой подписки с возможностью загрузки изображения' */
@@ -65,7 +65,7 @@ router.post(
     required: true,
     description: 'URL оплаты'
   } */
-  /* #swagger.parameters['profileImage'] = {
+  /* #swagger.parameters['img'] = {
     in: 'formData',
     type: 'file',
     required: false,
@@ -150,7 +150,7 @@ router.put("/", upload.single('img'), authMiddleware,
     required: true,
     description: 'URL оплаты'
   } */
-  /* #swagger.parameters['profileImage'] = {
+  /* #swagger.parameters['img'] = {
     in: 'formData',
     type: 'file',
     required: false,
