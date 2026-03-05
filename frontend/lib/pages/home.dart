@@ -28,11 +28,11 @@ class _HomeState extends State<Home> {
   final _storage = FlutterSecureStorage();
 
   Future<void> _enter() async {
-    print('enter');
     if (_controllerPassword.text.isEmpty || _controllerEmail.text.isEmpty) {
       Alerts.showError(context, 'Заполните все поля');
     } else {
       try {
+        print('enter');
         final response = await _dio.post(
           '/api/user/enter',
           data: jsonEncode({
@@ -40,6 +40,7 @@ class _HomeState extends State<Home> {
             'password': _controllerPassword.text,
           }),
         );
+        print(response);
         final data = response.data;
         await _storage.write(key: 'token', value: data['token']);
         Navigator.pushNamed(context, '/profile');
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _register() async {
+    print('register');
     if (_controllerPassword.text.isEmpty ||
         _controllerEmail.text.isEmpty ||
         _controllerName.text.isEmpty ||

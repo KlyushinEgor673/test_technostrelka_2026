@@ -1,3 +1,4 @@
+const { sub } = require("date-fns");
 const prisma = require("../client");
 const { bytesToBase64 } = require('byte-base64')
 
@@ -41,8 +42,8 @@ const createSubscription = async (req, res) => {
 
     console.log("end_date:", end_date);
     console.log("period:", period);
-    
-    
+
+
     console.log("formattedEndDate:", formattedEndDate);
     console.log("formattedPeriod:", formattedPeriod);
     console.log("formattedPrice:", formattedPrice);
@@ -51,7 +52,7 @@ const createSubscription = async (req, res) => {
     debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
 
     console.log("debitDate:", debitDate);
-    
+
     console.log("Дата списания: ", debitDate);
 
     const existingDebit = await prisma.debiting_subscriptions.findFirst({
@@ -92,19 +93,19 @@ const createSubscription = async (req, res) => {
       }
     });
 
-    return res.status(201).json({ 
+    return res.status(201).json({
       status: "success",
-      message: "Подписка успешно создана" 
+      message: "Подписка успешно создана"
     });
 
   } catch (error) {
     console.error("Ошибка:", error);
-    
+
     // Проверяем, не отправлен ли уже ответ
     if (!res.headersSent) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: "Internal server error",
-        details: error.message 
+        details: error.message
       });
     }
   }
@@ -151,7 +152,7 @@ const updateSubscription = async (req, res) => {
       return res.status(404).json({ error: "Подписка не найдена" });
     }
 
-    if(existingSubscription.id_user !== req.user.id){
+    if (existingSubscription.id_user !== req.user.id) {
       return res.status(403).json({ error: "Нет доступа" })
     }
 
@@ -159,104 +160,89 @@ const updateSubscription = async (req, res) => {
     try {
 
       const formattedEndDate = new Date(end_date);
-      formattedEndDate.setDate(formattedEndDate.getDate() + 1);
+      // formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
-      
-      console.log("formattedEndDate:", formattedEndDate);
-      console.log("formattedPeriod:", formattedPeriod);
-      console.log("formattedPrice:", formattedPrice);
-      
-      let date = new Date(formattedEndDate);
-      date.setDate(formattedEndDate.getDate() - formattedPeriod);
 
-      const checkDate = await prisma.debiting_subscriptions.findFirst({
-        where: { date: date }
+
+      const oldSub = await prisma.subscriptions.findUnique({
+        where: { id: parseInt(id) },
       })
 
-      //если измененной даты не существует
-      if(!checkDate){
+      const newPayDate = new Date(formattedEndDate)
+      newPayDate.setDate(newPayDate.getDate() - formattedPeriod)
+      const oldPayDate = new Date(oldSub.end_date)
+      oldPayDate.setDate(oldPayDate.getDate() - oldSub.period)
+      console.log("Даты", newPayDate, oldPayDate)
 
-        //получаем подписку, которую собираемся изменить (ее изначальный вид)
-        const sub = await prisma.subscriptions.findUnique({
-          where: { id: parseInt(id)}
-        })
-
-        //проверяем, есть ли подписки на новую дату
-        const newDate = date
-
-        const checkNewDate = await prisma.debiting_subscriptions.findFirst({
-          where: { date: newDate }
-        })
-
-        //если подписок на новую дату нет:
-        if(!checkNewDate){
-          // создаем подписку (изменяем текущую и добавляем в табличку) на эту дату
-          await prisma.debiting_subscriptions.create({
-            data: {
-              date: newDate,
-              price: formattedPrice,
+      const debitingSubscriptionOld = await prisma.debiting_subscriptions.findUnique({
+        where: {
+          date_user_id: {
+              date: oldPayDate,
               user_id: req.user.id
             }
-          })
+        }
+      })
 
-          //проверяем была ли это единственная подписка на старую дату (для того, чтобы удалять или оставить прошлую дату)
-          const dateSub = new Date(sub.end_date);
-          dateSub.setDate(dateSub.getDate() - sub.period);
-          const checkUniqueSub = await prisma.debiting_subscriptions.findFirst({
-            where: { date: dateSub }
-          })
-
-          //если вся сумма за тот день равна сумма нашей подписки (еще не измененной), то удаляем эту дату
-          if(checkUniqueSub.price == sub.price){
-            await prisma.debiting_subscriptions.delete({
-              where: { date: sub.date }
-            })
-          } else {
-            //если неравна
-
-            //получаем новую сумму без той подписки
-            const newPrice = checkUniqueSub.price - sub.price
-            
-            //обновляем цену
-            await prisma.debiting_subscriptions.update({
-              where: { date: date },
-              data: {
-                price: newPrice
-              }
-            })
-          }
-        }  
-      } else {
-        //если пользователь не менял дату
-
-        //ищем текущую подписку для изменения цены в таблице debiting_subscriptions
-        const sub = await prisma.subscriptions.findUnique({
-          where: { id: parseInt(id) }
-        })
-
-        //получаем изменение цены подписки
-        const oldPrice = sub.price
-        const newPrice = formattedPrice
-        const difference = newPrice - oldPrice
-
-        //обновлем траты за этот день
+      if (newPayDate.getDate() == oldPayDate.getDate()) {
+        console.log('ravno')
         await prisma.debiting_subscriptions.update({
           where: {
-            date: date
+            date_user_id: {
+              date: oldPayDate,
+              user_id: req.user.id
+            }
           },
           data: {
-            date: date,
-            price: {
-              increment: parseFloat(difference)
-            },
-            user_id: req.user.id
+            price: debitingSubscriptionOld.price - oldSub.price + formattedPrice
           }
         })
+      } else {
+        console.log('OLDATE', oldPayDate)
+        await prisma.debiting_subscriptions.update({
+          where: {
+            date_user_id: {
+              date: oldPayDate,
+              user_id: req.user.id
+            }
+          },
+          data: {
+            price: debitingSubscriptionOld.price - oldSub.price
+          }
+        })
+        console.log(debitingSubscriptionOld.price - oldSub.price)
+        const debitingSubscriptionNew = await prisma.debiting_subscriptions.findUnique({
+          where: {
+            date_user_id: {
+              date: newPayDate,
+              user_id: req.user.id
+            }
+          }
+        })
+        if (!debitingSubscriptionNew) {
+          await prisma.debiting_subscriptions.create({
+            data: {
+              price: formattedPrice,
+              user_id: req.user.id,
+              date: newPayDate
+            }
+          })
+        } else {
+          await prisma.debiting_subscriptions.update({
+            where: {
+              date_user_id: {
+                date: oldPayDate,
+                user_id: req.user.id
+              }
+            },
+            data: {
+              price: debitingSubscriptionNew.price + formattedPrice
+            }
+          })
+        }
       }
 
-      //обновляем саму подписку
       await prisma.subscriptions.update({
         where: { id: parseInt(id) },
         data: {
@@ -266,10 +252,117 @@ const updateSubscription = async (req, res) => {
           end_date: formattedEndDate,
           price: formattedPrice,
           flag_auto: flagAutoBool,
-          img: img, 
+          img: img,
           url: url
         }
       })
+
+      // console.log("formattedEndDate:", formattedEndDate);
+      // console.log("formattedPeriod:", formattedPeriod);
+      // console.log("formattedPrice:", formattedPrice);
+
+      // let date = new Date(formattedEndDate);
+      // date.setDate(formattedEndDate.getDate() - formattedPeriod);
+
+      // const checkDate = await prisma.debiting_subscriptions.findFirst({
+      //   where: { date: date }
+      // })
+
+      // //если измененной даты не существует
+      // if(!checkDate){
+
+      //   //получаем подписку, которую собираемся изменить (ее изначальный вид)
+      //   const sub = await prisma.subscriptions.findUnique({
+      //     where: { id: parseInt(id)}
+      //   })
+
+      //   //проверяем, есть ли подписки на новую дату
+      //   const newDate = date
+
+      //   const checkNewDate = await prisma.debiting_subscriptions.findFirst({
+      //     where: { date: newDate }
+      //   })
+
+      //   //если подписок на новую дату нет:
+      //   if(!checkNewDate){
+      //     // создаем подписку (изменяем текущую и добавляем в табличку) на эту дату
+      //     await prisma.debiting_subscriptions.create({
+      //       data: {
+      //         date: newDate,
+      //         price: formattedPrice,
+      //         user_id: req.user.id
+      //       }
+      //     })
+
+      //     //проверяем была ли это единственная подписка на старую дату (для того, чтобы удалять или оставить прошлую дату)
+      //     const dateSub = new Date(sub.end_date);
+      //     dateSub.setDate(dateSub.getDate() - sub.period);
+      //     const checkUniqueSub = await prisma.debiting_subscriptions.findFirst({
+      //       where: { date: dateSub }
+      //     })
+
+      //     //если вся сумма за тот день равна сумма нашей подписки (еще не измененной), то удаляем эту дату
+      //     if(checkUniqueSub.price == sub.price){
+      //       await prisma.debiting_subscriptions.delete({
+      //         where: { date: sub.date }
+      //       })
+      //     } else {
+      //       //если неравна
+
+      //       //получаем новую сумму без той подписки
+      //       const newPrice = checkUniqueSub.price - sub.price
+
+      //       //обновляем цену
+      //       await prisma.debiting_subscriptions.update({
+      //         where: { date: date },
+      //         data: {
+      //           price: newPrice
+      //         }
+      //       })
+      //     }
+      //   }  
+      // } else {
+      //   //если пользователь не менял дату
+
+      //   //ищем текущую подписку для изменения цены в таблице debiting_subscriptions
+      //   const sub = await prisma.subscriptions.findUnique({
+      //     where: { id: parseInt(id) }
+      //   })
+
+      //   //получаем изменение цены подписки
+      //   const oldPrice = sub.price
+      //   const newPrice = formattedPrice
+      //   const difference = newPrice - oldPrice
+
+      //   //обновлем траты за этот день
+      //   await prisma.debiting_subscriptions.update({
+      //     where: {
+      //       date: date
+      //     },
+      //     data: {
+      //       date: date,
+      //       price: {
+      //         increment: parseFloat(difference)
+      //       },
+      //       user_id: req.user.id
+      //     }
+      //   })
+      // }
+
+      // //обновляем саму подписку
+      // await prisma.subscriptions.update({
+      //   where: { id: parseInt(id) },
+      //   data: {
+      // name: name,
+      // category: category,
+      // period: formattedPeriod,
+      // end_date: formattedEndDate,
+      // price: formattedPrice,
+      // flag_auto: flagAutoBool,
+      // img: img, 
+      // url: url
+      //   }
+      // })
     } catch (error) {
       console.error("Ошибка: ", error);
       return res.status(500).json({ error: "Произошла ошибка при изменении подписки" });
@@ -279,9 +372,9 @@ const updateSubscription = async (req, res) => {
   } catch (error) {
     // Проверяем, не отправлен ли уже ответ
     if (!res.headersSent) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: "Internal server error",
-        details: error.message 
+        details: error.message
       });
     }
   }
@@ -325,15 +418,15 @@ const deleteSubscription = async (req, res) => {
     }
 
     const sub = await prisma.subscriptions.findUnique({
-      where: {id: parseInt(id)}
+      where: { id: parseInt(id) }
     })
 
-    if(!sub){
+    if (!sub) {
       return res.status(404).json({ error: "Подписка не найдена" });
     }
 
-    if(sub.id_user !== req.user.id){
-       return res.status(403).json({ error: "Нет доступа" })
+    if (sub.id_user !== req.user.id) {
+      return res.status(403).json({ error: "Нет доступа" })
     }
 
 
@@ -346,10 +439,10 @@ const deleteSubscription = async (req, res) => {
       const formattedEndDate = sub.end_date;
       // formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(sub.period);
-      
+
       console.log("DELETE formattedEndDate:", formattedEndDate);
       console.log("DELETE formattedPeriod:", formattedPeriod);
-      
+
       let date = new Date(formattedEndDate);
       date.setDate(formattedEndDate.getDate() - formattedPeriod);
       console.log("DELETE date:", date);
@@ -359,7 +452,7 @@ const deleteSubscription = async (req, res) => {
       })
 
       //проверка является ли подписка единственной в этот день
-      if(dateDebit.price == sub.price){
+      if (dateDebit.price == sub.price) {
         await prisma.debiting_subscriptions.delete({
           where: { date: date }
         })
@@ -391,9 +484,9 @@ const deleteSubscription = async (req, res) => {
   }
 };
 
-module.exports = { 
-  createSubscription, 
-  updateSubscription, 
-  getSubscriptions, 
-  deleteSubscription 
+module.exports = {
+  createSubscription,
+  updateSubscription,
+  getSubscriptions,
+  deleteSubscription
 };

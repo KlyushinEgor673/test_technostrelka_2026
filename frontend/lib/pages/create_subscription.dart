@@ -259,6 +259,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                     key: 'token',
                                   );
                                   final base64String = base64Encode(bytes);
+                                  print('Отправляю ${_dateEnd.toString().substring(0, 10)}');
                                   await _dio.put(
                                     '/api/subscription',
                                     data: FormData.fromMap({
@@ -268,7 +269,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       'period': int.parse(
                                         _controllerPeriod.text,
                                       ),
-                                      'end_date': _dateEnd.toString(),
+                                      'end_date': _dateEnd.toString().substring(0, 10),
                                       'price': double.parse(
                                         _controllerPrice.text,
                                       ),
