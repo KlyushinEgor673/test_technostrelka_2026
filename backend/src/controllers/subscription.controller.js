@@ -218,7 +218,7 @@ const updateSubscription = async (req, res) => {
             
             //обновляем цену
             await prisma.debiting_subscriptions.update({
-              where: { date: sub.end_date },
+              where: { date: date },
               data: {
                 price: newPrice
               }
