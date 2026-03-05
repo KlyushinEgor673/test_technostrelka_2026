@@ -4947,14 +4947,15 @@ export namespace Prisma {
   }
 
   export type debiting_subscriptionsWhereUniqueInput = Prisma.AtLeast<{
-    date?: Date | string
+    date_user_id?: debiting_subscriptionsDateUser_idCompoundUniqueInput
     AND?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
     OR?: debiting_subscriptionsWhereInput[]
     NOT?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
+    date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
     price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
     user_id?: IntFilter<"debiting_subscriptions"> | number
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-  }, "date">
+  }, "date_user_id">
 
   export type debiting_subscriptionsOrderByWithAggregationInput = {
     date?: SortOrder
@@ -5628,6 +5629,11 @@ export namespace Prisma {
   export type UsersScalarRelationFilter = {
     is?: usersWhereInput
     isNot?: usersWhereInput
+  }
+
+  export type debiting_subscriptionsDateUser_idCompoundUniqueInput = {
+    date: Date | string
+    user_id: number
   }
 
   export type debiting_subscriptionsCountOrderByAggregateInput = {

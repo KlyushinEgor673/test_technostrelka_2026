@@ -38,8 +38,10 @@ model subscriptions {
 }
 
 model debiting_subscriptions {
-  date    DateTime @id @db.Date
+  date    DateTime @db.Date
   price   Decimal  @db.Decimal(10, 2)
   user_id Int
   users   users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([date, user_id])
 }
