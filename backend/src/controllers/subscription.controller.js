@@ -163,7 +163,7 @@ const updateSubscription = async (req, res) => {
       let date = new Date(formattedEndDate);
       date.setDate(formattedEndDate.getDate() - formattedPeriod);
 
-      const checkDate = prisma.debiting_subscriptions.findFirst({
+      const checkDate = await prisma.debiting_subscriptions.findFirst({
         where: { date: date }
       })
 
@@ -171,7 +171,7 @@ const updateSubscription = async (req, res) => {
       if(!checkDate){
 
         //получаем подписку, которую собираемся изменить (ее изначальный вид)
-        const sub = await prisma.debiting_subscriptions.findUnique({
+        const sub = await prisma.subscriptions.findUnique({
           where: { id: id}
         })
 
@@ -208,8 +208,14 @@ const updateSubscription = async (req, res) => {
 
             //получаем новую сумму без той подписки
             const newPrice = checkUniqueSub.price - sub.price
+            
             //обновляем цену
-            checkUniqueSub.price = newPrice
+            await prisma.debiting_subscriptions.update({
+              where: { date: sub.date },
+              data: {
+                price: newPrice
+              }
+            })
           }
         }  
       } else {
@@ -221,9 +227,9 @@ const updateSubscription = async (req, res) => {
         })
 
         //получаем изменение цены подписки
-        const changePrice = sub.price - price
-        const newPrice = checkDate.price + changePrice
-    
+        const priceDifference = formattedPrice - price
+        const newPrice = checkDate.price + priceDifference
+
         //обновлем траты за этот день
         await prisma.debiting_subscriptions.update({
           where: {
@@ -231,7 +237,9 @@ const updateSubscription = async (req, res) => {
           },
           data: {
             date: date,
-            price: newPrice,
+            price: {
+              increment: newPrice
+            },
             user_id: req.user.id
           }
         })
