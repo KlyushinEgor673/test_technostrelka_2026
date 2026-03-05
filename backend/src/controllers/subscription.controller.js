@@ -1,5 +1,4 @@
 const prisma = require("../client");
-const { parseISO } = require('date-fns')
 const { bytesToBase64 } = require('byte-base64')
 
 // Создание подписки
@@ -34,7 +33,7 @@ const createSubscription = async (req, res) => {
       return res.status(400).json({ error: "URL оплаты обязателен" })
     }
 
-    const formattedEndDate = parseISO(end_date) + 1;
+    const formattedEndDate = new Date(end_date);
     formattedEndDate.setDate(formattedEndDate.getDate() + 1);
     const formattedPeriod = parseInt(period);
     const formattedPrice = parseFloat(price);
@@ -159,7 +158,7 @@ const updateSubscription = async (req, res) => {
 
     try {
 
-      const formattedEndDate = parseISO(end_date);
+      const formattedEndDate = new Date(end_date);
       formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
