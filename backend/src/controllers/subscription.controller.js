@@ -217,7 +217,7 @@ const updateSubscription = async (req, res) => {
 
         //ищем текущую подписку для изменения цены в таблице debiting_subscriptions
         const sub = await prisma.subscriptions.findUnique({
-          where: { id: id }
+          where: { id: parseInt(id) }
         })
 
         //получаем изменение цены подписки
@@ -253,15 +253,22 @@ const updateSubscription = async (req, res) => {
       })
     } catch (error) {
       console.error("Ошибка: ", error);
-      res.status(500).json({ error: "Произошла ошибка при изменении подписки" });
+      return res.status(500).json({ error: "Произошла ошибка при изменении подписки" });
     }
 
     res.status(200).json({ status: "success" })
   } catch (error) {
-    console.error("Ошибка:", error);
-    res.status(500).json({ error: "Internal server error" });
+    // Проверяем, не отправлен ли уже ответ
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: "Internal server error",
+        details: error.message 
+      });
+    }
   }
 };
+
+
 
 // Получение всех подписок пользователя
 const getSubscriptions = async (req, res) => {
