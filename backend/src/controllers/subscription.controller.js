@@ -227,8 +227,9 @@ const updateSubscription = async (req, res) => {
         })
 
         //получаем изменение цены подписки
-        const priceDifference = parseFloat(formattedPrice) - parseFloat(price)
-        const newPrice = parseFloat(checkDate.price) + parseFloat(priceDifference)
+        const oldPrice = sub.price
+        const newPrice = formattedPrice
+        const difference = newPrice - oldPrice
 
         //обновлем траты за этот день
         await prisma.debiting_subscriptions.update({
@@ -238,7 +239,7 @@ const updateSubscription = async (req, res) => {
           data: {
             date: date,
             price: {
-              increment: parseFloat(newPrice)
+              increment: parseFloat(difference)
             },
             user_id: req.user.id
           }
