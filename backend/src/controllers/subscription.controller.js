@@ -343,11 +343,12 @@ const deleteSubscription = async (req, res) => {
       const formattedEndDate = sub.end_date;
       const formattedPeriod = parseInt(sub.period);
       
-      console.log("formattedEndDate:", formattedEndDate);
-      console.log("formattedPeriod:", formattedPeriod);
+      console.log("DELETE formattedEndDate:", formattedEndDate);
+      console.log("DELETE formattedPeriod:", formattedPeriod);
       
       let date = formattedEndDate;
       date.setDate(formattedEndDate.getDate() - formattedPeriod);
+      console.log("DELETE date:", date);
 
       const dateDebit = await prisma.debiting_subscriptions.findFirst({
         where: { date: date }
