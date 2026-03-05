@@ -394,7 +394,7 @@ const getSubscriptions = async (req, res) => {
         id_user: req.user.id
       },
       orderBy: {
-        id: "asc"
+        id: 'asc'
       }
     })
 
@@ -422,7 +422,7 @@ const getHistorySubscriptions = async (req, res) => {
         user_id: req.user.id
       },
       orderBy: {
-        id: "asc"
+        date: "asc"
       }
     })
 

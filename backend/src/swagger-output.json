@@ -425,7 +425,7 @@
             "description": "URL оплаты"
           },
           {
-            "name": "profileImage",
+            "name": "img",
             "in": "formData",
             "type": "file",
             "required": false,
@@ -595,7 +595,7 @@
             "description": "URL оплаты"
           },
           {
-            "name": "profileImage",
+            "name": "img",
             "in": "formData",
             "type": "file",
             "required": false,
