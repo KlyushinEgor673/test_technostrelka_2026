@@ -171,27 +171,29 @@ const yoomoneyLogin = async (req, res) => {
       return res.status(400).json({ error: "Почта и пароль обязательны" });
     }
 
-    let driver = driverStorage.get(email)
+    // let driver = driverStorage.get(email)
 
-    if (driver) {
-      try {
-        await driver.getCurrentUrl();
-        const currentUrl = await driver.getCurrentUrl();
-        if (!currentUrl.includes('signin') && !currentUrl.includes('confirmation')) {
-          return res.status(200).json({ message: "Пользователь уже в аккаунте", is_enter: true });
-        }
-      } catch (error) {
-        driverStorage.delete(email);
-        driver = null;
-      }
-    }
+    // if (driver) {
+    //   try {
+    //     await driver.getCurrentUrl();
+    //     const currentUrl = await driver.getCurrentUrl();
+    //     if (!currentUrl.includes('signin') && !currentUrl.includes('confirmation')) {
+    //       return res.status(200).json({ message: "Пользователь уже в аккаунте", is_enter: true });
+    //     }
+    //   } catch (error) {
+    //     driverStorage.delete(email);
+    //     driver = null;
+    //   }
+    // }
 
-    if(!driver){
-      driver = await new Builder().forBrowser('chrome').build();
+    // if(!driver){
+      
+    // }
+
+    let driver = await new Builder().forBrowser('chrome').build();
       await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
       await driver.manage().deleteAllCookies();
       driverStorage.set(email, driver);
-    }
 
     await driver.sleep(2000);
 
