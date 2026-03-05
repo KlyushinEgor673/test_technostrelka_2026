@@ -340,7 +340,7 @@ const deleteSubscription = async (req, res) => {
         where: { id: parseInt(id) }
       })
 
-      const formattedEndDate = parseISO(sub.end_date);
+      const formattedEndDate = sub.end_date;
       const formattedPeriod = parseInt(sub.period);
       
       console.log("formattedEndDate:", formattedEndDate);
