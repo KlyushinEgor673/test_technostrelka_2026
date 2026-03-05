@@ -46,8 +46,8 @@ const createSubscription = async (req, res) => {
     console.log("formattedEndDate:", formattedEndDate);
     console.log("formattedPeriod:", formattedPeriod);
     console.log("formattedPrice:", formattedPrice);
-    
-    let debitDate = formattedEndDate;
+
+    let debitDate = new Date(formattedEndDate);
     debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
 
     console.log("debitDate:", debitDate);
@@ -167,7 +167,7 @@ const updateSubscription = async (req, res) => {
       console.log("formattedPeriod:", formattedPeriod);
       console.log("formattedPrice:", formattedPrice);
       
-      let date = formattedEndDate;
+      let date = new Date(formattedEndDate);
       date.setDate(formattedEndDate.getDate() - formattedPeriod);
 
       const checkDate = await prisma.debiting_subscriptions.findFirst({
@@ -346,7 +346,7 @@ const deleteSubscription = async (req, res) => {
       console.log("DELETE formattedEndDate:", formattedEndDate);
       console.log("DELETE formattedPeriod:", formattedPeriod);
       
-      let date = formattedEndDate;
+      let date = new Date(formattedEndDate);
       date.setDate(formattedEndDate.getDate() - formattedPeriod);
       console.log("DELETE date:", date);
 
