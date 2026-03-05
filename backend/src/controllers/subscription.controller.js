@@ -150,14 +150,18 @@ const updateSubscription = async (req, res) => {
 
 
     try {
-      const formattedEndDate = end_date.slice(10)
-      console.log("formattedEndDate: ", formattedEndDate)
 
-      const formattedPeriod = parseInt(period)
-      console.log("formattedPeriod: ", formattedPeriod)
-
+      const formattedEndDate = new Date(end_date);
+      const formattedPeriod = parseInt(period);
+      const formattedPrice = parseFloat(price);
+      const flagAutoBool = flag_auto === 'true' || flag_auto === true;
+      
+      console.log("formattedEndDate:", formattedEndDate);
+      console.log("formattedPeriod:", formattedPeriod);
+      console.log("formattedPrice:", formattedPrice);
+      
       let date = new Date(formattedEndDate);
-      date.setDate(end_date.getDate() - period);
+      date.setDate(formattedEndDate.getDate() - formattedPeriod);
 
       const checkDate = prisma.debiting_subscriptions.findFirst({
         where: { date: date }
@@ -239,10 +243,10 @@ const updateSubscription = async (req, res) => {
         data: {
           name: name,
           category: category,
-          period: period,
-          end_date: new Date(end_date),
-          price: price,
-          flag_auto: !!flag_auto,
+          period: formattedPeriod,
+          end_date: formattedEndDate,
+          price: formattedPrice,
+          flag_auto: flagAutoBool,
           img: img, 
           url: url
         }
@@ -308,15 +312,16 @@ const deleteSubscription = async (req, res) => {
 
 
     try {
-      const formattedEndDate = end_date.slice(10)
-      console.log("formattedEndDate: ", formattedEndDate)
 
-      const formattedPeriod = parseInt(period)
-      console.log("formattedPeriod: ", formattedPeriod)
 
-      //дата когда эта подписка была создана (на какую дату добавили в табличку debiting_subscriptions)
+      const formattedEndDate = new Date(end_date);
+      const formattedPeriod = parseInt(period);
+      
+      console.log("formattedEndDate:", formattedEndDate);
+      console.log("formattedPeriod:", formattedPeriod);
+      
       let date = new Date(formattedEndDate);
-      date.setDate(end_date.getDate() - period);
+      date.setDate(formattedEndDate.getDate() - formattedPeriod);
 
       const dateDebit = await prisma.debiting_subscriptions.findFirst({
         where: { date: date }
