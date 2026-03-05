@@ -34,7 +34,8 @@ const createSubscription = async (req, res) => {
       return res.status(400).json({ error: "URL оплаты обязателен" })
     }
 
-    const formattedEndDate = parseISO(end_date);
+    const formattedEndDate = parseISO(end_date) + 1;
+    formattedEndDate.setDate(formattedEndDate.getDate() + 1);
     const formattedPeriod = parseInt(period);
     const formattedPrice = parseFloat(price);
     const flagAutoBool = flag_auto === 'true' || flag_auto === true;
@@ -159,6 +160,7 @@ const updateSubscription = async (req, res) => {
     try {
 
       const formattedEndDate = parseISO(end_date);
+      formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
@@ -341,6 +343,7 @@ const deleteSubscription = async (req, res) => {
       })
 
       const formattedEndDate = sub.end_date;
+      // formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(sub.period);
       
       console.log("DELETE formattedEndDate:", formattedEndDate);
