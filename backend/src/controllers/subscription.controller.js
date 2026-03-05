@@ -181,7 +181,7 @@ const updateSubscription = async (req, res) => {
 
         //получаем подписку, которую собираемся изменить (ее изначальный вид)
         const sub = await prisma.subscriptions.findUnique({
-          where: { id: id}
+          where: { id: parseInt(id)}
         })
 
         //проверяем, есть ли подписки на новую дату
