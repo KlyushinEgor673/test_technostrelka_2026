@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
@@ -7,7 +8,6 @@ import 'package:frontend/widgets/input.dart';
 import 'package:frontend/widgets/select_date.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:s_webview/s_webview.dart';
 
 class CreateSubscription extends StatefulWidget {
   const CreateSubscription({super.key, this.id});

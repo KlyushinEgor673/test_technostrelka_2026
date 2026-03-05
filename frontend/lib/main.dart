@@ -40,14 +40,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = FlutterSecureStorage();
   String? token = await storage.read(key: 'token');
-  print(token);
   final dio = Dio(BaseOptions(baseUrl: 'http://localhost:3000'));
   init(dio);
   runApp(
     Provider(
       create: (_) => dio,
       child: ScreenUtilInit(
-        designSize: const Size(428, 926),
+        designSize: const Size(390, 844),
         builder: (_, _) => MaterialApp(
           // locale: Locale('ru'),
           theme: ThemeData(

@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
 import 'package:provider/provider.dart';
-import 'package:s_webview/s_webview.dart';
 // import 'dart:html' as html;
 
 class Profile extends StatefulWidget {

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
 import 'package:frontend/widgets/yoomoney_button.dart';
 import 'package:provider/provider.dart';
-import 'package:s_webview/s_webview.dart';
 
 class Yoomoney extends StatefulWidget {
   const Yoomoney({super.key});

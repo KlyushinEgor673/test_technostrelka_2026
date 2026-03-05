@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:s_webview/s_webview.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,6 +28,7 @@ class _HomeState extends State<Home> {
   final _storage = FlutterSecureStorage();
 
   Future<void> _enter() async {
+    print('enter');
     if (_controllerPassword.text.isEmpty || _controllerEmail.text.isEmpty) {
       Alerts.showError(context, 'Заполните все поля');
     } else {
@@ -63,14 +65,16 @@ class _HomeState extends State<Home> {
             'email': _controllerEmail.text,
             'password': _controllerPassword.text,
             'name': _controllerName.text,
-            'surname': _controllerSurname.text
+            'surname': _controllerSurname.text,
           }),
         );
-        Navigator.pushNamed(context, '/otp', arguments: {
-          'email': _controllerEmail.text
-        });
-      } on DioException catch (e){
-        if (e.response?.statusCode == 409){
+        Navigator.pushNamed(
+          context,
+          '/otp',
+          arguments: {'email': _controllerEmail.text},
+        );
+      } on DioException catch (e) {
+        if (e.response?.statusCode == 409) {
           Alerts.showError(context, 'Такой email уже занят');
         }
       }
@@ -86,8 +90,154 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    if (Platform.isAndroid || Platform.isIOS) {
+      print(
+        'width: ${MediaQuery.of(context).size.width}, height: ${MediaQuery.of(context).size.height}',
+      );
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: ListView(
+            children: [
+              SizedBox(
+                height: orientation == Orientation.portrait ? 200.h : 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
+                child: Text(
+                  _isEnter ? 'Вход' : 'Регистрация',
+                  style: TextStyle(
+                    fontSize: orientation == Orientation.portrait ? 24.sp : 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
+                height: orientation == Orientation.portrait ? 50.h : 50,
+                child: Input(
+                  isPassword: false,
+                  hintText: 'Email',
+                  controller: _controllerEmail,
+                  type: InputTypeCustom.inputText,
+                ),
+              ),
+              SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
+                height: orientation == Orientation.portrait ? 50.h : 50,
+                child: Input(
+                  isPassword: true,
+                  hintText: 'Пароль',
+                  controller: _controllerPassword,
+                  type: InputTypeCustom.inputText,
+                ),
+              ),
+              if (!_isEnter) SizedBox(height: 15.h),
+              if (!_isEnter)
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  ),
+                  height: orientation == Orientation.portrait ? 50.h : 50,
+                  child: Input(
+                    isPassword: false,
+                    hintText: 'Имя',
+                    controller: _controllerName,
+                    type: InputTypeCustom.inputText,
+                  ),
+                ),
+              if (!_isEnter)
+                SizedBox(
+                  height: orientation == Orientation.portrait ? 15.h : 15,
+                ),
+              if (!_isEnter)
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  ),
+                  height: orientation == Orientation.portrait ? 50.h : 50,
+                  child: Input(
+                    isPassword: false,
+                    hintText: 'Фамилия',
+                    controller: _controllerSurname,
+                    type: InputTypeCustom.inputText,
+                  ),
+                ),
+              SizedBox(
+                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+              ),
+              if (_isEnter)
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        child: Text(
+                          'Восстановить',
+                          style: TextStyle(
+                            color: Color.fromRGBO(89, 65, 174, 1),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(
+                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
+                height: orientation == Orientation.portrait ? 50.h : 50,
+                child: FilledButton(
+                  onPressed: _isEnter ? _enter : _register,
+                  child: Text('Далее'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(89, 65, 174, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: orientation == Orientation.portrait ? 7.5.h : 7.5),
+              Center(
+                child: GestureDetector(
+                  child: Text(
+                    _isEnter ? 'Зарегистрироваться' : 'Войти',
+                    style: TextStyle(
+                      color: Color.fromRGBO(89, 65, 174, 1),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _isEnter = !_isEnter;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -194,9 +344,7 @@ class _HomeState extends State<Home> {
                                 ),
                               SizedBox(height: _isEnter ? 15 : 30),
                               GestureDetector(
-                                onTap: _isEnter
-                                    ? _enter
-                                    : _register,
+                                onTap: _isEnter ? _enter : _register,
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,
@@ -410,9 +558,7 @@ class _HomeState extends State<Home> {
                             SizedBox(height: _isEnter ? 7.5 : 22.5),
                             Center(
                               child: GestureDetector(
-                                onTap: _isEnter
-                                    ? _enter
-                                    : _register,
+                                onTap: _isEnter ? _enter : _register,
                                 child: IntrinsicWidth(
                                   child: Container(
                                     height: 50,

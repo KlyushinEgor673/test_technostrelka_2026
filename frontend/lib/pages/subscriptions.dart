@@ -7,7 +7,6 @@ import 'package:frontend/widgets/chip_button.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:provider/provider.dart';
-import 'package:s_webview/s_webview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/header.dart';
@@ -353,7 +352,6 @@ class _SubscriptionsState extends State<Subscriptions> {
                           ),
                         );
                       }
-                      print(_subscriptions[i]['end_date']);
                       return GestureDetector(
                         child: Container(
                           decoration: BoxDecoration(
@@ -369,13 +367,6 @@ class _SubscriptionsState extends State<Subscriptions> {
                                 blurRadius: 20,
                               ),
                             ],
-                            // boxShadow: [
-                            //   BoxShadow(
-                            //     color: Colors.grey.withAlpha(100),
-                            //     spreadRadius: 4,
-                            //     blurRadius: 4,
-                            //   ),
-                            // ],
                           ),
                           child: Stack(
                             children: [
