@@ -1162,6 +1162,39 @@
           }
         }
       }
+    },
+    "/api/graphs/graphsYoomoneySubs": {
+      "get": {
+        "tags": [
+          "Graphs"
+        ],
+        "summary": "Получение данных для графика из Yoomoney",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "security": [
