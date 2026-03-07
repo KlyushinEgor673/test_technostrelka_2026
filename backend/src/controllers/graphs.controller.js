@@ -81,8 +81,8 @@ const graphsYoomoneySubs = async (req, res) => {
     // );
     const divOperations = await driver.findElements(
       By.xpath(
-        "//div[@data-qa='history']",
-      ),
+        "//div[@data-qa='operation']"
+      )
     );
     const subs = [];
     
@@ -90,50 +90,80 @@ const graphsYoomoneySubs = async (req, res) => {
 
     for (let div of divOperations) {
       try {
-        console.log(4)
+        console.log(4);
 
-        const checkIsSub = await div.findElement(By.xpath('.//div/div[1]/div[2]/span[1]')).getText();
-        
-        console.log(checkIsSub)
-        
-        if(checkIsSub === "Оплата подписки"){  
-          console.log(5)
-          
+        const checkIsSub = await div.findElement(By.xpath(
+          ".//div[@class='MuiBox-root css-14223cq']" +
+          "//div[@class='MuiBox-root css-dggkwl']" +
+          "/div[not(@class)]" +
+          "//span[@data-qa='operation-title']"
+        )).getText();
 
-          //разобраться правильно ли нажимает
+        console.log(checkIsSub);
+        
+        if (checkIsSub === "Оплата подписки") {
+          console.log(5);
+
+          // Кликаем
           await driver.executeScript("arguments[0].click();", div);
           
-          console.log(6)
-          const detail = await driver.findElements(
-            By.xpath(
-              "//div[@data-qa='detail']",
-            ),
-          );
+          // const pageSource = await driver.getPageSource();
+          // if (pageSource.includes('operation-details') || pageSource.includes('datetime')) {
+          //   console.log("Модальное окно обнаружено в HTML");
+          // } else {
+          //   console.log("Модальное окно НЕ обнаружено в HTML");
+            
+          //   // Возможно нужно прокрутить к элементу перед кликом
+          //   await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", div);
+          //   await driver.sleep(1000);
+          //   await driver.executeScript("arguments[0].click();", div);
+          // }
 
-
-          console.log(7)
+          // Ждем появления модального окна
+          await driver.sleep(3000);
           
-          const notFormattedDateEl = await detail.findElement(By.xpath(".//span[@data-qa='datetime']"));
-          const NotFormattedPriceEl = await detail.findElement(By.xpath(".//span[@data-qa='amount-rub']//span[1]"));
+          console.log(6);
+          
+          // Ищем дату и цену (В ОСНОВНОМ DOM, НЕ В IFRAME)
+          try {
 
-          const notFormattedDate = await notFormattedDateEl.getText()
-          const notFormattedPrice = await NotFormattedPriceEl.getText()
+            //        !!!!! ОН НЕ МОЖЕТ НАЙТИ detail после клика (словно клик и не срабатывает) !!!!!!
+            const details = await driver.findElement(By.xpath(
+              "//*[@id='root']/div/div[1]/div/div[3]/div/div[4]/div/div[5]"
+            ));
+            
+            const notFormattedDateEl = await details.findElement(By.xpath(
+              "//span[@data-qa='datetime']"
+            ));
+            
+            const notFormattedPriceEl = await driver.findElement(By.xpath(
+              "//span[@data-qa='amount-rub']//span[1]"
+            ));
 
-          const date = notFormattedDate
-          const price = parseFloat(notFormattedPrice.slice(0, -1))
+            const notFormattedDate = await notFormattedDateEl.getText();
+            const notFormattedPrice = await notFormattedPriceEl.getText();
 
-          console.log(date, price)
+            const date = notFormattedDate.split(' ')[0];
+            const price = parseFloat(notFormattedPrice.replace(/\s/g, '').replace(',', '.'));
 
-          subs.push({ date: date, price: price })
+            console.log("Найдена подписка:", date, price);
+
+            subs.push({ date, price });
+            
+            // Закрываем модальное окно (нажимаем Escape)
+            await driver.actions().sendKeys('\uE00C').perform(); // Escape key
+            await driver.sleep(1000);
+            
+          } catch (innerError) {
+            console.log("Ошибка при получении данных:", innerError.message);
+          }
         }
       } catch (error) {
-        console.log(error)
-        return res.status(400).json({ error: "Произошла ошибка при получении подписок из Yoomoney" })
+        console.log("Ошибка при обработке элемента:", error.message);
       }
-      
     }
 
-    // await driver.quit();
+    await driver.quit();
 
     res.status(200).json({ subs });
   } catch (error) {
