@@ -104,59 +104,85 @@ const graphsYoomoneySubs = async (req, res) => {
         if (checkIsSub === "Оплата подписки") {
           console.log(5);
 
+          await driver.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", div);
+          
           // Кликаем
           await driver.executeScript("arguments[0].click();", div);
           
           // const pageSource = await driver.getPageSource();
-          // if (pageSource.includes('operation-details') || pageSource.includes('datetime')) {
-          //   console.log("Модальное окно обнаружено в HTML");
-          // } else {
-          //   console.log("Модальное окно НЕ обнаружено в HTML");
-            
-          //   // Возможно нужно прокрутить к элементу перед кликом
-          //   await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", div);
-          //   await driver.sleep(1000);
-          //   await driver.executeScript("arguments[0].click();", div);
-          // }
 
-          // Ждем появления модального окна
-          await driver.sleep(3000);
+          // console.log(pageSource)
+
+          const subsData = await driver.executeScript(`
+            return window.__data__.state.timeline.history.entity
+              .filter(op => op.title === "Оплата подписки")
+              .map(op => ({
+                date: op.timestamp.split('T')[0],
+                price: op.amount.value
+              }));
+          `);
+
+          console.log("Найденные подписки:", subsData);
+
+          // Преобразуем в нужный формат (если нужно)
+          subs = subsData.map(item => ({
+            date: item.date,
+            price: parseFloat(item.price)
+          }));
+
+
+      //     if (pageSource.includes('detail')) {
+      //       console.log("Модальное окно обнаружено в HTML");
+      //     } else {
+      //       console.log("Модальное окно НЕ обнаружено в HTML");
+            
+      //       // Возможно нужно прокрутить к элементу перед кликом
+      //       await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", div);
+      //       await driver.sleep(1000);
+      //       await driver.executeScript("arguments[0].click();", div);
+      //     }
+
+      //     // Ждем появления модального окна
+      //     await driver.sleep(3000);
           
-          console.log(6);
+      //     console.log(6);
           
-          // Ищем дату и цену (В ОСНОВНОМ DOM, НЕ В IFRAME)
-          try {
-
-            //        !!!!! ОН НЕ МОЖЕТ НАЙТИ detail после клика (словно клик и не срабатывает) !!!!!!
-            const details = await driver.findElement(By.xpath(
-              "//*[@id='root']/div/div[1]/div/div[3]/div/div[4]/div/div[5]"
-            ));
+      //     try {
+      //       //        !!!!! ОН НЕ МОЖЕТ НАЙТИ detail после клика (словно клик и не срабатывает) !!!!!!
+      //       const detailDiv = await driver.wait(
+      //         until.elementLocated(By.xpath("//div[@class='k9KGTzPt']")),
+      //         10000,
+      //         "Модальное окно с деталями не появилось"
+      //       );
             
-            const notFormattedDateEl = await details.findElement(By.xpath(
-              "//span[@data-qa='datetime']"
-            ));
+      //       const notFormattedDateEl = await details.findElement(By.xpath(
+      //         "//span[@data-qa='datetime']"
+      //       ));
             
-            const notFormattedPriceEl = await driver.findElement(By.xpath(
-              "//span[@data-qa='amount-rub']//span[1]"
-            ));
+      //       const notFormattedPriceEl = await driver.findElement(By.xpath(
+      //         "//span[@data-qa='amount-rub']//span[1]"
+      //       ));
 
-            const notFormattedDate = await notFormattedDateEl.getText();
-            const notFormattedPrice = await notFormattedPriceEl.getText();
+      //       const notFormattedDate = await notFormattedDateEl.getText();
+      //       const notFormattedPrice = await notFormattedPriceEl.getText();
 
-            const date = notFormattedDate.split(' ')[0];
-            const price = parseFloat(notFormattedPrice.replace(/\s/g, '').replace(',', '.'));
+      //       console.log(notFormattedDate)
+      //       console.log(notFormattedPrice)
 
-            console.log("Найдена подписка:", date, price);
+      //       const date = notFormattedDate.split(' ')[0];
+      //       const price = parseFloat(notFormattedPrice.replace(/\s/g, '').replace(',', '.'));
 
-            subs.push({ date, price });
+      //       console.log("Найдена подписка:", date, price);
+
+      //       subs.push({ date, price });
             
-            // Закрываем модальное окно (нажимаем Escape)
-            await driver.actions().sendKeys('\uE00C').perform(); // Escape key
-            await driver.sleep(1000);
+      //       // Закрываем модальное окно (нажимаем Escape)
+      //       // await driver.actions().sendKeys('\uE00C').perform(); // Escape key
+      //       // await driver.sleep(1000);
             
-          } catch (innerError) {
-            console.log("Ошибка при получении данных:", innerError.message);
-          }
+      //     } catch (innerError) {
+      //       console.log("Ошибка при получении данных:", innerError.message);
+      //     }
         }
       } catch (error) {
         console.log("Ошибка при обработке элемента:", error.message);

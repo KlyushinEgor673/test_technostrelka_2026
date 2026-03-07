@@ -63,6 +63,8 @@ const verifyCode = async (req, res) => {
   }
 };
 
+
+
 // Повторная отправка кода
 const resendCode = async (req, res) => {
   /* #swagger.tags = ['code'] */
@@ -91,5 +93,26 @@ const resendCode = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
+// Push-уведомление об оплате
+const pushNotifications = async (req, res) => {
+  /* #swagger.tags = ['code'] */
+  /* #swagger.summary = 'Push-уведомление об оплате' */
+  try {
+
+    const { email } = req.body;
+
+    console.log(`Новый код ${newCode} отправлен на ${email}`);
+
+    res.status(200).json({ message: "Новый код отправлен" });
+  } catch (error) {
+    console.error("Ошибка:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 
 module.exports = { verifyCode, resendCode };
