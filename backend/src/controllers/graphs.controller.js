@@ -25,7 +25,7 @@ const graphsYoomoneySubs = async (req, res) => {
 
   await driver.manage().deleteAllCookies();
 
-  driver.get(
+  await driver.get(
     "https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F"
   )
 
@@ -60,7 +60,6 @@ const graphsYoomoneySubs = async (req, res) => {
     );
     await button2.click();
     
-
     await driver.sleep(5000);
 
     const currentUrl = await driver.getCurrentUrl();
@@ -74,124 +73,70 @@ const graphsYoomoneySubs = async (req, res) => {
         .json({ error: "Неверная почта или пароль", is_enter: false });
     }
 
-    // const divOperations = await driver.findElements(
-    //   By.xpath(
-    //     "//div[@class='MuiBox-root css-14223cq']//div[@class='MuiBox-root css-dggkwl']/div[not(@class)]//span[@class='tocfcbQ2']",
-    //   ),
-    // );
-    const divOperations = await driver.findElements(
-      By.xpath(
-        "//div[@data-qa='operation']"
-      )
-    );
-    const subs = [];
-    
-    console.log(3)
+    console.log(3);
 
-    for (let div of divOperations) {
-      try {
-        console.log(4);
+    // Ждем загрузки данных
+    await driver.sleep(3000);
 
-        const checkIsSub = await div.findElement(By.xpath(
-          ".//div[@class='MuiBox-root css-14223cq']" +
-          "//div[@class='MuiBox-root css-dggkwl']" +
-          "/div[not(@class)]" +
-          "//span[@data-qa='operation-title']"
-        )).getText();
-
-        console.log(checkIsSub);
-        
-        if (checkIsSub === "Оплата подписки") {
-          console.log(5);
-
-          await driver.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", div);
-          
-          // Кликаем
-          await driver.executeScript("arguments[0].click();", div);
-          
-          // const pageSource = await driver.getPageSource();
-
-          // console.log(pageSource)
-
-          const subsData = await driver.executeScript(`
-            return window.__data__.state.timeline.history.entity
-              .filter(op => op.title === "Оплата подписки")
-              .map(op => ({
-                date: op.timestamp.split('T')[0],
-                price: op.amount.value
-              }));
-          `);
-
-          console.log("Найденные подписки:", subsData);
-
-          // Преобразуем в нужный формат (если нужно)
-          subs = subsData.map(item => ({
-            date: item.date,
-            price: parseFloat(item.price)
-          }));
-
-
-      //     if (pageSource.includes('detail')) {
-      //       console.log("Модальное окно обнаружено в HTML");
-      //     } else {
-      //       console.log("Модальное окно НЕ обнаружено в HTML");
-            
-      //       // Возможно нужно прокрутить к элементу перед кликом
-      //       await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", div);
-      //       await driver.sleep(1000);
-      //       await driver.executeScript("arguments[0].click();", div);
-      //     }
-
-      //     // Ждем появления модального окна
-      //     await driver.sleep(3000);
-          
-      //     console.log(6);
-          
-      //     try {
-      //       //        !!!!! ОН НЕ МОЖЕТ НАЙТИ detail после клика (словно клик и не срабатывает) !!!!!!
-      //       const detailDiv = await driver.wait(
-      //         until.elementLocated(By.xpath("//div[@class='k9KGTzPt']")),
-      //         10000,
-      //         "Модальное окно с деталями не появилось"
-      //       );
-            
-      //       const notFormattedDateEl = await details.findElement(By.xpath(
-      //         "//span[@data-qa='datetime']"
-      //       ));
-            
-      //       const notFormattedPriceEl = await driver.findElement(By.xpath(
-      //         "//span[@data-qa='amount-rub']//span[1]"
-      //       ));
-
-      //       const notFormattedDate = await notFormattedDateEl.getText();
-      //       const notFormattedPrice = await notFormattedPriceEl.getText();
-
-      //       console.log(notFormattedDate)
-      //       console.log(notFormattedPrice)
-
-      //       const date = notFormattedDate.split(' ')[0];
-      //       const price = parseFloat(notFormattedPrice.replace(/\s/g, '').replace(',', '.'));
-
-      //       console.log("Найдена подписка:", date, price);
-
-      //       subs.push({ date, price });
-            
-      //       // Закрываем модальное окно (нажимаем Escape)
-      //       // await driver.actions().sendKeys('\uE00C').perform(); // Escape key
-      //       // await driver.sleep(1000);
-            
-      //     } catch (innerError) {
-      //       console.log("Ошибка при получении данных:", innerError.message);
-      //     }
-        }
-      } catch (error) {
-        console.log("Ошибка при обработке элемента:", error.message);
+    // Получаем данные напрямую из window.__data__
+    const subsData = await driver.executeScript(`
+      // Проверяем, что данные существуют
+      if (!window.__data__) {
+        console.log("window.__data__ не найден");
+        return [];
       }
-    }
+      
+      console.log("window.__data__ найден");
+      
+      // Пробуем разные пути к данным
+      let history = [];
+      
+      if (window.__data__.state && 
+          window.__data__.state.timeline && 
+          window.__data__.state.timeline.history &&
+          window.__data__.state.timeline.history.entity) {
+        history = window.__data__.state.timeline.history.entity;
+      } else if (window.__data__.timeline && 
+                 window.__data__.timeline.history && 
+                 window.__data__.timeline.history.entity) {
+        history = window.__data__.timeline.history.entity;
+      } else {
+        console.log("Не удалось найти историю операций");
+        return [];
+      }
+      
+      console.log("Найдено операций:", history.length);
+      
+      // Фильтруем только подписки
+      return history
+        .filter(op => {
+          const title = op.title || '';
+          return title.includes('Оплата подписки') || 
+                 title.includes('подписк') ||
+                 (op.categoryName && op.categoryName.includes('подписк'));
+        })
+        .map(op => ({
+          date: op.timestamp ? op.timestamp.split('T')[0] : null,
+          price: op.amount ? op.amount.value : null,
+          title: op.title
+        }));
+    `);
 
+    console.log("Найденные подписки:", subsData);
+
+    // Фильтруем только те, у которых есть дата и цена
+    const subs = subsData
+      .filter(item => item.date && item.price)
+      .map(item => ({
+        date: item.date,
+        price: parseFloat(item.price)
+      }));
+
+    console.log(`Найдено ${subs.length} подписок`);
+    
     await driver.quit();
-
-    res.status(200).json({ subs });
+    res.status(200).json({ subs: subs });
+    
   } catch (error) {
     console.error("Error in yoomoneyOperation:", error);
     if (driver) {

@@ -96,17 +96,30 @@ const resendCode = async (req, res) => {
 
 
 
-// Push-уведомление об оплате
+// Push-уведомление о списании
 const pushNotifications = async (req, res) => {
   /* #swagger.tags = ['code'] */
-  /* #swagger.summary = 'Push-уведомление об оплате' */
+  /* #swagger.summary = 'Push-уведомление о списании' */
   try {
 
-    const { email } = req.body;
+    const subs = await prisma.subscriptions.findMany()
 
-    console.log(`Новый код ${newCode} отправлен на ${email}`);
+    const currentDate = new Date()
 
-    res.status(200).json({ message: "Новый код отправлен" });
+    for(let sub of subs){
+      const subEndDate = new Date(sub.end_date)
+      
+      console.log("===================================");
+      console.log("subEndDate: ", subEndDate)
+      console.log("currentDate: ", currentDate)
+
+      if((subEndDate.getDate() - currentDate.getDate() < 4)){
+        
+      }
+
+    }
+
+    res.status(200).json({ message: "success" });
   } catch (error) {
     console.error("Ошибка:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -115,4 +128,4 @@ const pushNotifications = async (req, res) => {
 
 
 
-module.exports = { verifyCode, resendCode };
+module.exports = { verifyCode, resendCode, pushNotifications };

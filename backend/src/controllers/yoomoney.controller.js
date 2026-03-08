@@ -404,9 +404,9 @@ const getYoomoneySubscriptions = async (req, res) => {
       where: {id: req.user.id}
     });
 
-    if(!user || !user.cookies || user.cookies.length === 0) {
-      return res.status(400).json({ error: "Нет cookies для входа" });
-    }
+    // if(!user || !user.cookies || user.cookies.length === 0) {
+    //   return res.status(400).json({ error: "Нет cookies для входа" });
+    // }
 
     const email = user.email_ym
     const password = user.password_ym
