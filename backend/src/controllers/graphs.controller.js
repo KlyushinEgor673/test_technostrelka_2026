@@ -19,17 +19,17 @@ const graphsYoomoneySubs = async (req, res) => {
     return res.status(400).json({ error: "Вы не авторизованы в yoomoney" });
   }
 
-  console.log(1)
+  console.log(1);
 
   const driver = await new Builder().forBrowser("chrome").build();
 
   await driver.manage().deleteAllCookies();
 
   driver.get(
-    "https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F"
-  )
+    "https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F",
+  );
 
-  console.log(2)
+  console.log(2);
 
   try {
     await driver.sleep(2000);
@@ -59,7 +59,6 @@ const graphsYoomoneySubs = async (req, res) => {
       10000,
     );
     await button2.click();
-    
 
     await driver.sleep(5000);
 
@@ -80,93 +79,140 @@ const graphsYoomoneySubs = async (req, res) => {
     //   ),
     // );
     const divOperations = await driver.findElements(
-      By.xpath(
-        "//div[@data-qa='operation']"
-      )
+      By.xpath("//div[@data-qa='operation']"),
     );
     const subs = [];
-    
-    console.log(3)
+
+    console.log(3);
 
     for (let div of divOperations) {
       try {
         console.log(4);
 
-        const checkIsSub = await div.findElement(By.xpath(
-          ".//div[@class='MuiBox-root css-14223cq']" +
-          "//div[@class='MuiBox-root css-dggkwl']" +
-          "/div[not(@class)]" +
-          "//span[@data-qa='operation-title']"
-        )).getText();
+        const checkIsSub = await div
+          .findElement(
+            By.xpath(
+              ".//div[@class='MuiBox-root css-14223cq']" +
+                "//div[@class='MuiBox-root css-dggkwl']" +
+                "/div[not(@class)]" +
+                "//span[@data-qa='operation-title']",
+            ),
+          )
+          .getText();
 
         console.log(checkIsSub);
-        
+
         if (checkIsSub === "Оплата подписки") {
           console.log(5);
 
           // Кликаем
-          await driver.executeScript("scrollBy(0, 500)")
+          await driver.executeScript(
+            "arguments[0].scrollIntoView({block: 'center'});",
+            div,
+          );
+          await driver.sleep(1000);
 
           try {
-            await driver.executeScript("arguments[0].click();", div);
-            console.log("Есть пробитие")
+            await div.click();
+            console.log("Есть пробитие");
           } catch (error) {
-            return res.status(400).json({ error: "не нажалось" })
+            return res.status(400).json({ error: "не нажалось" });
           }
-          
-          
+
           // const pageSource = await driver.getPageSource();
           // if (pageSource.includes('operation-details') || pageSource.includes('datetime')) {
           //   console.log("Модальное окно обнаружено в HTML");
           // } else {
           //   console.log("Модальное окно НЕ обнаружено в HTML");
-            
+
           //   // Возможно нужно прокрутить к элементу перед кликом
-          //   await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", div);
-          //   await driver.sleep(1000);
-          //   await driver.executeScript("arguments[0].click();", div);
+
           // }
 
           // Ждем появления модального окна
           await driver.sleep(3000);
-          
+
           console.log(6);
-          
+
           // Ищем дату и цену (В ОСНОВНОМ DOM, НЕ В IFRAME)
           try {
-
-            //        !!!!! ОН НЕ МОЖЕТ НАЙТИ detail после клика (словно клик и не срабатывает) !!!!!!
-            const detailDiv = await driver.wait(
-              until.elementLocated(By.xpath("//div[@class='k9KGTzPt']")),
-              10000,
-              "Модальное окно с деталями не появилось"
+            const notFormattedDateEl = await driver.findElement(
+              By.xpath("//div[@data-qa='datetime']"),
             );
 
-            const notFormattedDateEl = await details.findElement(By.xpath(
-              "//span[@data-qa='datetime']"
-            ));
-            
-            const notFormattedPriceEl = await driver.findElement(By.xpath(
-              "//span[@data-qa='amount-rub']//span[1]"
-            ));
+            const notFormattedPriceEl = await driver.findElement(
+              By.xpath("//span[@data-qa='amount-rub']//span[1]"),
+            );
 
             const notFormattedDate = await notFormattedDateEl.getText();
             const notFormattedPrice = await notFormattedPriceEl.getText();
 
-            console.log(notFormattedDate)
-            console.log(notFormattedPrice)
+            console.log(notFormattedDate);
+            console.log(notFormattedPrice);
 
-            const date = notFormattedDate.split(' ')[0];
-            const price = parseFloat(notFormattedPrice.replace(/\s/g, '').replace(',', '.'));
+            const dateArr = notFormattedDate.split(" ");
+            let date = dateArr[2].slice(0, 4);
+            switch (dateArr[1]) {
+              case "января":
+              case "январь":
+                date += "-01-";
+                break;
+              case "февраля":
+              case "февраль":
+                date += "-02-";
+                break;
+              case "марта":
+              case "март":
+                date += "-03-";
+                break;
+              case "апреля":
+              case "апрель":
+                date += "-04-";
+                break;
+              case "мая":
+              case "май":
+                date += "-05-";
+                break;
+              case "июня":
+              case "июнь":
+                date += "-06-";
+                break;
+              case "июля":
+              case "июль":
+                date += "-07-";
+                break;
+              case "августа":
+              case "август":
+                date += "-08-";
+                break;
+              case "сентября":
+              case "сентябрь":
+                date += "-09-";
+                break;
+              case "октября":
+              case "октябрь":
+                date += "-10-";
+                break;
+              case "ноября":
+              case "ноябрь":
+                date += "-11-";
+                break;
+              case "декабря":
+              case "декабрь":
+                date += "-12-";
+                break;
 
-            console.log("Найдена подписка:", date, price);
+              default:
+                return res.status(400).json({ error: "Произошла ошибка при форматировании даты" });
+            }
 
-            subs.push({ date, price });
-            
-            // Закрываем модальное окно (нажимаем Escape)
-            // await driver.actions().sendKeys('\uE00C').perform(); // Escape key
-            // await driver.sleep(1000);
-            
+            date += dateArr[0];
+
+            const price = parseFloat(notFormattedPrice);
+
+            console.log("Найдена подписка:", price, date);
+
+            subs.push({ price, date });
           } catch (innerError) {
             console.log("Ошибка при получении данных:", innerError.message);
           }
