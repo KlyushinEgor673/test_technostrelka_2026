@@ -1,5 +1,6 @@
 const prisma = require("../client");
 const { Builder, By, until } = require("selenium-webdriver");
+const chrome = require('selenium-webdriver/chrome')
 
 // Получение операций из юмани через парсинг
 
@@ -21,13 +22,21 @@ const graphsYoomoneySubs = async (req, res) => {
 
   console.log(1);
 
-  const driver = await new Builder().forBrowser("chrome").build();
+  //настройка драйвера
+  const options = new chrome.Options();
+  options.addArguments('--headless=new');
+  options.addArguments('--no-sandbox');
+  options.addArguments('--disable-dev-shm-usage');
+  options.addArguments('--disable-gpu');
+  options.addArguments('--window-size=1920,1080');
+
+  const driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build();
 
   await driver.manage().deleteAllCookies();
 
   driver.get(
-    "https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F",
-  );
+    "https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F"
+  )
 
   console.log(2);
 
