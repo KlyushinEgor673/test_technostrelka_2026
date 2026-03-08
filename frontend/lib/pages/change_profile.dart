@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/widgets/backend_button.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/input.dart';
@@ -42,17 +44,35 @@ class _ChangeProfileState extends State<ChangeProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white,),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+      ),
       backgroundColor: Colors.white,
-      body: Center(
+      body: SafeArea(
         child: ListView(
           children: [
-            // SizedBox(height: ,)
-            Container(
-              margin: EdgeInsets.only(left: 20, bottom: 20),
-              child: Text('Изменение профиля', style: TextStyle(fontSize: 24)),
+            SizedBox(
+              height: orientation == Orientation.portrait
+                  ? (200.h - AppBar().preferredSize.height)
+                  : 20,
             ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: orientation == Orientation.portrait ? 20.w : 20,
+              ),
+              child: Text(
+                'Изменение профиля',
+                style: TextStyle(
+                  fontSize: orientation == Orientation.portrait ? 24.sp : 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
             Container(
               margin: EdgeInsets.only(bottom: 15, left: 20, right: 20),
               constraints: BoxConstraints(maxWidth: 500),
@@ -73,31 +93,21 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 type: InputTypeCustom.inputText,
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              height: 50,
-              child: FilledButton(
-                onPressed: () async {
-                  String? token = await _storage.read(key: 'token');
-                  await _dio.put(
-                    '/api/user/edit-profile',
-                    data: jsonEncode({
-                      'name': _controllerName.text,
-                      'surname': _controllerSurname.text,
-                    }),
-                    options: Options(headers: {'Authorization': 'Bearer $token'}),
-                  );
-                  Navigator.pop(context);
-                },
-                child: Text('Изменить'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
+            BackendButton(
+              text: 'Изменить',
+              isLoading: false,
+              onPressed: () async {
+                String? token = await _storage.read(key: 'token');
+                await _dio.put(
+                  '/api/user/edit-profile',
+                  data: jsonEncode({
+                    'name': _controllerName.text,
+                    'surname': _controllerSurname.text,
+                  }),
+                  options: Options(headers: {'Authorization': 'Bearer $token'}),
+                );
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
@@ -44,12 +45,18 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
       body: Center(
         child: Column(
           children: [
+            SizedBox(
+              height: orientation == Orientation.portrait
+                  ? (200.h - AppBar().preferredSize.height)
+                  : 20,
+            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Text(
@@ -58,7 +65,7 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
               ),
             ),
             SizedBox(height: 15),
-            InputYoomoney(controller: _controller, isPassword: false),
+            InputYoomoney(controller: _controller, isPassword: false, hintText: 'Код',),
             SizedBox(height: 15),
             YoomoneyButton(
               isCircular: _isSent,

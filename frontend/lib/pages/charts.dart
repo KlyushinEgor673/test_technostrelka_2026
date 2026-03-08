@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
@@ -22,24 +25,12 @@ class _ChartsState extends State<Charts> {
   Map _subscriptions = {};
   List<PieChartSectionData> _sections = [];
   List<BarChartGroupData> _barGroups = [];
+  String _startDate = '';
+  String _endDate = '';
+  double _maxY = 0;
+  List _chartList = [];
 
-  Future<void> _init() async {
-    //
-    // for (final value in response.data['subscriptions']) {
-    //   if (_subscriptions[value['description']] == null) {
-    //     _subscriptions[value['description']] = 1;
-    //   } else {
-    //     _subscriptions[value['description']] =
-    //         _subscriptions[value['description']] + 1;
-    //   }
-    // }
-    // for (final key in _subscriptions.keys) {
-    //   _sections.add(
-    //     PieChartSectionData(value: _subscriptions[key], title: key),
-    //   );
-    // }
-    // setState(() {});
-  }
+  Future<void> _init() async {}
 
   @override
   void initState() {
@@ -51,6 +42,7 @@ class _ChartsState extends State<Charts> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -60,76 +52,87 @@ class _ChartsState extends State<Charts> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: orientation == Orientation.portrait ? 20.h : 20,
+                ),
                 Container(
-                  constraints: BoxConstraints(maxWidth: 500),
-                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  constraints: BoxConstraints(
+                    minWidth: orientation == Orientation.portrait ? 500.w : 500,
+                  ),
+                  margin: EdgeInsets.only(
+                    left: orientation == Orientation.portrait ? 20.w : 20,
+                    right: orientation == Orientation.portrait ? 20.w : 20,
+                    bottom: orientation == Orientation.portrait ? 20.h : 20,
+                  ),
                   child: SelectDate(
                     hintText: 'Выберете начальную дату',
-                    change: (newValue) {},
+                    change: (newValue) {
+                      _startDate = newValue;
+                    },
                     firstDate: DateTime(1990),
                     lastDate: DateTime(2100),
                   ),
                 ),
                 Container(
-                  constraints: BoxConstraints(maxWidth: 500),
-                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  constraints: BoxConstraints(minWidth: 500),
+                  margin: EdgeInsets.only(
+                    left: orientation == Orientation.portrait ? 20.w : 20,
+                    right: orientation == Orientation.portrait ? 20.w : 20,
+                    bottom: orientation == Orientation.portrait ? 20.h : 20,
+                  ),
                   child: SelectDate(
                     hintText: 'Выберете начальную дату',
-                    change: (newValue) {},
+                    change: (newValue) {
+                      _endDate = newValue;
+                    },
                     firstDate: DateTime(1990),
                     lastDate: DateTime(2100),
                   ),
                 ),
-                // FilledButton(
-                //   onPressed: () async {
-                //     _barGroups = [];
-                //     String? token = await _storage.read(key: 'token');
-                //     final response = await _dio.get(
-                //       '/api/subscription/',
-                //       options: Options(
-                //         headers: {'Authorization': 'Bearer $token'},
-                //       ),
-                //     );
-                //     print(response.data['subscriptions']);
-                //     List subscriptions = response.data['subscriptions'];
-                //     for (int i = 0; i < subscriptions.length; ++i) {
-                //       // if (subscriptions[i]['date_start'])
-                //       _barGroups.add(
-                //         BarChartGroupData(
-                //           x: i,
-                //           barRods: [
-                //             BarChartRodData(
-                //               toY: double.parse(subscriptions[i]['price']),
-                //             ),
-                //           ],
-                //         ),
-                //       );
-                //     }
-                //     setState(() {
-                //
-                //     });
-                //   },
-                //   child: Text('Построить'),
-                // ),
               ],
             ),
-            // Spacer(),
-            Center(
-              child: SizedBox(
-                height: 500,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              clipBehavior: Clip.none,
+              child: Container(
+                height: orientation == Orientation.portrait ? 480.h : 480,
+                width: _chartList.length * 30,
+                constraints: BoxConstraints(
+                  minWidth:
+                      MediaQuery.of(context).size.width -
+                      (orientation == Orientation.portrait ? 20.w : 20) -
+                      MediaQuery.of(context).padding.left -
+                      MediaQuery.of(context).padding.right,
+                ),
+                margin: EdgeInsets.only(right: 20),
                 child: BarChart(
                   BarChartData(
                     barGroups: _barGroups,
-                    // titlesData: FlTitlesData(
-                    //   bottomTitles: AxisTitles(
-                    //     sideTitles: SideTitles(
-                    //       showTitles: true,
-                    //       getTitlesWidget: (_, __) {
-                    //         return Text(':)');
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                    maxY: _maxY,
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 100,
+                          getTitlesWidget: (double value, TitleMeta meta) {
+                            return SideTitleWidget(
+                              meta: meta,
+                              space: 35,
+                              child: Transform.rotate(
+                                angle: 90 * (pi / 180),
+                                child: Text(
+                                  _chartList[value.toInt()]['date']
+                                      .toString()
+                                      .substring(0, 11),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      topTitles: AxisTitles(),
+                      rightTitles: AxisTitles(),
+                    ),
                   ),
                 ),
               ),
@@ -137,17 +140,76 @@ class _ChartsState extends State<Charts> {
             Container(
               constraints: BoxConstraints(maxWidth: 500),
               margin: EdgeInsets.only(left: 20, right: 20),
-              height: 50,
+              height: orientation == Orientation.portrait ? 50.h : 50,
               child: ChipButton(
                 text: 'Построить',
                 isActive: true,
-                onTap: () {},
+                onTap: () async {
+                  _maxY = 0;
+                  _barGroups = [];
+                  String? token = await _storage.read(key: 'token');
+                  final response = await _dio.get(
+                    '/api/subscription/history',
+                    options: Options(
+                      headers: {'Authorization': 'Bearer $token'},
+                    ),
+                  );
+                  int countDays = DateTime.parse(
+                    _endDate,
+                  ).difference(DateTime.parse(_startDate)).inDays;
+                  DateTime startDate = DateTime.parse(_startDate);
+                  _chartList = [];
+                  for (int i = 0; i < countDays + 1; ++i) {
+                    DateTime date = startDate.add(Duration(days: i));
+                    bool isHas = false;
+                    for (final item in response.data['debSubscriptions']) {
+                      final timestapz = DateTime.parse(item['date']);
+                      final dateTimeDB = DateTime(
+                        timestapz.year,
+                        timestapz.month,
+                        timestapz.day,
+                      );
+                      if (date == dateTimeDB) {
+                        // print('price ${double.parse(item['price'])} ${item['price'].runtimeType}');
+                        _chartList.add({
+                          'date': date,
+                          'price': double.parse(item['price']),
+                        });
+                        isHas = true;
+                        if (double.parse(item['price']) > _maxY) {
+                          _maxY = double.parse(item['price']);
+                        }
+                        break;
+                      }
+                    }
+                    if (!isHas) {
+                      _chartList.add({'date': date, 'price': 0.0});
+                    }
+                  }
+                  for (int i = 0; i < _chartList.length; ++i) {
+                    print(_chartList[i]['price'].runtimeType);
+                    _barGroups.add(
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: _chartList[i]['price'],
+                            color: Color.fromRGBO(89, 65, 174, 1),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  _maxY += _maxY * 0.05;
+                  setState(() {});
+                },
               ),
             ),
+            SizedBox(height: orientation == Orientation.portrait ? 20.h : 20),
           ],
         ),
       ),
-      bottomNavigationBar: Footer(currentIndex: 0),
+      bottomNavigationBar: SafeArea(child: Footer(currentIndex: 1)),
     );
   }
 }

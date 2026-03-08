@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InputYoomoney extends StatefulWidget {
   const InputYoomoney({
     super.key,
     required this.controller,
     required this.isPassword,
+    required this.hintText,
   });
 
   final bool isPassword;
 
   final TextEditingController controller;
+  final String hintText;
 
   @override
   State<InputYoomoney> createState() => _InputYoomoneyState();
@@ -29,10 +32,12 @@ class _InputYoomoneyState extends State<InputYoomoney> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Container(
-      height: 50,
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      constraints: BoxConstraints(maxWidth: 500),
+      height: orientation == Orientation.portrait ? 50.h : 50,
+      margin: EdgeInsets.symmetric(
+        horizontal: orientation == Orientation.portrait ? 20.w : 20,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -40,15 +45,25 @@ class _InputYoomoneyState extends State<InputYoomoney> {
       ),
       child: Row(
         children: [
-          SizedBox(width: 14),
+          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
           Expanded(
             child: TextField(
+              style: TextStyle(
+                fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+              ),
               obscureText: _isPassword,
               controller: widget.controller,
-              decoration: InputDecoration(border: InputBorder.none),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: TextStyle(
+                  fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                  color: Colors.grey
+                )
+              ),
             ),
           ),
-          SizedBox(width: 14),
+          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
         ],
       ),
     );

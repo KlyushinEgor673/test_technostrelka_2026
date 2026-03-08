@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
+import 'package:frontend/widgets/backend_button.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:frontend/widgets/select_date.dart';
 import 'package:image_picker/image_picker.dart';
@@ -73,6 +75,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -102,19 +105,36 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 20, bottom: 20),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                            ),
                             child: Text(
-                              'Создание подписки',
-                              style: TextStyle(fontSize: 24),
+                              widget.id == null
+                                  ? 'Создание подписки'
+                                  : 'Изменение подписки',
+                              style: TextStyle(
+                                fontSize: orientation == Orientation.portrait
+                                    ? 24.sp
+                                    : 24,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
+                          SizedBox(height: 15),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
                             child: Input(
                               isPassword: false,
                               hintText: 'Имя',
@@ -124,11 +144,16 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
                             child: Input(
                               isPassword: false,
                               hintText: 'Категория',
@@ -138,11 +163,17 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
+
                             child: Input(
                               isPassword: false,
                               hintText: 'Период',
@@ -152,11 +183,17 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
+
                             child: SelectDate(
                               hintText: 'Конечная дата',
                               change: (newValue) {
@@ -169,11 +206,17 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
+
                             child: Input(
                               isPassword: false,
                               hintText: 'Цена',
@@ -183,21 +226,27 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                              bottom: 15,
-                              left: 20,
-                              right: 20,
+                              bottom: orientation == Orientation.portrait
+                                  ? 15.h
+                                  : 15,
+                              left: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
+                              right: orientation == Orientation.portrait
+                                  ? 20.w
+                                  : 20,
                             ),
-                            constraints: BoxConstraints(maxWidth: 500),
+
                             child: Input(
                               isPassword: false,
-                              hintText: 'url сайта',
+                              hintText: 'Url сайта',
                               controller: _controllerUrl,
                               type: InputTypeCustom.inputText,
                             ),
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
-                            constraints: BoxConstraints(maxWidth: 500),
+
                             child: Row(
                               children: [
                                 Checkbox(
@@ -208,7 +257,15 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                     });
                                   },
                                 ),
-                                Text('Автопродление'),
+                                Text(
+                                  'Автопродление',
+                                  style: TextStyle(
+                                    fontSize:
+                                        orientation == Orientation.portrait
+                                        ? 16.sp
+                                        : 16,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -218,8 +275,12 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                     GestureDetector(
                       child: Center(
                         child: Container(
-                          width: 170,
-                          height: 170,
+                          width: orientation == Orientation.portrait
+                              ? 170.h
+                              : 170,
+                          height: orientation == Orientation.portrait
+                              ? 170.h
+                              : 170,
                           decoration: BoxDecoration(
                             color: bytes != null
                                 ? Colors.black
@@ -246,91 +307,68 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                         }
                       },
                     ),
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 15, left: 20, right: 20),
-                        width: double.infinity,
-                        constraints: BoxConstraints(maxWidth: 500),
-                        height: 50,
-                        child: FilledButton(
-                          onPressed: widget.id != null
-                              ? () async {
-                                  String? token = await _storage.read(
-                                    key: 'token',
-                                  );
-                                  final base64String = base64Encode(bytes);
-                                  print('Отправляю ${_dateEnd.toString().substring(0, 10)}');
-                                  await _dio.put(
-                                    '/api/subscription',
-                                    data: FormData.fromMap({
-                                      'id': widget.id,
-                                      'name': _controllerName.text,
-                                      'category': _controllerCategory.text,
-                                      'period': int.parse(
-                                        _controllerPeriod.text,
-                                      ),
-                                      'end_date': _dateEnd.toString().substring(0, 10),
-                                      'price': double.parse(
-                                        _controllerPrice.text,
-                                      ),
-                                      'flag_auto': _isAuto,
-                                      'img': MultipartFile.fromBytes(
-                                        bytes,
-                                        filename: 'image.png',
-                                      ),
-                                      'url': _controllerUrl.text,
-                                    }),
-                                    options: Options(
-                                      headers: {
-                                        'Authorization': 'Bearer $token',
-                                      },
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                }
-                              : () async {
-                                  String? token = await _storage.read(
-                                    key: 'token',
-                                  );
-                                  // final base64String = base64Encode(bytes);
-                                  await _dio.post(
-                                    '/api/subscription/',
-                                    data: FormData.fromMap({
-                                      'name': _controllerName.text,
-                                      'category': _controllerCategory.text,
-                                      'period': int.parse(
-                                        _controllerPeriod.text,
-                                      ),
-                                      'end_date': _dateEnd.toString(),
-                                      'price': double.parse(
-                                        _controllerPrice.text,
-                                      ),
-                                      'flag_auto': _isAuto,
-                                      'img': MultipartFile.fromBytes(
-                                        bytes,
-                                        filename: 'image.png',
-                                      ),
-                                      'url': _controllerUrl.text,
-                                    }),
-                                    options: Options(
-                                      headers: {
-                                        'Authorization': 'Bearer $token',
-                                      },
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                },
-                          child: Text(
-                            widget.id == null ? 'Создать' : 'Изменить',
-                          ),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
+                    SizedBox(
+                      height: orientation == Orientation.portrait ? 15.h : 15,
+                    ),
+                    BackendButton(
+                      text: widget.id == null ? 'Создать' : 'Изменить',
+                      isLoading: false,
+                      onPressed: widget.id != null
+                          ? () async {
+                              String? token = await _storage.read(key: 'token');
+                              final base64String = base64Encode(bytes);
+                              print(
+                                'Отправляю ${_dateEnd.toString().substring(0, 10)}',
+                              );
+                              await _dio.put(
+                                '/api/subscription',
+                                data: FormData.fromMap({
+                                  'id': widget.id,
+                                  'name': _controllerName.text,
+                                  'category': _controllerCategory.text,
+                                  'period': int.parse(_controllerPeriod.text),
+                                  'end_date': _dateEnd.toString().substring(
+                                    0,
+                                    10,
+                                  ),
+                                  'price': double.parse(_controllerPrice.text),
+                                  'flag_auto': _isAuto,
+                                  'img': MultipartFile.fromBytes(
+                                    bytes,
+                                    filename: 'image.png',
+                                  ),
+                                  'url': _controllerUrl.text,
+                                }),
+                                options: Options(
+                                  headers: {'Authorization': 'Bearer $token'},
+                                ),
+                              );
+                              Navigator.pop(context);
+                            }
+                          : () async {
+                              String? token = await _storage.read(key: 'token');
+                              // final base64String = base64Encode(bytes);
+                              await _dio.post(
+                                '/api/subscription/',
+                                data: FormData.fromMap({
+                                  'name': _controllerName.text,
+                                  'category': _controllerCategory.text,
+                                  'period': int.parse(_controllerPeriod.text),
+                                  'end_date': _dateEnd.toString(),
+                                  'price': double.parse(_controllerPrice.text),
+                                  'flag_auto': _isAuto,
+                                  'img': MultipartFile.fromBytes(
+                                    bytes,
+                                    filename: 'image.png',
+                                  ),
+                                  'url': _controllerUrl.text,
+                                }),
+                                options: Options(
+                                  headers: {'Authorization': 'Bearer $token'},
+                                ),
+                              );
+                              Navigator.pop(context);
+                            },
                     ),
                   ],
                 ),

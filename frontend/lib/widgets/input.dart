@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum InputTypeCustom {inputText, inputInt, inputDouble}
+enum InputTypeCustom { inputText, inputInt, inputDouble }
 
 class Input extends StatefulWidget {
   const Input({
     super.key,
     required this.isPassword,
     required this.hintText,
-    required this.controller, required this.type,
+    required this.controller,
+    required this.type,
   });
 
   final String hintText;
@@ -32,26 +33,34 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Container(
-      height: 50,
+      height: orientation == Orientation.portrait ? 50.h : 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Color.fromRGBO(240, 240, 240, 1),
       ),
       child: Row(
         children: [
-          SizedBox(width: 14),
+          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
           Expanded(
             child: TextField(
-              keyboardType: widget.type != InputTypeCustom.inputText ? TextInputType.number : null,
+              keyboardType: widget.type != InputTypeCustom.inputText
+                  ? TextInputType.number
+                  : null,
               inputFormatters: [],
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+              ),
               controller: widget.controller,
               obscureText: _isPassword,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                  fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                ),
               ),
             ),
           ),
@@ -67,7 +76,7 @@ class _InputState extends State<Input> {
                 color: Colors.grey,
               ),
             ),
-          SizedBox(width: 14),
+          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
         ],
       ),
     );

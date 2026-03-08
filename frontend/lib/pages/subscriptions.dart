@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/chip_button.dart';
 import 'package:frontend/widgets/footer.dart';
@@ -42,7 +43,7 @@ class _SubscriptionsState extends State<Subscriptions> {
     setState(() {
       _subscriptions = response.data['subscriptions'];
     });
-    if (_isYoomoney){
+    if (_isYoomoney) {
       String? subscriptions_yoomoney = await _storage.read(
         key: 'yoomoney_subscriptions',
       );
@@ -79,11 +80,13 @@ class _SubscriptionsState extends State<Subscriptions> {
           options: Options(headers: {'Authorization': 'Bearer $token'}),
         );
         _subscriptions = response.data['subscriptions'];
-        if (_isYoomoney){
+        if (_isYoomoney) {
           String? subscriptions_yoomoney = await _storage.read(
             key: 'yoomoney_subscriptions',
           );
-          List subscriptions_yoomoney_list = jsonDecode(subscriptions_yoomoney!);
+          List subscriptions_yoomoney_list = jsonDecode(
+            subscriptions_yoomoney!,
+          );
           for (int i = 0; i < subscriptions_yoomoney_list!.length; ++i) {
             _subscriptions.add(subscriptions_yoomoney_list[i]);
           }
@@ -108,7 +111,9 @@ class _SubscriptionsState extends State<Subscriptions> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -119,9 +124,11 @@ class _SubscriptionsState extends State<Subscriptions> {
               Header(id: 2),
               if (MediaQuery.of(context).size.width > 768) SizedBox(height: 20),
               Container(
-                height: 50,
+                height: orientation == Orientation.portrait ? 50.h : 50,
                 width: MediaQuery.of(context).size.width > 1040 ? 1000 : null,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(245, 245, 249, 1),
@@ -140,19 +147,26 @@ class _SubscriptionsState extends State<Subscriptions> {
                           hintText: 'Поиск',
                           hintStyle: TextStyle(
                             color: Color.fromRGBO(126, 126, 154, 1),
-                            fontSize: 16,
+                            fontSize: orientation == Orientation.portrait
+                                ? 16.sp
+                                : 16,
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 14),
+                    SizedBox(
+                      width: orientation == Orientation.portrait ? 14.w : 14,
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
               Container(
                 width: MediaQuery.of(context).size.width > 1040 ? 1000 : null,
-                margin: EdgeInsets.only(left: 20, bottom: 20),
+                margin: EdgeInsets.only(
+                  left: orientation == Orientation.portrait ? 20.w : 20,
+                  bottom: orientation == Orientation.portrait ? 20.h : 20,
+                ),
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -168,7 +182,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                           ),
                         );
                         _subscriptions = response.data['subscriptions'];
-                        if (_isYoomoney){
+                        if (_isYoomoney) {
                           String? subscriptions_yoomoney = await _storage.read(
                             key: 'yoomoney_subscriptions',
                           );
@@ -176,9 +190,9 @@ class _SubscriptionsState extends State<Subscriptions> {
                             subscriptions_yoomoney!,
                           );
                           for (
-                          int i = 0;
-                          i < subscriptions_yoomoney_list!.length;
-                          ++i
+                            int i = 0;
+                            i < subscriptions_yoomoney_list!.length;
+                            ++i
                           ) {
                             _subscriptions.add(subscriptions_yoomoney_list[i]);
                           }
@@ -262,7 +276,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                       // }
                       if (_subscriptions[i]['url'] == null) {
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             launchUrl(Uri.parse('https://yoomoney.ru'));
                           },
                           child: Container(
@@ -279,22 +293,18 @@ class _SubscriptionsState extends State<Subscriptions> {
                                   blurRadius: 20,
                                 ),
                               ],
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Colors.grey.withAlpha(100),
-                              //     spreadRadius: 4,
-                              //     blurRadius: 4,
-                              //   ),
-                              // ],
                             ),
                             child: Stack(
                               children: [
                                 Positioned(
-                                  left: 20,
+                                  left: orientation == Orientation.portrait
+                                      ? 20.w
+                                      : 20,
                                   top: 0,
                                   bottom: 0,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(
@@ -305,11 +315,25 @@ class _SubscriptionsState extends State<Subscriptions> {
                                             ),
                                             child: Image.network(
                                               _subscriptions[i]['img'],
-                                              height: 50,
-                                              width: 50,
+                                              height:
+                                                  orientation ==
+                                                      Orientation.portrait
+                                                  ? 70.h
+                                                  : 70,
+                                              width:
+                                                  orientation ==
+                                                      Orientation.portrait
+                                                  ? 70.h
+                                                  : 70,
                                             ),
                                           ),
-                                          SizedBox(width: 20),
+                                          SizedBox(
+                                            width:
+                                                orientation ==
+                                                    Orientation.portrait
+                                                ? 20.w
+                                                : 20,
+                                          ),
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -318,31 +342,69 @@ class _SubscriptionsState extends State<Subscriptions> {
                                                 _subscriptions[i]['name'],
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w700,
-                                                  fontSize: 16,
+                                                  fontSize:
+                                                      orientation ==
+                                                          Orientation.portrait
+                                                      ? 16.sp
+                                                      : 16,
                                                 ),
                                               ),
-                                              Text(_subscriptions[i]['days']),
+                                              Text(
+                                                _subscriptions[i]['days'],
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      orientation ==
+                                                          Orientation.portrait
+                                                      ? 16.sp
+                                                      : 16,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    orientation ==
+                                                        Orientation.portrait
+                                                    ? 2.5.h
+                                                    : 2.5,
+                                              ),
+                                              Text(
+                                                _subscriptions[i]['price'],
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      orientation ==
+                                                          Orientation.portrait
+                                                      ? 16.sp
+                                                      : 16,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    orientation ==
+                                                        Orientation.portrait
+                                                    ? 2.5.h
+                                                    : 2.5,
+                                              ),
+                                              Text(
+                                                _subscriptions[i]['end'],
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      orientation ==
+                                                          Orientation.portrait
+                                                      ? 16.sp
+                                                      : 16,
+                                                  color: Color.fromRGBO(
+                                                    89,
+                                                    65,
+                                                    174,
+                                                    1,
+                                                  ),
+                                                  //Color.fromRGBO(216, 139, 49, 1),
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        _subscriptions[i]['price'],
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(height: 2.5),
-                                      Text(
-                                        _subscriptions[i]['end'],
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color.fromRGBO(89, 65, 174, 1),
-                                          //Color.fromRGBO(216, 139, 49, 1),
-                                          fontWeight: FontWeight.w700,
-                                        ),
                                       ),
                                     ],
                                   ),
@@ -371,7 +433,9 @@ class _SubscriptionsState extends State<Subscriptions> {
                           child: Stack(
                             children: [
                               Positioned(
-                                left: 20,
+                                left: orientation == Orientation.portrait
+                                    ? 20.w
+                                    : 20,
                                 top: 0,
                                 bottom: 0,
                                 child: Column(
@@ -388,12 +452,26 @@ class _SubscriptionsState extends State<Subscriptions> {
                                             base64Decode(
                                               _subscriptions[i]['img'],
                                             ),
-                                            height: 50,
-                                            width: 50,
+                                            height:
+                                                orientation ==
+                                                    Orientation.portrait
+                                                ? 70.h
+                                                : 70,
+                                            width:
+                                                orientation ==
+                                                    Orientation.portrait
+                                                ? 70.h
+                                                : 70,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                        SizedBox(width: 20),
+                                        SizedBox(
+                                          width:
+                                              orientation ==
+                                                  Orientation.portrait
+                                              ? 20.w
+                                              : 20,
+                                        ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -402,49 +480,74 @@ class _SubscriptionsState extends State<Subscriptions> {
                                               _subscriptions[i]['name'],
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
-                                                fontSize: 16,
+                                                fontSize:
+                                                    orientation ==
+                                                        Orientation.portrait
+                                                    ? 16.sp
+                                                    : 16,
                                               ),
                                             ),
                                             Text(
                                               '${_subscriptions[i]['category']} ∙ ${_subscriptions[i]['period']} дней',
+                                              style: TextStyle(
+                                                fontSize:
+                                                    orientation ==
+                                                        Orientation.portrait
+                                                    ? 16.sp
+                                                    : 16,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  orientation ==
+                                                      Orientation.portrait
+                                                  ? 2.5.h
+                                                  : 2.5,
+                                            ),
+                                            Text(
+                                              '${_subscriptions[i]['price']} ₽',
+                                              style: TextStyle(
+                                                fontSize:
+                                                    orientation ==
+                                                        Orientation.portrait
+                                                    ? 16.sp
+                                                    : 16,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  orientation ==
+                                                      Orientation.portrait
+                                                  ? 2.5.h
+                                                  : 2.5,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${_subscriptions[i]['flag_auto'] ? 'Спишется' : 'Активна до'} ${_subscriptions[i]['end_date'].substring(0, 10)}',
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        orientation ==
+                                                            Orientation.portrait
+                                                        ? 16.sp
+                                                        : 16,
+                                                    color: Color.fromRGBO(
+                                                      89,
+                                                      65,
+                                                      174,
+                                                      1,
+                                                    ),
+                                                    //Color.fromRGBO(216, 139, 49, 1),
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    // GestureDetector(
-                                    //   child: Text(
-                                    //     _subscriptions[i]['url'] ?? '',
-                                    //     style: TextStyle(
-                                    //       color: Color.fromRGBO(89, 65, 174, 1),
-                                    //     ),
-                                    //   ),
-                                    //   onTap: () {
-                                    //     launchUrl(
-                                    //       Uri.parse(_subscriptions[i]['url']),
-                                    //     );
-                                    //   },
-                                    // ),
-                                    Text(
-                                      '${_subscriptions[i]['price']} ₽',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    SizedBox(height: 2.5),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${_subscriptions[i]['flag_auto'] ? 'Спишется' : 'Активна до'} ${_subscriptions[i]['end_date'].substring(0, 10)}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Color.fromRGBO(89, 65, 174, 1),
-                                            //Color.fromRGBO(216, 139, 49, 1),
-                                            fontWeight: FontWeight.w700,
-                                          ),
                                         ),
                                       ],
                                     ),
@@ -459,10 +562,13 @@ class _SubscriptionsState extends State<Subscriptions> {
                                   itemBuilder: (context) => [
                                     PopupMenuItem(
                                       value: 'edit',
-                                      child: Row(children: [
-                                        Icon(Icons.edit),
-                                        SizedBox(width: 5,),
-                                        Text('Изменить')]),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.edit),
+                                          SizedBox(width: 5),
+                                          Text('Изменить'),
+                                        ],
+                                      ),
                                     ),
                                     PopupMenuItem(
                                       value: 'delete',
@@ -479,7 +585,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                                     ),
                                   ],
                                   onSelected: (value) async {
-                                    if (value == 'delete'){
+                                    if (value == 'delete') {
                                       String? token = await _storage.read(
                                         key: 'token',
                                       );
@@ -499,7 +605,9 @@ class _SubscriptionsState extends State<Subscriptions> {
                                       await Navigator.pushNamed(
                                         context,
                                         '/create_subscription',
-                                        arguments: {'id': _subscriptions[i]['id']},
+                                        arguments: {
+                                          'id': _subscriptions[i]['id'],
+                                        },
                                       );
                                       await _init();
                                     }
@@ -531,9 +639,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                           ),
                         ),
                         onTap: () async {
-                          launchUrl(
-                            Uri.parse(_subscriptions[i]['url']),
-                          );
+                          launchUrl(Uri.parse(_subscriptions[i]['url']));
                         },
                       );
                     },
@@ -544,19 +650,23 @@ class _SubscriptionsState extends State<Subscriptions> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.pushNamed(
-            context,
-            '/create_subscription',
-            arguments: {'id': null},
-          );
-          await _init();
-        },
-        backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-        child: Icon(Icons.add, color: Colors.white),
+      floatingActionButton: SizedBox(
+        height: orientation == Orientation.portrait ? 60.h : 60,
+        width: orientation == Orientation.portrait ? 60.h : 60,
+        child: FloatingActionButton(
+          onPressed: () async {
+            await Navigator.pushNamed(
+              context,
+              '/create_subscription',
+              arguments: {'id': null},
+            );
+            await _init();
+          },
+          backgroundColor: Color.fromRGBO(89, 65, 174, 1),
+          child: Icon(Icons.add, color: Colors.white),
+        ),
       ),
-      bottomNavigationBar: Footer(currentIndex: 1),
+      bottomNavigationBar: SafeArea(child: Footer(currentIndex: 2)),
     );
   }
 }

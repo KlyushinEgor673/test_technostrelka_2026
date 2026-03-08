@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChipButton extends StatelessWidget {
   const ChipButton({
@@ -14,11 +15,14 @@ class ChipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 48,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        height: orientation == Orientation.portrait ? 48.h : 48,
+        padding: EdgeInsets.symmetric(
+          horizontal: orientation == Orientation.portrait ? 20.w : 20,
+        ),
         decoration: BoxDecoration(
           color: isActive
               ? Color.fromRGBO(89, 65, 174, 1)
@@ -30,7 +34,7 @@ class ChipButton extends StatelessWidget {
             text,
             style: TextStyle(
               color: isActive ? Colors.white : Color.fromRGBO(126, 126, 154, 1),
-              fontSize: 15,
+              fontSize: orientation == Orientation.portrait ? 15.sp : 15,
               fontWeight: FontWeight.w500,
             ),
           ),

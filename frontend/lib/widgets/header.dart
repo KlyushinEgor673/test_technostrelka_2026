@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
@@ -12,7 +14,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 768) {
+    if (MediaQuery.of(context).size.width < 845 || Platform.isAndroid || Platform.isIOS) {
       return SizedBox.shrink();
     }
     return Container(

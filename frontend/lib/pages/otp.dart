@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
+import 'package:frontend/widgets/backend_button.dart';
+import 'package:frontend/widgets/box_otp.dart';
 import 'package:frontend/widgets/otp_box.dart';
 import 'package:provider/provider.dart';
 
@@ -24,17 +28,18 @@ class _OtpState extends State<Otp> {
   int seconds = 60;
   late final _dio;
   final _storage = FlutterSecureStorage();
+  bool _isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _dio = Provider.of<Dio>(context, listen: false);
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        _focusNode.requestFocus();
-      }
-    });
+    // _focusNode.addListener(() {
+    //   if (!_focusNode.hasFocus) {
+    //     _focusNode.requestFocus();
+    //   }
+    // });
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (seconds != 0) {
         setState(() {
@@ -44,9 +49,145 @@ class _OtpState extends State<Otp> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+    if (Platform.isAndroid || Platform.isIOS) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
+        body: ListView(
+          children: [
+            SizedBox(
+              height: orientation == Orientation.portrait
+                  ? (200.h - AppBar().preferredSize.height)
+                  : 20,
+              child: Opacity(
+                opacity: 0,
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: TextField(
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    maxLength: 4,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Код подтверждения',
+                style: TextStyle(
+                  fontSize: orientation == Orientation.portrait ? 24.sp : 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+            GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BoxOtp(
+                    char: _controller.text.length > 0
+                        ? _controller.text[0]
+                        : '',
+                  ),
+                  SizedBox(width: 15),
+                  BoxOtp(
+                    char: _controller.text.length > 1
+                        ? _controller.text[1]
+                        : '',
+                  ),
+                  SizedBox(width: 15),
+                  BoxOtp(
+                    char: _controller.text.length > 2
+                        ? _controller.text[2]
+                        : '',
+                  ),
+                  SizedBox(width: 15),
+                  BoxOtp(
+                    char: _controller.text.length > 3
+                        ? _controller.text[3]
+                        : '',
+                  ),
+                ],
+              ),
+              onTap: () {
+                _focusNode.requestFocus();
+                SystemChannels.textInput.invokeMethod('TextInput.show');
+              },
+            ),
+            SizedBox(height: orientation == Orientation.portrait ? 60.h : 60),
+            Center(
+              child: SizedBox(
+                width: orientation == Orientation.portrait ? 250.w : 250,
+                child: BackendButton(
+                  text: 'Подтвердить',
+                  isLoading: _isLoading,
+                  onPressed: () async {
+                    try {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      print(_controller.text);
+                      final response = await _dio.post(
+                        '/api/code/verify-code',
+                        data: jsonEncode({
+                          'email': widget.email,
+                          'code': _controller.text,
+                        }),
+                      );
+                      await _storage.write(
+                        key: 'token',
+                        value: response.data['token'],
+                      );
+                      Navigator.pushNamed(context, '/profile');
+                    } on DioException catch (e) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      Alerts.showError(context, e.response?.data['error']);
+                    }
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 7.5),
+            Center(
+              child: GestureDetector(
+                onTap: seconds != 0 ? (){
+                  print('a');
+                } : () async {
+                  await _dio.post(
+                    '/api/code/resend-code',
+                    data: jsonEncode({'email': widget.email}),
+                  );
+                  setState(() {
+                    seconds = 60;
+                  });
+                },
+                child: Text(
+                  seconds != 0
+                      ? 'Отправить код ещё раз через $seconds'
+                      : 'Отправить код ещё раз',
+                  style: TextStyle(color: Colors.grey, fontSize: orientation == Orientation.portrait ? 12.sp : 12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

@@ -18,12 +18,14 @@ import 'package:provider/provider.dart';
 Future<void> init(Dio dio) async {
   final storage = FlutterSecureStorage();
   String? token = await storage.read(key: 'token');
+  print('АОЛУЧЕНИЕ юMONEY');
   if (token != null) {
     final responseMe = await dio.get(
       '/api/user/me',
       options: Options(headers: {'authorization': 'Bearer $token'}),
     );
     if (responseMe.data['user']['is_enter_ym']) {
+      print('YOOOMONEY');
       final response = await dio.get(
         '/api/yoomoney/subscription',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
@@ -40,7 +42,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = FlutterSecureStorage();
   String? token = await storage.read(key: 'token');
-  final dio = Dio(BaseOptions(baseUrl: 'http://localhost:3000'));
+  final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:3000'));
   init(dio);
   runApp(
     Provider(

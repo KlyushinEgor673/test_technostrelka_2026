@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
@@ -48,81 +49,95 @@ class _YoomoneyState extends State<Yoomoney> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
       ),
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Вход в юMoney',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: orientation == Orientation.portrait
+                ? (200.h - AppBar().preferredSize.height)
+                : 20,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Вход в юMoney',
+              style: TextStyle(
+                fontSize: orientation == Orientation.portrait ? 24.sp : 24,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 15),
-            InputYoomoney(controller: _controllerEmail, isPassword: false),
-            SizedBox(height: 15),
-            InputYoomoney(controller: _controllerPassword, isPassword: true),
-            SizedBox(height: 15),
-            YoomoneyButton(
-              isCircular: _isSent,
-              isActive: _isNotEmpty,
-              onTap: _isNotEmpty
-                  ? () async {
-                      print(EmailValidator.validate(_controllerEmail.text));
-                      if (!EmailValidator.validate(_controllerEmail.text)) {
-                        Alerts.showError(context, 'Введите коректный email');
-                      } else {
-                        setState(() {
-                          _isSent = true;
-                          _isNotEmpty = false;
-                        });
-                        final token = await _storage.read(key: 'token');
-                        try {
-                          final response = await _dio.post(
-                            '/api/yoomoney/enter',
-                            data: jsonEncode({
-                              'email': _controllerEmail.text,
-                              'password': _controllerPassword.text,
-                            }),
-                            options: Options(
-                              headers: {'Authorization': 'Bearer $token'},
-                            ),
+          ),
+          SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+          InputYoomoney(
+            controller: _controllerEmail,
+            isPassword: false,
+            hintText: 'Email',
+          ),
+          SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+          InputYoomoney(
+            controller: _controllerPassword,
+            isPassword: true,
+            hintText: 'Пароль',
+          ),
+          SizedBox(height: 15),
+          YoomoneyButton(
+            isCircular: _isSent,
+            isActive: _isNotEmpty,
+            onTap: _isNotEmpty
+                ? () async {
+                    print(EmailValidator.validate(_controllerEmail.text));
+                    if (!EmailValidator.validate(_controllerEmail.text)) {
+                      Alerts.showError(context, 'Введите коректный email');
+                    } else {
+                      setState(() {
+                        _isSent = true;
+                        _isNotEmpty = false;
+                      });
+                      final token = await _storage.read(key: 'token');
+                      try {
+                        final response = await _dio.post(
+                          '/api/yoomoney/enter',
+                          data: jsonEncode({
+                            'email': _controllerEmail.text,
+                            'password': _controllerPassword.text,
+                          }),
+                          options: Options(
+                            headers: {'Authorization': 'Bearer $token'},
+                          ),
+                        );
+                        if (response.data['is_enter']) {
+                          Navigator.pushNamed(context, '/profile');
+                        }
+                      } on DioException catch (e) {
+                        if (e.response?.data['error'] ==
+                            'Необходим код подтверждения') {
+                          Navigator.pushNamed(
+                            context,
+                            '/yoomoney_code',
+                            arguments: {'email': _controllerEmail.text},
                           );
-                          if (response.data['is_enter']) {
-                            Navigator.pushNamed(context, '/profile');
-                          }
-                        } on DioException catch (e) {
-                          if (e.response?.data['error'] ==
-                              'Необходим код подтверждения') {
-                            Navigator.pushNamed(
-                              context,
-                              '/yoomoney_code',
-                              arguments: {'email': _controllerEmail.text},
-                            );
-                          } else {
-                            Alerts.showError(
-                              context,
-                              'Неверный логин или пароль',
-                            );
-                            setState(() {
-                              _isSent = false;
-                              _isNotEmpty = true;
-                            });
-                          }
+                        } else {
+                          Alerts.showError(
+                            context,
+                            'Неверный логин или пароль',
+                          );
+                          setState(() {
+                            _isSent = false;
+                            _isNotEmpty = true;
+                          });
                         }
                       }
                     }
-                  : () {},
-            ),
-          ],
-        ),
+                  }
+                : () {},
+          ),
+        ],
       ),
     );
   }

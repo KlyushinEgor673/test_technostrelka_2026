@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/alerts.dart';
+import 'package:frontend/widgets/backend_button.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -26,13 +27,32 @@ class _HomeState extends State<Home> {
 
   late final _dio;
   final _storage = FlutterSecureStorage();
+  bool _isLoading = false;
+
+  Map _checkPassword(String password) {
+    if (password.length < 8) {
+      return {'status': false, 'detail': 'Пароль слишком короткий'};
+    } else if (!password.contains(RegExp('[A-Z]'))) {
+      return {'status': false, 'detail': 'В пароле должна быть большая буква'};
+    } else if (!password.contains(RegExp('[0-9]'))) {
+      return {'status': false, 'detail': 'В пароле должна быть цифра'};
+    } else if (!password.contains(RegExp('[!@#\$%^&*]'))) {
+      return {
+        'status': false,
+        'detail': 'В пароле должен быть специальный символ',
+      };
+    }
+    return {'status': true};
+  }
 
   Future<void> _enter() async {
     if (_controllerPassword.text.isEmpty || _controllerEmail.text.isEmpty) {
       Alerts.showError(context, 'Заполните все поля');
     } else {
       try {
-        print('enter');
+        setState(() {
+          _isLoading = true;
+        });
         final response = await _dio.post(
           '/api/user/enter',
           data: jsonEncode({
@@ -40,18 +60,20 @@ class _HomeState extends State<Home> {
             'password': _controllerPassword.text,
           }),
         );
-        print(response);
         final data = response.data;
         await _storage.write(key: 'token', value: data['token']);
         Navigator.pushNamed(context, '/profile');
       } catch (e) {
+        setState(() {
+          _isLoading = false;
+        });
         Alerts.showError(context, 'Неверный логин или пароль');
       }
     }
   }
 
   Future<void> _register() async {
-    print('register');
+    print(!_checkPassword(_controllerPassword.text)['status']);
     if (_controllerPassword.text.isEmpty ||
         _controllerEmail.text.isEmpty ||
         _controllerName.text.isEmpty ||
@@ -59,8 +81,16 @@ class _HomeState extends State<Home> {
       Alerts.showError(context, 'Заполните все поля');
     } else if (!EmailValidator.validate(_controllerEmail.text)) {
       Alerts.showError(context, 'Введите коректный email');
+    } else if (!_checkPassword(_controllerPassword.text)['status']) {
+      Alerts.showError(
+        context,
+        _checkPassword(_controllerPassword.text)['detail'],
+      );
     } else {
       try {
+        setState(() {
+          _isLoading = true;
+        });
         await _dio.post(
           '/api/user/register',
           data: jsonEncode({
@@ -70,15 +100,24 @@ class _HomeState extends State<Home> {
             'surname': _controllerSurname.text,
           }),
         );
-        Navigator.pushNamed(
+        print('b');
+        await Navigator.pushNamed(
           context,
           '/otp',
           arguments: {'email': _controllerEmail.text},
         );
+        setState(() {
+          _isLoading = false;
+        });
       } on DioException catch (e) {
+        setState(() {
+          _isLoading = false;
+        });
+        print('error');
         if (e.response?.statusCode == 409) {
           Alerts.showError(context, 'Такой email уже занят');
         }
+        rethrow;
       }
     }
   }
@@ -96,9 +135,6 @@ class _HomeState extends State<Home> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     if (Platform.isAndroid || Platform.isIOS) {
-      print(
-        'width: ${MediaQuery.of(context).size.width}, height: ${MediaQuery.of(context).size.height}',
-      );
       return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -202,23 +238,18 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: orientation == Orientation.portrait ? 7.5.h : 7.5,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
-                ),
-                height: orientation == Orientation.portrait ? 50.h : 50,
-                child: FilledButton(
-                  onPressed: _isEnter ? _enter : _register,
-                  child: Text('Далее'),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(89, 65, 174, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
+              BackendButton(
+                text: 'Далее',
+                isLoading: _isLoading,
+                onPressed: _isLoading
+                    ? () {}
+                    : _isEnter
+                    ? _enter
+                    : _register,
               ),
-              SizedBox(height: orientation == Orientation.portrait ? 7.5.h : 7.5),
+              SizedBox(
+                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+              ),
               Center(
                 child: GestureDetector(
                   child: Text(
@@ -226,6 +257,9 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                       color: Color.fromRGBO(89, 65, 174, 1),
                       fontWeight: FontWeight.w500,
+                      fontSize: orientation == Orientation.portrait
+                          ? 12.sp
+                          : 12,
                     ),
                   ),
                   onTap: () {
