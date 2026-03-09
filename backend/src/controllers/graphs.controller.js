@@ -216,7 +216,8 @@ const graphsYoomoneySubs = async (req, res) => {
             }
 
             date += dateArr[0];
-
+            date += "T00:00:00.000Z"
+            
             const price = parseFloat(notFormattedPrice);
 
             console.log("Найдена подписка:", price, date);
