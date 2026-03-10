@@ -4,6 +4,7 @@ require("dotenv").config();
 // библиотеки
 const express = require("express");
 const cors = require("cors");
+const cron = require('node-cron');
 
 // парсинг (оставляем для Selenium)
 require('chromedriver');
@@ -18,7 +19,16 @@ const swaggerDocument = require("./swagger-output.json");
 // маршруты
 const routes = require("./routes/index");
 
+// функции
+const { updateExpiredSubscriptions } = require('./services/cron')
+
 const app = express();
+
+updateExpiredSubscriptions();
+
+cron.schedule('0 0 * * *', () => {
+  updateExpiredSubscriptions();
+})
 
 // CORS настройки
 app.use(

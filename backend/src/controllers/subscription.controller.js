@@ -6,7 +6,7 @@ const { addDays, differenceInDays }  = require('date-fns')
 // Создание подписки
 const createSubscription = async (req, res) => {
   try {
-    const { name, category, period, end_date, price, flag_auto, url } = req.body
+    const { name, category_id, period, end_date, price, flag_auto, url } = req.body
     const img = req.file?.buffer
 
     if (!req.file) {
@@ -16,7 +16,7 @@ const createSubscription = async (req, res) => {
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
-    if (!category) {
+    if (!category_id) {
       return res.status(400).json({ error: "Категория подписки обязательна" });
     }
     if (!period) {
@@ -35,8 +35,15 @@ const createSubscription = async (req, res) => {
       return res.status(400).json({ error: "URL оплаты обязателен" })
     }
 
+    const checkCategory = await prisma.category.findUnique({
+      where: { id: parseInt(category_id) }
+    })
+
+    if(!checkCategory){
+      return res.status(404).json({ error: "Категория с данным id не найдена" })
+    }
+
     const formattedEndDate = new Date(end_date);
-    formattedEndDate.setDate(formattedEndDate.getDate() + 1);
     const formattedPeriod = parseInt(period);
     const formattedPrice = parseFloat(price);
     const flagAutoBool = flag_auto === 'true' || flag_auto === true;
@@ -87,7 +94,7 @@ const createSubscription = async (req, res) => {
     await prisma.subscriptions.create({
       data: {
         name: name,
-        category: category,
+        category_id: parseInt(category_id),
         period: formattedPeriod,
         end_date: formattedEndDate,
         price: formattedPrice,
@@ -121,7 +128,7 @@ const createSubscription = async (req, res) => {
 // Изменение подписки
 const updateSubscription = async (req, res) => {
   try {
-    const { id, name, category, period, end_date, price, flag_auto, url } = req.body
+    const { id, name, category_id, period, end_date, price, flag_auto, url } = req.body
     const img = req.file?.buffer
 
     if (!id) {
@@ -130,7 +137,7 @@ const updateSubscription = async (req, res) => {
     if (!name) {
       return res.status(400).json({ error: "Название подписки обязательно" });
     }
-    if (!category) {
+    if (!category_id) {
       return res.status(400).json({ error: "Категория подписки обязательна" });
     }
     if (!period) {
@@ -149,6 +156,7 @@ const updateSubscription = async (req, res) => {
       return res.status(400).json({ error: "URL оплаты обязателен" });
     }
 
+    //проверка на существование подписки
     const existingSubscription = await prisma.subscriptions.findUnique({
       where: { id: parseInt(id) }
     });
@@ -157,15 +165,24 @@ const updateSubscription = async (req, res) => {
       return res.status(404).json({ error: "Подписка не найдена" });
     }
 
+    //проверка на права доступа
     if (existingSubscription.id_user !== req.user.id) {
       return res.status(403).json({ error: "Нет доступа" })
+    }
+
+    //проверка на существование категории
+    const checkCategory = await prisma.category.findUnique({
+      where: { id: parseInt(category_id) }
+    })
+
+    if(checkCategory){
+      return res.status(404).json({ error: "Категория с данным id не найдена" })
     }
 
 
     try {
 
       const formattedEndDate = new Date(end_date);
-      // formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
@@ -252,7 +269,7 @@ const updateSubscription = async (req, res) => {
         where: { id: parseInt(id) },
         data: {
           name: name,
-          category: category,
+          category_id: parseInt(category_id),
           period: formattedPeriod,
           end_date: formattedEndDate,
           price: formattedPrice,
@@ -472,10 +489,43 @@ const deleteSubscription = async (req, res) => {
   }
 };
 
+
+
+//получение всех подписок всех пользователей
+const getAllSubs = async (req, res) => {
+  try {
+    const allSubs = await prisma.subscriptions.findMany()
+    res.status(200).json({ allSubs })
+  } catch (error) {
+    console.error("Ошибка:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+//получение категорий подписок
+const getCategorySubs = async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany()
+
+    if(!categories){
+      return res.status(400).jspn({ error: "Произошла ошибка при получении категорий" })
+    }
+
+    res.status(200).json({ categories })
+  } catch (error) {
+    console.error("Ошибка:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createSubscription,
   updateSubscription,
   getSubscriptions,
   getHistorySubscriptions,
-  deleteSubscription
+  deleteSubscription,
+  getAllSubs,
+  getCategorySubs
 };

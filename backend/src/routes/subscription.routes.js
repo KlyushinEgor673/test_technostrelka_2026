@@ -5,7 +5,9 @@ const {
   updateSubscription, 
   getSubscriptions,
   getHistorySubscriptions,
-  deleteSubscription 
+  deleteSubscription,
+  getAllSubs,
+  getCategorySubs
 } = require('../controllers/subscription.controller');
 const multer = require('multer')
 const { authMiddleware } = require('../middlewares/auth.middleware');
@@ -26,9 +28,9 @@ router.post(
     required: true,
     description: 'Название подписки'
   } */
-  /* #swagger.parameters['category'] = {
+  /* #swagger.parameters['category_id'] = {
     in: 'formData',
-    type: 'string',
+    type: 'integer',
     required: true,
     description: 'Категория подписки'
   } */
@@ -111,9 +113,9 @@ router.put("/", upload.single('img'), authMiddleware,
     required: true,
     description: 'Название подписки'
   } */
-  /* #swagger.parameters['category'] = {
+  /* #swagger.parameters['category_id'] = {
     in: 'formData',
-    type: 'string',
+    type: 'integer',
     required: true,
     description: 'Категория подписки'
   } */
@@ -184,16 +186,30 @@ router.get("/", authMiddleware,
   getSubscriptions
 );
 
-// Получение истории всех подписок
-router.get("/history", authMiddleware, 
-  /* #swagger.tags = ['Subscription'] #swagger.summary = 'Получение всей истории подписок пользователя' */
-  getHistorySubscriptions
-);
-
 // Удаление подписки
 router.delete("/", authMiddleware,
   /* #swagger.tags = ['Subscription'] #swagger.summary = 'Удаление подписки' */
   deleteSubscription
 );
+
+// Получение всех подписок всех пользователей
+router.get("/all", authMiddleware,
+  /* #swagger.tags = ['Subscription'] #swagger.summary = 'Получение всех подписок всех пользователей' */
+  getAllSubs
+);
+
+// Получение истории всех подписок пользователя
+router.get("/history", authMiddleware,
+  /* #swagger.tags = ['Subscription'] #swagger.summary = 'Получение всей истории подписок пользователя' */
+  getHistorySubscriptions
+);
+
+// Получение всех категорий подписок
+router.get("/category", authMiddleware,
+  /* #swagger.tags = ['Subscription'] #swagger.summary = 'Получение всех категорий подписок' */
+  getCategorySubs
+);
+
+
 
 module.exports = router;

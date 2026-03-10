@@ -137,7 +137,7 @@ exports.Prisma.UsersScalarFieldEnum = {
 exports.Prisma.SubscriptionsScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  category: 'category',
+  category_id: 'category_id',
   period: 'period',
   end_date: 'end_date',
   price: 'price',
@@ -151,6 +151,11 @@ exports.Prisma.Debiting_subscriptionsScalarFieldEnum = {
   date: 'date',
   price: 'price',
   user_id: 'user_id'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.SortOrder = {
@@ -183,7 +188,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   users: 'users',
   subscriptions: 'subscriptions',
-  debiting_subscriptions: 'debiting_subscriptions'
+  debiting_subscriptions: 'debiting_subscriptions',
+  category: 'category'
 };
 
 /**
