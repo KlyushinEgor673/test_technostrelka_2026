@@ -20,14 +20,19 @@ const swaggerDocument = require("./swagger-output.json");
 const routes = require("./routes/index");
 
 // функции
-const { updateExpiredSubscriptions } = require('./services/cron')
+const { updateExpiredSubscriptions, notificationSubs } = require('./services/cron')
 
 const app = express();
 
 updateExpiredSubscriptions();
+notificationSubs();
 
-cron.schedule('0 0 * * *', () => {
+cron.schedule('0 10 * * *', () => {
   updateExpiredSubscriptions();
+})
+
+cron.schedule('0 10 * * *', () => {
+  notificationSubs();
 })
 
 // CORS настройки

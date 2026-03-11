@@ -175,7 +175,7 @@ const updateSubscription = async (req, res) => {
       where: { id: parseInt(category_id) }
     })
 
-    if(checkCategory){
+    if(!checkCategory){
       return res.status(404).json({ error: "Категория с данным id не найдена" })
     }
 
@@ -308,69 +308,7 @@ const getSubscriptions = async (req, res) => {
         id: 'asc'
       }
     })
-
-    const currentDate = new Date()
-
-    for (let sub of subs){
-      if(differenceInDays(sub.end_date, currentDate) < 1){
-        //сюда добавить условие, стоит ли флаг автопродления
-        if (sub.flag_auto == true) {
-          const newDate = addDays(sub.end_date, sub.period)
-
-          await prisma.subscriptions.update({
-            where: { id: sub.id },
-            data: {
-              end_date: newDate
-            }
-          })
-          console.log("1. обновилась подписка")
-
-
-          const debSubs = await prisma.debiting_subscriptions.findUnique({
-            where: { 
-              date_user_id: {
-                date: sub.end_date,
-                user_id: req.user.id
-              }
-            }
-          })
-          console.log("2. ищет debSubs")
-
-          if(!debSubs){
-            await prisma.debiting_subscriptions.create({
-              data: {
-                date: sub.end_date,
-                user_id: req.user.id,
-                price: sub.price
-              }
-            })
-            console.log("3. создает новый")
-          } else {
-            await prisma.debiting_subscriptions.update({
-              where: {
-                date_user_id: {
-                  date: sub.end_date,
-                  user_id: req.user.id
-                }
-              },
-              data: {
-                price: {
-                  increment: sub.price
-                }
-              }
-            })
-            console.log("3. обновляет старый")
-          }
-        } else {
-          await prisma.subscriptions.delete({
-            where: { id: sub.id }
-          })
-          console.log("2. удаляет старую подписку")
-        }
-        
-      }
-    }
-
+    
     const subscriptionsWithBase64 = subs.map(sub => {
       if (sub.img) {
         sub.img = bytesToBase64(sub.img)

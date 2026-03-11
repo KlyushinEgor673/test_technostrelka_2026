@@ -2,11 +2,14 @@ const cron = require('node-cron');
 const prisma = require('../client');
 const { addDays, differenceInDays } = require('date-fns');
 const { bytesToBase64 } = require('byte-base64');
+const { sendSubscriptionDebitNotification } = require('./email.service')
+
+const currentDate = new Date();
 
 // Функция для обновления подписок
 const updateExpiredSubscriptions = async () => {
   console.log(`[${new Date().toISOString()}] Запуск проверки просроченных подписок...`);
-  
+
   try {
     // Получаем всех пользователей (или можно получать подписки по одному)
     const users = await prisma.users.findMany({
@@ -19,8 +22,6 @@ const updateExpiredSubscriptions = async () => {
           id_user: user.id
         }
       });
-
-      const currentDate = new Date();
 
       for (const sub of subs) {
         if (differenceInDays(sub.end_date, currentDate) < 1) {
@@ -81,8 +82,55 @@ const updateExpiredSubscriptions = async () => {
   }
 };
 
-// Запуск каждый день в 00:00 (полночь)
-cron.schedule('0 0 * * *', () => {
+
+
+//уведомления о списании
+const notificationSubs = async () => {
+  console.log(`[${new Date().toISOString()}] Запуск отправки уведомлений о списании...`);
+  try {
+
+    const subs = await prisma.subscriptions.findMany()
+
+    for (let sub of subs) {
+      try {
+
+        const difDays = differenceInDays(sub.end_date, currentDate) + 1
+
+        console.log(`sub difference: ${difDays}`)
+
+        if(difDays > 0 && difDays < 4) {
+          const user = await prisma.users.findUnique({
+            where: { id: sub.id_user }
+          })
+
+          const email = user.email
+
+          const subscriptionDetails = {
+            subscriptionName: sub.name,
+            amount: sub.price,
+            in_a_few: difDays
+          }
+
+          sendSubscriptionDebitNotification(email, subscriptionDetails)
+
+          console.log(`Письмо было отправлено на ${email}`);
+        }
+      } catch (error) {
+        console.error(`Ошибка при отправке сообщения на почту при списании:`, error);
+      }
+    }
+  } catch (error) {
+    console.error(`[${new Date().toISOString()}] Ошибка при отправке уведомлений о списании:`, error);
+  }
+}
+
+// Запуск каждый день в 10:00
+cron.schedule('0 10 * * *', () => {
+  updateExpiredSubscriptions();
+});
+
+// Запуск каждый день в 10:00
+cron.schedule('0 10 * * *', () => {
   updateExpiredSubscriptions();
 });
 
@@ -91,4 +139,4 @@ cron.schedule('0 0 * * *', () => {
 // Каждый час: '0 * * * *'
 // Каждый день в 3 часа ночи: '0 3 * * *'
 
-module.exports = { updateExpiredSubscriptions };
+module.exports = { updateExpiredSubscriptions, notificationSubs };
