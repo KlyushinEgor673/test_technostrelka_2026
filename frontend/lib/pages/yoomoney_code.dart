@@ -25,6 +25,32 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
   final _storage = FlutterSecureStorage();
   bool _isSent = false;
 
+  Future<void> _getYoomoney(Dio dio) async{
+    String? token = await _storage.read(key: 'token');
+    final response = await dio.get(
+      '/api/yoomoney/subscription',
+      options: Options(headers: {'authorization': 'Bearer $token'}),
+    );
+    await _storage.write(
+      key: 'yoomoney_subscriptions',
+      value: jsonEncode(response.data['subscriptions']),
+    );
+  }
+
+  Future<void> _getYoomoneyChart(
+      Dio dio,
+      ) async {
+    String? token = await _storage.read(key: 'token');
+    final response = await dio.get(
+      '/api/graphs/graphsYoomoneySubs',
+      options: Options(headers: {'authorization': 'Bearer $token'}),
+    );
+    await _storage.write(
+      key: 'yoomoneyChart',
+      value: jsonEncode(response.data['subs']),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -88,6 +114,8 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
                             headers: {'Authorization': 'Bearer $token'},
                           ),
                         );
+                        _getYoomoney(_dio);
+                        _getYoomoneyChart(_dio);
                         Navigator.pushNamed(context, '/profile');
                       } on DioException catch (e) {
                         setState(() {

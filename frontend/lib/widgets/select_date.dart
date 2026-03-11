@@ -44,6 +44,9 @@ class _SelectDateState extends State<SelectDate> {
           borderRadius: BorderRadius.circular(10),
           color: Color.fromRGBO(240, 240, 240, 1),
         ),
+        constraints: BoxConstraints(
+            maxWidth: 700
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -52,7 +55,7 @@ class _SelectDateState extends State<SelectDate> {
               value ?? widget.hintText,
               style: TextStyle(
                 color: value != null ? Colors.black : Colors.grey,
-                fontSize: orientation == Orientation.portrait ? 16.sp : 16
+                fontSize: 16
               ),
             ),
           ],

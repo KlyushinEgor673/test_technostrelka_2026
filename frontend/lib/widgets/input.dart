@@ -40,6 +40,9 @@ class _InputState extends State<Input> {
         borderRadius: BorderRadius.circular(10),
         color: Color.fromRGBO(240, 240, 240, 1),
       ),
+      constraints: BoxConstraints(
+        maxWidth: 700
+      ),
       child: Row(
         children: [
           SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
@@ -50,7 +53,7 @@ class _InputState extends State<Input> {
                   : null,
               inputFormatters: [],
               style: TextStyle(
-                fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                fontSize: 16,
               ),
               controller: widget.controller,
               obscureText: _isPassword,
@@ -59,7 +62,7 @@ class _InputState extends State<Input> {
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                   color: Colors.grey,
-                  fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                  fontSize: 16,
                 ),
               ),
             ),

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
@@ -28,6 +28,37 @@ class _HomeState extends State<Home> {
   late final _dio;
   final _storage = FlutterSecureStorage();
   bool _isLoading = false;
+
+  Future<void> _getYoomoney(Dio dio) async {
+    String? token = await _storage.read(key: 'token');
+    final responseMe = await dio.get(
+      '/api/user/me',
+      options: Options(headers: {'authorization': 'Bearer $token'}),
+    );
+    if (responseMe.data['user']['is_enter_ym']) {
+      final response = await dio.get(
+        '/api/yoomoney/subscription',
+        options: Options(headers: {'authorization': 'Bearer $token'}),
+      );
+      print(response.data);
+      await _storage.write(
+        key: 'yoomoney_subscriptions',
+        value: jsonEncode(response.data['subscriptions']),
+      );
+    }
+  }
+
+  Future<void> _getYoomoneyChart(Dio dio) async {
+    String? token = await _storage.read(key: 'token');
+    final response = await dio.get(
+      '/api/graphs/graphsYoomoneySubs',
+      options: Options(headers: {'authorization': 'Bearer $token'}),
+    );
+    await _storage.write(
+      key: 'yoomoneyChart',
+      value: jsonEncode(response.data['subs']),
+    );
+  }
 
   Map _checkPassword(String password) {
     if (password.length < 8) {
@@ -62,6 +93,8 @@ class _HomeState extends State<Home> {
         );
         final data = response.data;
         await _storage.write(key: 'token', value: data['token']);
+        _getYoomoney(_dio);
+        _getYoomoneyChart(_dio);
         Navigator.pushNamed(context, '/profile');
       } catch (e) {
         setState(() {
@@ -73,7 +106,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _register() async {
-    print(!_checkPassword(_controllerPassword.text)['status']);
+    print('REGISTER');
     if (_controllerPassword.text.isEmpty ||
         _controllerEmail.text.isEmpty ||
         _controllerName.text.isEmpty ||
@@ -131,10 +164,23 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final orientation = MediaQuery.of(context).orientation;
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    if (Platform.isAndroid || Platform.isIOS) {
+    final orientation = MediaQuery
+        .of(context)
+        .orientation;
+    final double width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final double height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    if (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS ||
+        MediaQuery
+            .of(context)
+            .size
+            .width < 840) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -149,10 +195,7 @@ class _HomeState extends State<Home> {
                 ),
                 child: Text(
                   _isEnter ? 'Вход' : 'Регистрация',
-                  style: TextStyle(
-                    fontSize: orientation == Orientation.portrait ? 24.sp : 24,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
               ),
               SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
@@ -238,14 +281,19 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: orientation == Orientation.portrait ? 7.5.h : 7.5,
               ),
-              BackendButton(
-                text: 'Далее',
-                isLoading: _isLoading,
-                onPressed: _isLoading
-                    ? () {}
-                    : _isEnter
-                    ? _enter
-                    : _register,
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                ),
+                child: BackendButton(
+                  text: 'Далее',
+                  isLoading: _isLoading,
+                  onPressed: _isLoading
+                      ? () {}
+                      : _isEnter
+                      ? _enter
+                      : _register,
+                ),
               ),
               SizedBox(
                 height: orientation == Orientation.portrait ? 7.5.h : 7.5,
@@ -257,9 +305,7 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                       color: Color.fromRGBO(89, 65, 174, 1),
                       fontWeight: FontWeight.w500,
-                      fontSize: orientation == Orientation.portrait
-                          ? 12.sp
-                          : 12,
+                      fontSize: 12,
                     ),
                   ),
                   onTap: () {
@@ -275,383 +321,185 @@ class _HomeState extends State<Home> {
       );
     }
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(225, 228, 234, 1),
-              Color.fromRGBO(211, 222, 250, 1),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          width: 800,
+          height: 520,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(228, 232, 245, 0.6),
+                blurRadius: 20,
+              ),
             ],
           ),
-        ),
-        child: LayoutBuilder(
-          builder: (context, constrains) {
-            if (constrains.maxWidth > 840 && constrains.maxHeight > 500) {
-              return Center(
+          child: Stack(
+            children: [
+              AnimatedPositioned(
+                left: _isEnter ? 0 : 800 - (800 * 0.55),
+                top: 0,
+                duration: Duration(milliseconds: 300),
+                child: SizedBox(
+                  width: 800 * 0.55,
+                  height: 520,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _isEnter ? 'Вход' : 'Регистрация',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: width * 0.03),
+                        child: Input(
+                          hintText: 'Email',
+                          isPassword: false,
+                          controller: _controllerEmail,
+                          type: InputTypeCustom.inputText,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: width * 0.03),
+                        child: Input(
+                          hintText: 'Пароль',
+                          isPassword: true,
+                          controller: _controllerPassword,
+                          type: InputTypeCustom.inputText,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      if (!_isEnter)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width * 0.03,
+                          ),
+                          child: Input(
+                            hintText: 'Имя',
+                            isPassword: false,
+                            controller: _controllerName,
+                            type: InputTypeCustom.inputText,
+                          ),
+                        ),
+                      if (!_isEnter) SizedBox(height: 15),
+                      if (!_isEnter)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width * 0.03,
+                          ),
+                          child: Input(
+                            hintText: 'Фамилия',
+                            isPassword: false,
+                            controller: _controllerSurname,
+                            type: InputTypeCustom.inputText,
+                          ),
+                        ),
+                      if (_isEnter)
+                        GestureDetector(
+                          child: Text(
+                            'Забыли ваш пароль?',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      SizedBox(height: _isEnter ? 15 : 30),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: width * 0.03),
+                        width: double.infinity,
+                        child: BackendButton(text: 'Далее', isLoading: _isLoading,
+                            onPressed: _isEnter ? _enter : _register),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              AnimatedPositioned(
+                left: _isEnter ? 800 - (800 * 0.45) : 0,
+                top: 0,
+                duration: Duration(milliseconds: 300),
                 child: Container(
-                  width: 800,
+                  width: 800 * 0.45,
                   height: 520,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withAlpha(100),
-                        spreadRadius: 8,
-                        blurRadius: 8,
-                      ),
-                    ],
-                  ),
-                  child: Stack(
-                    children: [
-                      AnimatedPositioned(
-                        left: _isEnter ? 0 : 800 - (800 * 0.55),
-                        top: 0,
-                        duration: Duration(milliseconds: 300),
-                        child: SizedBox(
-                          width: 800 * 0.55,
-                          height: 520,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                _isEnter ? 'Вход' : 'Регистрация',
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: width * 0.03,
-                                ),
-                                child: Input(
-                                  hintText: 'Email',
-                                  isPassword: false,
-                                  controller: _controllerEmail,
-                                  type: InputTypeCustom.inputText,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: width * 0.03,
-                                ),
-                                child: Input(
-                                  hintText: 'Пароль',
-                                  isPassword: true,
-                                  controller: _controllerPassword,
-                                  type: InputTypeCustom.inputText,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              if (!_isEnter)
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: width * 0.03,
-                                  ),
-                                  child: Input(
-                                    hintText: 'Имя',
-                                    isPassword: false,
-                                    controller: _controllerName,
-                                    type: InputTypeCustom.inputText,
-                                  ),
-                                ),
-                              if (!_isEnter) SizedBox(height: 15),
-                              if (!_isEnter)
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: width * 0.03,
-                                  ),
-                                  child: Input(
-                                    hintText: 'Фамилия',
-                                    isPassword: false,
-                                    controller: _controllerSurname,
-                                    type: InputTypeCustom.inputText,
-                                  ),
-                                ),
-                              if (_isEnter)
-                                GestureDetector(
-                                  child: Text(
-                                    'Забыли ваш пароль?',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              SizedBox(height: _isEnter ? 15 : 30),
-                              GestureDetector(
-                                onTap: _isEnter ? _enter : _register,
-                                child: IntrinsicWidth(
-                                  child: Container(
-                                    height: 50,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 30,
-                                    ),
-                                    constraints: BoxConstraints(minWidth: 200),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(89, 65, 174, 1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        _isEnter
-                                            ? 'Войти'
-                                            : 'Зарегистрироваться',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      AnimatedPositioned(
-                        left: _isEnter ? 800 - (800 * 0.45) : 0,
-                        top: 0,
-                        duration: Duration(milliseconds: 300),
-                        child: Container(
-                          width: 800 * 0.45,
-                          height: 520,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(_isEnter ? 100 : 30),
-                              bottomLeft: Radius.circular(_isEnter ? 100 : 30),
-                              topRight: Radius.circular(_isEnter ? 30 : 100),
-                              bottomRight: Radius.circular(_isEnter ? 30 : 100),
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(97, 93, 186, 1),
-                                Color.fromRGBO(89, 65, 174, 1),
-                              ],
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Привет!',
-                                style: TextStyle(
-                                  fontSize: 44,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                textAlign: TextAlign.center,
-                                _isEnter
-                                    ? 'Еще не зарегистрированы? Пройдите регистрацию →'
-                                    : 'Уже есть аккаунт? Войдите в него →',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              GestureDetector(
-                                child: IntrinsicWidth(
-                                  child: Container(
-                                    height: 50,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 70,
-                                    ),
-                                    constraints: BoxConstraints(
-                                      minWidth: _isEnter ? 280 : 200,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        _isEnter ? 'Регистрация' : 'Вход',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    _isEnter = !_isEnter;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        constraints: BoxConstraints(maxWidth: 500),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withAlpha(100),
-                              spreadRadius: 8,
-                              blurRadius: 8,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 38, bottom: 20),
-                              child: Center(
-                                child: Text(
-                                  _isEnter ? 'Вход' : 'Регистрация',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20),
-                              child: Input(
-                                isPassword: false,
-                                hintText: 'Email',
-                                controller: _controllerEmail,
-                                type: InputTypeCustom.inputText,
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20),
-                              child: Input(
-                                isPassword: true,
-                                hintText: 'Пароль',
-                                controller: _controllerPassword,
-                                type: InputTypeCustom.inputText,
-                              ),
-                            ),
-                            if (!_isEnter) SizedBox(height: 15),
-                            if (!_isEnter)
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20),
-                                child: Input(
-                                  isPassword: false,
-                                  hintText: 'Имя',
-                                  controller: _controllerName,
-                                  type: InputTypeCustom.inputText,
-                                ),
-                              ),
-                            if (!_isEnter) SizedBox(height: 15),
-                            if (!_isEnter)
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20),
-                                child: Input(
-                                  isPassword: false,
-                                  hintText: 'Фамилия',
-                                  controller: _controllerSurname,
-                                  type: InputTypeCustom.inputText,
-                                ),
-                              ),
-                            SizedBox(height: 7.5),
-                            if (_isEnter)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(right: 20),
-                                    child: Text(
-                                      'Восстановить',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            SizedBox(height: _isEnter ? 7.5 : 22.5),
-                            Center(
-                              child: GestureDetector(
-                                onTap: _isEnter ? _enter : _register,
-                                child: IntrinsicWidth(
-                                  child: Container(
-                                    height: 50,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 30,
-                                    ),
-                                    constraints: BoxConstraints(minWidth: 200),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(89, 65, 174, 1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        _isEnter
-                                            ? 'Войти'
-                                            : 'Зарегистрироваться',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            Center(
-                              child: GestureDetector(
-                                child: Text(
-                                  _isEnter
-                                      ? 'Еще не зарегистрированы?\nПройдите регистрацию →'
-                                      : 'Уже есть аккаунт?\nВойдите в него →',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: Color.fromRGBO(113, 113, 113, 1),
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    _isEnter = !_isEnter;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(height: 38),
-                          ],
-                        ),
-                      ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(_isEnter ? 100 : 30),
+                      bottomLeft: Radius.circular(_isEnter ? 100 : 30),
+                      topRight: Radius.circular(_isEnter ? 30 : 100),
+                      bottomRight: Radius.circular(_isEnter ? 30 : 100),
                     ),
-                  ],
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromRGBO(97, 93, 186, 1),
+                        Color.fromRGBO(89, 65, 174, 1),
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Привет!',
+                        style: TextStyle(
+                          fontSize: 44,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        textAlign: TextAlign.center,
+                        _isEnter
+                            ? 'Еще не зарегистрированы? Пройдите регистрацию →'
+                            : 'Уже есть аккаунт? Войдите в него →',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      GestureDetector(
+                        child: IntrinsicWidth(
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(horizontal: 70),
+                            constraints: BoxConstraints(
+                              minWidth: _isEnter ? 280 : 200,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1, color: Colors.white),
+                            ),
+                            child: Center(
+                              child: Text(
+                                _isEnter ? 'Регистрация' : 'Вход',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _isEnter = !_isEnter;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            }
-          },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,0 @@
-server:
-  host: "localhost.ru"  # !!! ВАЖНО: меняем на localhost.ru
-  port: 8080
-  https:
-    cert-path: "localhost.ru.pem"      # Файл сертификата
-    cert-key-path: "localhost.ru-key.pem"   # Файл ключа

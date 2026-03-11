@@ -23,6 +23,9 @@ class YoomoneyButton extends StatelessWidget {
         margin: EdgeInsets.symmetric(
           horizontal: orientation == Orientation.portrait ? 20.w : 20,
         ),
+        constraints: BoxConstraints(
+          maxWidth: 700
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: isActive

@@ -16,10 +16,7 @@ class BackendButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: orientation == Orientation.portrait ? 20.w : 20,
-      ),
+    return SizedBox(
       height: orientation == Orientation.portrait ? 50.h : 50,
       child: FilledButton(
         onPressed: onPressed,
@@ -44,7 +41,7 @@ class BackendButton extends StatelessWidget {
             : Text(
                 text,
                 style: TextStyle(
-                  fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                  fontSize: 16,
                 ),
               ),
       ),

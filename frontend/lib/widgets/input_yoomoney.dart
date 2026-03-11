@@ -34,6 +34,9 @@ class _InputYoomoneyState extends State<InputYoomoney> {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     return Container(
+      constraints: BoxConstraints(
+        maxWidth: 700
+      ),
       height: orientation == Orientation.portrait ? 50.h : 50,
       margin: EdgeInsets.symmetric(
         horizontal: orientation == Orientation.portrait ? 20.w : 20,

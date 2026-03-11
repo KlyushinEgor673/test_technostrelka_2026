@@ -1,5 +1,6 @@
-import 'dart:io';
 
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,7 +13,8 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     if (MediaQuery.of(context).size.width > 845 &&
-        !(Platform.isAndroid || Platform.isIOS)) {
+        !(defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS)) {
       return SizedBox.shrink();
     }
     return Container(
