@@ -433,7 +433,14 @@ const deleteSubscription = async (req, res) => {
 const getAllSubs = async (req, res) => {
   try {
     const allSubs = await prisma.subscriptions.findMany()
-    res.status(200).json({ allSubs })
+    
+    const allSubsWithBase64 = allSubs.map(sub => {
+      if (sub.img) {
+        sub.img = bytesToBase64(sub.img)
+      }
+      return sub;
+    });
+    res.status(200).json({ allSubsWithBase64 })
   } catch (error) {
     console.error("Ошибка:", error);
     res.status(500).json({ error: "Internal server error" });
