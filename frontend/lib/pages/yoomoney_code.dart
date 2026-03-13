@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
@@ -80,7 +79,7 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
           children: [
             SizedBox(
               height: orientation == Orientation.portrait
-                  ? (200.h - AppBar().preferredSize.height)
+                  ? (200 - AppBar().preferredSize.height)
                   : 20,
             ),
             Container(

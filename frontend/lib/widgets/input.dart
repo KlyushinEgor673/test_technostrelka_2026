@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum InputTypeCustom { inputText, inputInt, inputDouble }
 
@@ -35,17 +34,17 @@ class _InputState extends State<Input> {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     return Container(
-      height: orientation == Orientation.portrait ? 50.h : 50,
+      height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Color.fromRGBO(240, 240, 240, 1),
       ),
       constraints: BoxConstraints(
-        maxWidth: 700
+        maxWidth: 500
       ),
       child: Row(
         children: [
-          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
+          SizedBox(width: 14),
           Expanded(
             child: TextField(
               keyboardType: widget.type != InputTypeCustom.inputText
@@ -79,7 +78,7 @@ class _InputState extends State<Input> {
                 color: Colors.grey,
               ),
             ),
-          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
+          SizedBox(width: 14),
         ],
       ),
     );

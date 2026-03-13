@@ -9,7 +9,6 @@ import 'package:frontend/widgets/backend_button.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -187,23 +186,23 @@ class _HomeState extends State<Home> {
           child: ListView(
             children: [
               SizedBox(
-                height: orientation == Orientation.portrait ? 200.h : 20,
+                height: 20,
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  horizontal:  20,
                 ),
                 child: Text(
                   _isEnter ? 'Вход' : 'Регистрация',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
               ),
-              SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+              SizedBox(height: 15),
               Container(
                 margin: EdgeInsets.symmetric(
-                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  horizontal: 20,
                 ),
-                height: orientation == Orientation.portrait ? 50.h : 50,
+                height: 50,
                 child: Input(
                   isPassword: false,
                   hintText: 'Email',
@@ -211,12 +210,12 @@ class _HomeState extends State<Home> {
                   type: InputTypeCustom.inputText,
                 ),
               ),
-              SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+              SizedBox(height: 15),
               Container(
                 margin: EdgeInsets.symmetric(
-                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  horizontal:  20,
                 ),
-                height: orientation == Orientation.portrait ? 50.h : 50,
+                height: 50,
                 child: Input(
                   isPassword: true,
                   hintText: 'Пароль',
@@ -224,13 +223,13 @@ class _HomeState extends State<Home> {
                   type: InputTypeCustom.inputText,
                 ),
               ),
-              if (!_isEnter) SizedBox(height: 15.h),
+              if (!_isEnter) SizedBox(height: 15),
               if (!_isEnter)
                 Container(
                   margin: EdgeInsets.symmetric(
-                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                    horizontal: 20,
                   ),
-                  height: orientation == Orientation.portrait ? 50.h : 50,
+                  height: 50,
                   child: Input(
                     isPassword: false,
                     hintText: 'Имя',
@@ -240,14 +239,14 @@ class _HomeState extends State<Home> {
                 ),
               if (!_isEnter)
                 SizedBox(
-                  height: orientation == Orientation.portrait ? 15.h : 15,
+                  height: 15,
                 ),
               if (!_isEnter)
                 Container(
                   margin: EdgeInsets.symmetric(
-                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                    horizontal: 20,
                   ),
-                  height: orientation == Orientation.portrait ? 50.h : 50,
+                  height: 50,
                   child: Input(
                     isPassword: false,
                     hintText: 'Фамилия',
@@ -256,12 +255,12 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               SizedBox(
-                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+                height: 7.5,
               ),
               if (_isEnter)
                 Container(
                   margin: EdgeInsets.symmetric(
-                    horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                    horizontal: 20,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -279,11 +278,11 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               SizedBox(
-                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+                height: 7.5,
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                  horizontal: orientation == Orientation.portrait ? 20.w : 20,
+                  horizontal: 20,
                 ),
                 child: BackendButton(
                   text: 'Далее',
@@ -296,7 +295,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(
-                height: orientation == Orientation.portrait ? 7.5.h : 7.5,
+                height: 7.5,
               ),
               Center(
                 child: GestureDetector(

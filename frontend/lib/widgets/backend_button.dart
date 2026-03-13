@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BackendButton extends StatelessWidget {
   const BackendButton({
@@ -17,7 +16,7 @@ class BackendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     return SizedBox(
-      height: orientation == Orientation.portrait ? 50.h : 50,
+      height: 50,
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
@@ -31,8 +30,8 @@ class BackendButton extends StatelessWidget {
         child: isLoading
             ? Center(
                 child: SizedBox(
-                  height: orientation == Orientation.portrait ? 30.h : 30,
-                  width: orientation == Orientation.portrait ? 30.h : 30,
+                  height: 30,
+                  width: 30,
                   child: CircularProgressIndicator(
                     color: Color.fromRGBO(89, 65, 174, 1),
                   ),

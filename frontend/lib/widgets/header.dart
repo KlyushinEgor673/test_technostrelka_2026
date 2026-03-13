@@ -30,7 +30,9 @@ class _HeaderState extends State<Header> {
       leading: SizedBox.shrink(),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/recommendations');
+          },
           child: Text(
             'Рекомендации',
             style: TextStyle(
@@ -45,7 +47,7 @@ class _HeaderState extends State<Header> {
             Navigator.pushNamed(context, '/charts');
           },
           child: Text(
-            'Аанлитика',
+            'Аналитика',
             style: TextStyle(
               color: widget.id == 1
                   ? Color.fromRGBO(89, 65, 174, 1)

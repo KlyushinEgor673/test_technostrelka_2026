@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
@@ -25,7 +24,7 @@ class _YoomoneyState extends State<Yoomoney> {
   bool _isNotEmpty = false;
   bool _isSent = false;
 
-  Future<void> _getYoomoney(Dio dio) async{
+  Future<void> _getYoomoney(Dio dio) async {
     String? token = await _storage.read(key: 'token');
     final response = await dio.get(
       '/api/yoomoney/subscription',
@@ -38,9 +37,7 @@ class _YoomoneyState extends State<Yoomoney> {
     print('ЗАПИСАНО');
   }
 
-  Future<void> _getYoomoneyChart(
-      Dio dio,
-      ) async {
+  Future<void> _getYoomoneyChart(Dio dio) async {
     String? token = await _storage.read(key: 'token');
     final response = await dio.get(
       '/api/graphs/graphsYoomoneySubs',
@@ -86,28 +83,21 @@ class _YoomoneyState extends State<Yoomoney> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: orientation == Orientation.portrait
-                ? (200.h - AppBar().preferredSize.height)
-                : 20,
-          ),
           Center(
             child: Container(
               width: double.infinity,
-              constraints: BoxConstraints(
-                maxWidth: 700
-              ),
+              constraints: BoxConstraints(maxWidth: 500),
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 'Вход в юMoney',
                 style: TextStyle(
-                  fontSize: orientation == Orientation.portrait ? 24.sp : 24,
+                  fontSize:  24,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
           ),
-          SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+          SizedBox(height: 15),
           Center(
             child: InputYoomoney(
               controller: _controllerEmail,
@@ -115,7 +105,7 @@ class _YoomoneyState extends State<Yoomoney> {
               hintText: 'Email',
             ),
           ),
-          SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
+          SizedBox(height: 15),
           Center(
             child: InputYoomoney(
               controller: _controllerPassword,
@@ -124,6 +114,18 @@ class _YoomoneyState extends State<Yoomoney> {
             ),
           ),
           SizedBox(height: 15),
+          Container(
+            constraints: BoxConstraints(maxWidth: 500),
+            margin: EdgeInsets.symmetric(
+              horizontal:  20,
+            ),
+            child: Row(
+              children: [
+                Checkbox(value: false, onChanged: (newValue) {}),
+                Text('Даю согласие на обработку персональных данных'),
+              ],
+            ),
+          ),
           Center(
             child: YoomoneyButton(
               isCircular: _isSent,

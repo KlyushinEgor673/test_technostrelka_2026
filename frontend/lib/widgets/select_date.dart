@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SelectDate extends StatefulWidget {
   const SelectDate({
@@ -39,18 +38,18 @@ class _SelectDateState extends State<SelectDate> {
     final orientation = MediaQuery.of(context).orientation;
     return GestureDetector(
       child: Container(
-        height: orientation == Orientation.portrait ? 50.h : 50,
+        height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Color.fromRGBO(240, 240, 240, 1),
         ),
         constraints: BoxConstraints(
-            maxWidth: 700
+            maxWidth: 500
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
+            SizedBox(width: 14),
             Text(
               value ?? widget.hintText,
               style: TextStyle(

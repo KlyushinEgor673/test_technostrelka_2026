@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChipButton extends StatelessWidget {
   const ChipButton({
@@ -19,9 +18,9 @@ class ChipButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: orientation == Orientation.portrait ? 48.h : 48,
+        height: 48,
         padding: EdgeInsets.symmetric(
-          horizontal: orientation == Orientation.portrait ? 20.w : 20,
+          horizontal: 20,
         ),
         decoration: BoxDecoration(
           color: isActive
@@ -34,7 +33,7 @@ class ChipButton extends StatelessWidget {
             text,
             style: TextStyle(
               color: isActive ? Colors.white : Color.fromRGBO(126, 126, 154, 1),
-              fontSize: orientation == Orientation.portrait ? 15.sp : 15,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),

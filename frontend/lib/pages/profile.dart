@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
 import 'package:frontend/widgets/header.dart';
@@ -99,8 +98,8 @@ class _ProfileState extends State<Profile> {
                       Navigator.pushNamed(context, '/yoomoney');
                     },
                     child: Container(
-                      width: orientation == Orientation.portrait ? 200.w : 200,
-                      height: orientation == Orientation.portrait ? 40.h : 40,
+                      width: 200,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: _isEnterYm
                             ? Colors.white

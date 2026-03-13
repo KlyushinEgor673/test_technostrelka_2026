@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InputYoomoney extends StatefulWidget {
   const InputYoomoney({
@@ -35,11 +34,11 @@ class _InputYoomoneyState extends State<InputYoomoney> {
     final orientation = MediaQuery.of(context).orientation;
     return Container(
       constraints: BoxConstraints(
-        maxWidth: 700
+        maxWidth: 500
       ),
-      height: orientation == Orientation.portrait ? 50.h : 50,
+      height: 50,
       margin: EdgeInsets.symmetric(
-        horizontal: orientation == Orientation.portrait ? 20.w : 20,
+        horizontal: 20,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -48,11 +47,11 @@ class _InputYoomoneyState extends State<InputYoomoney> {
       ),
       child: Row(
         children: [
-          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
+          SizedBox(width: 14),
           Expanded(
             child: TextField(
               style: TextStyle(
-                fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                fontSize: 16,
               ),
               obscureText: _isPassword,
               controller: widget.controller,
@@ -60,13 +59,13 @@ class _InputYoomoneyState extends State<InputYoomoney> {
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
-                  fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                  fontSize: 16,
                   color: Colors.grey
                 )
               ),
             ),
           ),
-          SizedBox(width: orientation == Orientation.portrait ? 14.w : 14),
+          SizedBox(width: 14),
         ],
       ),
     );

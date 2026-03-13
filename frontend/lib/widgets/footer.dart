@@ -2,7 +2,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key, required this.currentIndex});
@@ -18,7 +17,7 @@ class Footer extends StatelessWidget {
       return SizedBox.shrink();
     }
     return Container(
-      height: orientation == Orientation.portrait ? 70.h : 70,
+      height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -36,7 +35,9 @@ class Footer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/recommendations');
+                },
                 icon: Icon(
                   Icons.receipt,
                   size: 30,

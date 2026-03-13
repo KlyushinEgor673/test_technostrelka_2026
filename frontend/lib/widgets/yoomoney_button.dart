@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class YoomoneyButton extends StatelessWidget {
   const YoomoneyButton({
@@ -19,12 +18,12 @@ class YoomoneyButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: orientation == Orientation.portrait ? 50.h : 50,
+        height: 50,
         margin: EdgeInsets.symmetric(
-          horizontal: orientation == Orientation.portrait ? 20.w : 20,
+          horizontal: 20,
         ),
         constraints: BoxConstraints(
-          maxWidth: 700
+          maxWidth: 500
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -39,7 +38,7 @@ class YoomoneyButton extends StatelessWidget {
                   'Далее',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: orientation == Orientation.portrait ? 16.sp : 16,
+                    fontSize: 16,
                   ),
                 ),
         ),
