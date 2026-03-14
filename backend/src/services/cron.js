@@ -4,7 +4,7 @@ const { addDays, differenceInDays } = require('date-fns');
 const { bytesToBase64 } = require('byte-base64');
 const { sendSubscriptionDebitNotification } = require('./email.service')
 
-const currentDate = new Date();
+
 
 // Функция для обновления подписок
 const updateExpiredSubscriptions = async () => {
@@ -15,6 +15,8 @@ const updateExpiredSubscriptions = async () => {
     const users = await prisma.users.findMany({
       select: { id: true }
     });
+
+    const currentDate = new Date();
 
     for (const user of users) {
       const subs = await prisma.subscriptions.findMany({
@@ -90,6 +92,8 @@ const notificationSubs = async () => {
   try {
 
     const subs = await prisma.subscriptions.findMany()
+
+    const currentDate = new Date();
 
     for (let sub of subs) {
       try {
