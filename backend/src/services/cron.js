@@ -128,16 +128,6 @@ const notificationSubs = async () => {
   }
 }
 
-// Запуск каждый день в 10:00
-cron.schedule('0 10 * * *', () => {
-  updateExpiredSubscriptions();
-});
-
-// Запуск каждый день в 10:00
-cron.schedule('0 10 * * *', () => {
-  updateExpiredSubscriptions();
-});
-
 // Для теста можно запустить с другой частотой:
 // Каждую минуту: '* * * * *'
 // Каждый час: '0 * * * *'
