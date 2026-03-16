@@ -24,11 +24,11 @@ const { updateExpiredSubscriptions, notificationSubs } = require('./services/cro
 
 const app = express();
 
-cron.schedule('* 10 * * *', () => {
+cron.schedule('0 10 * * *', () => {
   updateExpiredSubscriptions();
 })
 
-cron.schedule('* 10 * * *', () => {
+cron.schedule('0 10 * * *', () => {
   notificationSubs();
 })
 
