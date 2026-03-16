@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/alerts.dart';
+import 'package:frontend/widgets/backend_button.dart';
 import 'package:frontend/widgets/input_yoomoney.dart';
 import 'package:frontend/widgets/yoomoney_button.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
   final _storage = FlutterSecureStorage();
   bool _isSent = false;
 
-  Future<void> _getYoomoney(Dio dio) async{
+  Future<void> _getYoomoney(Dio dio) async {
     String? token = await _storage.read(key: 'token');
     final response = await dio.get(
       '/api/yoomoney/subscription',
@@ -36,9 +37,7 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
     );
   }
 
-  Future<void> _getYoomoneyChart(
-      Dio dio,
-      ) async {
+  Future<void> _getYoomoneyChart(Dio dio) async {
     String? token = await _storage.read(key: 'token');
     final response = await dio.get(
       '/api/graphs/graphsYoomoneySubs',
@@ -73,58 +72,96 @@ class _YoomoneyCodeState extends State<YoomoneyCode> {
     final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: MediaQuery.of(context).size.width < 540
+          ? AppBar(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+            )
+          : null,
       body: Center(
-        child: Column(
+        child: ListView(
           children: [
-            SizedBox(
-              height: orientation == Orientation.portrait
-                  ? (200 - AppBar().preferredSize.height)
-                  : 20,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Введите код подтверждения',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              ),
-            ),
-            SizedBox(height: 15),
-            InputYoomoney(controller: _controller, isPassword: false, hintText: 'Код',),
-            SizedBox(height: 15),
-            YoomoneyButton(
-              isCircular: _isSent,
-              isActive: _isActive,
-              onTap: _isActive
-                  ? () async {
-                      try {
-                        setState(() {
-                          _isSent = true;
-                          _isActive = false;
-                        });
-                        String? token = await _storage.read(key: 'token');
-                        await _dio.post(
-                          '/api/yoomoney/check-code-yoomoney',
-                          data: jsonEncode({
-                            'email': widget.email,
-                            'code': _controller.text,
-                          }),
-                          options: Options(
-                            headers: {'Authorization': 'Bearer $token'},
+            Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            constraints: BoxConstraints(maxWidth: 500),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Введите код подтверждения',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                        _getYoomoney(_dio);
-                        _getYoomoneyChart(_dio);
-                        Navigator.pushNamed(context, '/profile');
-                      } on DioException catch (e) {
-                        setState(() {
-                          _isSent = false;
-                          _isActive = true;
-                        });
-                        Alerts.showError(context, 'Неверный код');
-                      }
-                    }
-                  : () {},
+                        ),
+                        SizedBox(height: 15),
+                        InputYoomoney(
+                          controller: _controller,
+                          isPassword: false,
+                          hintText: 'Код',
+                        ),
+                        SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          constraints: BoxConstraints(
+                            maxWidth: 500
+                          ),
+                          child: BackendButton(
+                            text: 'Далее',
+                            isLoading: _isSent,
+                            color: Color.fromRGBO(104, 51, 235, 1),
+                            onPressed: !_isActive || _isSent ? null : () async {
+                              try {
+                                setState(() {
+                                  _isSent = true;
+                                  _isActive = false;
+                                });
+                                String? token = await _storage.read(
+                                  key: 'token',
+                                );
+                                await _dio.post(
+                                  '/api/yoomoney/check-code-yoomoney',
+                                  data: jsonEncode({
+                                    'email': widget.email,
+                                    'code': _controller.text,
+                                  }),
+                                  options: Options(
+                                    headers: {
+                                      'Authorization': 'Bearer $token',
+                                    },
+                                  ),
+                                );
+                                _getYoomoney(_dio);
+                                _getYoomoneyChart(_dio);
+                                Navigator.pushNamed(context, '/profile');
+                              } on DioException catch (e) {
+                                setState(() {
+                                  _isSent = false;
+                                  _isActive = true;
+                                });
+                                Alerts.showError(context, 'Неверный код');
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

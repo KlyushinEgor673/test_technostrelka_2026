@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,6 +33,22 @@ class _ChartsState extends State<Charts> {
   List _chartList = [];
   List _subsYoomoney = [];
   bool _isLoaded = false;
+  bool _isCan = false;
+
+  void _checkCan() {
+    // print('startDate ${_startDate != ''}');
+    // print(_endDate != '');
+    print('CHECK');
+    if (_startDate != '' && _endDate != '') {
+      setState(() {
+        _isCan = true;
+      });
+    } else {
+      setState(() {
+        _isCan = false;
+      });
+    }
+  }
 
   Future<void> _buildChart() async {
     _maxY = 0;
@@ -113,9 +130,9 @@ class _ChartsState extends State<Charts> {
             _subsYoomoney = jsonDecode(subsYoomoney);
             _isLoaded = true;
           });
-          print(subsYoomoney);
           break;
         }
+        await Future.delayed(const Duration(seconds: 1));
       }
     } else {
       setState(() {
@@ -148,7 +165,12 @@ class _ChartsState extends State<Charts> {
           )
         : Scaffold(
             backgroundColor: Colors.white,
-            appBar: Header(id: 1),
+            appBar:
+                MediaQuery.of(context).size.width < 845 ||
+                    defaultTargetPlatform == TargetPlatform.android ||
+                    defaultTargetPlatform == TargetPlatform.iOS
+                ? null
+                : Header(id: 1),
             body: SafeArea(
               child: SizedBox(
                 width: width,
@@ -168,12 +190,18 @@ class _ChartsState extends State<Charts> {
                                   if (width < 810)
                                     Center(
                                       child: Container(
-                                        margin: EdgeInsets.only(left: 20, right: 20),
+                                        margin: EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                        ),
                                         height: 50,
                                         child: SelectDate(
                                           hintText: 'Выберете начальную дату',
                                           change: (newValue) {
-                                            _startDate = newValue;
+                                            setState(() {
+                                              _startDate = newValue;
+                                            });
+                                            _checkCan();
                                           },
                                           firstDate: DateTime(1990),
                                           lastDate: DateTime(2100),
@@ -184,30 +212,65 @@ class _ChartsState extends State<Charts> {
                                   if (width < 810)
                                     Center(
                                       child: Container(
-                                        margin: EdgeInsets.only(left: 20, right: 20),
+                                        margin: EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                        ),
                                         height: 50,
                                         child: SelectDate(
                                           hintText: 'Выберете конечную дату',
                                           change: (newValue) {
-                                            _endDate = newValue;
+                                            setState(() {
+                                              _endDate = newValue;
+                                            });
+                                            _checkCan();
                                           },
                                           firstDate: DateTime(1990),
                                           lastDate: DateTime(2100),
                                         ),
                                       ),
                                     ),
+                                  if (width < 810)
+                                    SizedBox( height: 20,),
+                                  if (width < 810)
+                                    Center(
+                                      child: Container(
+                                        constraints: BoxConstraints(maxWidth: 500),
+                                        margin: EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                        ),
+                                        height: 50,
+                                        width: double.infinity,
+                                        child: BackendButton(
+                                          color: Color.fromRGBO(89, 65, 174, 1),
+                                          text: 'Построить',
+                                          isLoading: false,
+                                          onPressed: !_isCan ? null : _buildChart,
+                                        ),
+                                        // ChipButton(
+                                        //   text: 'Построить',
+                                        //   isActive: true,
+                                        //   onTap: _buildChart,
+                                        // ),
+                                      ),
+                                    ),
                                   if (width > 810)
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
                                       width: 770,
                                       child: Row(
                                         children: [
                                           SizedBox(
                                             width: 250,
                                             child: SelectDate(
-                                              hintText: 'Выберете начальную дату',
+                                              hintText:
+                                                  'Выберете начальную дату',
                                               change: (newValue) {
                                                 _startDate = newValue;
+                                                _checkCan();
                                               },
                                               firstDate: DateTime(1990),
                                               lastDate: DateTime(2100),
@@ -217,9 +280,11 @@ class _ChartsState extends State<Charts> {
                                           SizedBox(
                                             width: 250,
                                             child: SelectDate(
-                                              hintText: 'Выберете конечную дату',
+                                              hintText:
+                                                  'Выберете конечную дату',
                                               change: (newValue) {
                                                 _endDate = newValue;
+                                                _checkCan();
                                               },
                                               firstDate: DateTime(1990),
                                               lastDate: DateTime(2100),
@@ -229,9 +294,17 @@ class _ChartsState extends State<Charts> {
                                           SizedBox(
                                             width: 250,
                                             child: BackendButton(
+                                              color: Color.fromRGBO(
+                                                89,
+                                                65,
+                                                174,
+                                                1,
+                                              ),
                                               text: 'Построить',
                                               isLoading: false,
-                                              onPressed: _buildChart,
+                                              onPressed: !_isCan
+                                                  ? null
+                                                  : _buildChart,
                                             ),
                                           ),
                                         ],
@@ -241,8 +314,7 @@ class _ChartsState extends State<Charts> {
                                 ],
                               ),
                               Center(
-                                child:
-                                Container(
+                                child: Container(
                                   width: 770,
                                   height: 490,
                                   margin: EdgeInsets.only(left: 20),
@@ -254,10 +326,18 @@ class _ChartsState extends State<Charts> {
                                         height: 480,
                                         width: _chartList.length * 30,
                                         constraints: BoxConstraints(
-                                          minWidth: width < 810 ? MediaQuery.of(context).size.width -
-                                              40 -
-                                              MediaQuery.of(context).padding.left -
-                                              MediaQuery.of(context).padding.right : 760,
+                                          minWidth: width < 810
+                                              ? MediaQuery.of(
+                                                      context,
+                                                    ).size.width -
+                                                    40 -
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).padding.left -
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).padding.right
+                                              : 760,
 
                                           // maxWidth: 700
                                         ),
@@ -272,16 +352,24 @@ class _ChartsState extends State<Charts> {
                                                   showTitles: true,
                                                   reservedSize: 100,
                                                   getTitlesWidget:
-                                                      (double value, TitleMeta meta) {
+                                                      (
+                                                        double value,
+                                                        TitleMeta meta,
+                                                      ) {
                                                         return SideTitleWidget(
                                                           meta: meta,
                                                           space: 35,
                                                           child: Transform.rotate(
-                                                            angle: 90 * (pi / 180),
+                                                            angle:
+                                                                90 * (pi / 180),
                                                             child: Text(
-                                                              _chartList[value.toInt()]['date']
+                                                              _chartList[value
+                                                                      .toInt()]['date']
                                                                   .toString()
-                                                                  .substring(0, 11),
+                                                                  .substring(
+                                                                    0,
+                                                                    11,
+                                                                  ),
                                                             ),
                                                           ),
                                                         );
@@ -298,19 +386,6 @@ class _ChartsState extends State<Charts> {
                                   ),
                                 ),
                               ),
-                              if (width < 810)
-                                Center(
-                                  child: Container(
-                                    constraints: BoxConstraints(maxWidth: 500),
-                                    margin: EdgeInsets.only(left: 20, right: 20),
-                                    height: 50,
-                                    child: ChipButton(
-                                      text: 'Построить',
-                                      isActive: true,
-                                      onTap: _buildChart,
-                                    ),
-                                  ),
-                                ),
                               SizedBox(height: 20),
                             ],
                           ),
@@ -318,20 +393,20 @@ class _ChartsState extends State<Charts> {
                       ),
                     ),
                     if (width > 810)
-                    Container(
-                      height: height,
-                      width: (width - 770) /  2,
-                      color: Colors.white,
-                    ),
-                    if (width > 810)
-                    Positioned(
-                      right: 0,
-                      child: Container(
+                      Container(
                         height: height,
-                        width: (width - 770) /  2,
+                        width: (width - 770) / 2,
                         color: Colors.white,
                       ),
-                    ),
+                    if (width > 810)
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          height: height,
+                          width: (width - 770) / 2,
+                          color: Colors.white,
+                        ),
+                      ),
                   ],
                 ),
               ),

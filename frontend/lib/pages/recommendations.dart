@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/widgets/footer.dart';
@@ -61,15 +62,16 @@ class _RecommendationsState extends State<Recommendations> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: Header(id: 0),
+      appBar: MediaQuery.of(context).size.width < 845 ||
+          defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS ? null : Header(id: 0),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 20),
             Container(
               width: MediaQuery.of(context).size.width > 1040 ? 1000 : null,
               padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width > 1040 ? 0 : 10,
+                horizontal: MediaQuery.of(context).size.width > 1040 ? 0 : 20,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -95,7 +97,7 @@ class _RecommendationsState extends State<Recommendations> {
                         } else {
                           for (final subscription
                               in response.data['allSubsWithBase64']) {
-                            if (subscription['category_id'] == newValue){
+                            if (subscription['category_id'] == newValue) {
                               _subscriptions.add(subscription);
                             }
                           }

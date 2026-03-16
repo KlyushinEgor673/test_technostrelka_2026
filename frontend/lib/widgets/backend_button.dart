@@ -5,12 +5,13 @@ class BackendButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.isLoading,
-    required this.onPressed,
+    this.onPressed, required this.color,
   });
 
   final String text;
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,7 @@ class BackendButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: isLoading
-              ? Color.fromRGBO(89, 65, 174, 0.5)
-              : Color.fromRGBO(89, 65, 174, 1),
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -33,7 +32,7 @@ class BackendButton extends StatelessWidget {
                   height: 30,
                   width: 30,
                   child: CircularProgressIndicator(
-                    color: Color.fromRGBO(89, 65, 174, 1),
+                    color: color,
                   ),
                 ),
               )

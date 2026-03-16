@@ -8,13 +8,14 @@ class Input extends StatefulWidget {
     required this.isPassword,
     required this.hintText,
     required this.controller,
-    required this.type,
+    required this.type, required this.readOnly,
   });
 
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
   final InputTypeCustom type;
+  final bool readOnly;
 
   @override
   State<Input> createState() => _InputState();
@@ -47,6 +48,7 @@ class _InputState extends State<Input> {
           SizedBox(width: 14),
           Expanded(
             child: TextField(
+              readOnly: widget.readOnly,
               keyboardType: widget.type != InputTypeCustom.inputText
                   ? TextInputType.number
                   : null,

@@ -36,8 +36,48 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
   bool _isLoaded = false;
   List<DropdownMenuItem> _listDropdown = [];
   int? _dropdownValue;
+  late bool _isCan;
+
+  void _checkCan() {
+    if (_controllerName.text.isNotEmpty &&
+        _dropdownValue != null &&
+        _controllerPeriod.text.isNotEmpty &&
+        _dateEnd != null &&
+        _controllerPrice.text.isNotEmpty &&
+        _controllerUrl.text.isNotEmpty &&
+        bytes != null) {
+      setState(() {
+        _isCan = true;
+      });
+    } else {
+      setState(() {
+        _isCan = false;
+      });
+    }
+  }
 
   Future<void> _createSubscription() async {
+    String? token = await _storage.read(key: 'token');
+    // final base64String = base64Encode(bytes);
+    await _dio.post(
+      '/api/subscription/',
+      data: FormData.fromMap({
+        'name': _controllerName.text,
+        'category_id': _dropdownValue,
+        'period': int.parse(_controllerPeriod.text),
+        'end_date': _dateEnd.toString(),
+        'price': double.parse(_controllerPrice.text),
+        'flag_auto': _isAuto,
+        'img': MultipartFile.fromBytes(bytes, filename: 'image.png'),
+        'url': _controllerUrl.text,
+      }),
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+    Navigator.pop(context);
+    print('create ${_dropdownValue}');
+  }
+
+  Future<void> _changeSubscription() async {
     String? token = await _storage.read(key: 'token');
     final base64String = base64Encode(bytes);
     print('Отправляю ${_dateEnd.toString().substring(0, 10)}');
@@ -62,26 +102,6 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
     } on DioException catch (e) {
       print(e.response?.data);
     }
-  }
-
-  Future<void> _changeSubscription() async {
-    String? token = await _storage.read(key: 'token');
-    // final base64String = base64Encode(bytes);
-    await _dio.post(
-      '/api/subscription/',
-      data: FormData.fromMap({
-        'name': _controllerName.text,
-        'category_id': _dropdownValue,
-        'period': int.parse(_controllerPeriod.text),
-        'end_date': _dateEnd.toString(),
-        'price': double.parse(_controllerPrice.text),
-        'flag_auto': _isAuto,
-        'img': MultipartFile.fromBytes(bytes, filename: 'image.png'),
-        'url': _controllerUrl.text,
-      }),
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-    Navigator.pop(context);
   }
 
   Future<void> _init() async {
@@ -128,12 +148,20 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _isCan = widget.id != null;
     _dio = Provider.of<Dio>(context, listen: false);
+    print(_isCan);
+    _controllerName.addListener(() => _checkCan());
+    _controllerPeriod.addListener(() => _checkCan());
+    _controllerPrice.addListener(() => _checkCan());
+    _controllerUrl.addListener(() => _checkCan());
     _init();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('CHANGE ${_isCan}');
+    _checkCan();
     final orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: MediaQuery.of(context).size.width < 540
@@ -150,8 +178,10 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
             ? SafeArea(
                 child: ListView(
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height > 667 ? MediaQuery.of(context).size.height : null,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height > 667
+                          ? MediaQuery.of(context).size.height
+                          : null,
                       child: Stack(
                         children: [
                           Center(
@@ -191,6 +221,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       right: 20,
                                     ),
                                     child: Input(
+                                      readOnly: false,
                                       isPassword: false,
                                       hintText: 'Имя',
                                       controller: _controllerName,
@@ -220,12 +251,18 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                           menuWidth: 500,
                                           menuMaxHeight: 180,
                                           dropdownColor: Colors.white,
-                                          hint: Text('Выберете категорию'),
+                                          hint: Text(
+                                            'Выберете категорию',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
                                           items: _listDropdown,
                                           onChanged: (newValue) {
                                             setState(() {
                                               _dropdownValue = newValue;
                                             });
+                                            _checkCan();
                                           },
                                         ),
                                       ),
@@ -242,6 +279,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                     ),
 
                                     child: Input(
+                                      readOnly: false,
                                       isPassword: false,
                                       hintText: 'Период',
                                       controller: _controllerPeriod,
@@ -261,6 +299,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       hintText: 'Конечная дата',
                                       change: (newValue) {
                                         _dateEnd = newValue;
+                                        _checkCan();
                                       },
                                       firstDate: DateTime.now(),
                                       lastDate: DateTime(2100),
@@ -277,6 +316,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                     ),
 
                                     child: Input(
+                                      readOnly: false,
                                       isPassword: false,
                                       hintText: 'Цена',
                                       controller: _controllerPrice,
@@ -293,6 +333,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                     ),
 
                                     child: Input(
+                                      readOnly: false,
                                       isPassword: false,
                                       hintText: 'Url сайта',
                                       controller: _controllerUrl,
@@ -328,8 +369,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                 ),
                                 GestureDetector(
                                   child: Center(
-                                    child:
-                                    Container(
+                                    child: Container(
                                       width: 170,
                                       height: 170,
                                       decoration: BoxDecoration(
@@ -361,6 +401,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       setState(() {
                                         bytes = newBytes;
                                       });
+                                      _checkCan();
                                     }
                                   },
                                 ),
@@ -425,13 +466,21 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                               maxWidth: 500,
                                             ),
                                             child: BackendButton(
+                                              color: Color.fromRGBO(
+                                                89,
+                                                65,
+                                                174,
+                                                1,
+                                              ),
                                               text: widget.id == null
                                                   ? 'Создать'
                                                   : 'Изменить',
                                               isLoading: false,
-                                              onPressed: widget.id == null
+                                              onPressed: _isCan
+                                                  ? widget.id == null
                                                   ? _createSubscription
-                                                  : _changeSubscription,
+                                                  : _changeSubscription
+                                                  : null,
                                             ),
                                           ),
                                         ],
@@ -448,13 +497,16 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                       right: 20,
                                     ),
                                     child: BackendButton(
+                                      color: Color.fromRGBO(89, 65, 174, 1),
                                       text: widget.id == null
                                           ? 'Создать'
                                           : 'Изменить',
                                       isLoading: false,
-                                      onPressed: widget.id == null
-                                          ? _createSubscription
-                                          : _changeSubscription,
+                                      onPressed: _isCan
+                                          ? widget.id == null
+                                                ? _createSubscription
+                                                : _changeSubscription
+                                          : null,
                                     ),
                                   ),
                               ],

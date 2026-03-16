@@ -29,6 +29,19 @@ class _OtpState extends State<Otp> {
   late final _dio;
   final _storage = FlutterSecureStorage();
   bool _isLoading = false;
+  bool _isCan = false;
+
+  void _checkCan() {
+    if (_controller.text.length != 4) {
+      setState(() {
+        _isCan = false;
+      });
+    } else {
+      setState(() {
+        _isCan = true;
+      });
+    }
+  }
 
   Future<void> _getYoomoney(Dio dio) async {
     String? token = await _storage.read(key: 'token');
@@ -74,155 +87,11 @@ class _OtpState extends State<Otp> {
         });
       }
     });
+    _controller.addListener(() => _checkCan());
   }
 
   @override
   Widget build(BuildContext context) {
-    final orientation = MediaQuery.of(context).orientation;
-    // if (defaultTargetPlatform == TargetPlatform.android ||
-    //     defaultTargetPlatform == TargetPlatform.iOS ||
-    //     MediaQuery
-    //         .of(context)
-    //         .size
-    //         .width < 750) {
-    //   return Scaffold(
-    //     backgroundColor: Colors.white,
-    //     appBar: AppBar(
-    //       backgroundColor: Colors.white,
-    //       surfaceTintColor: Colors.white,
-    //     ),
-    //     body: ListView(
-    //       children: [
-    //         SizedBox(
-    //           height: orientation == Orientation.portrait
-    //               ? (200.h - AppBar().preferredSize.height)
-    //               : 20,
-    //           child: Opacity(
-    //             opacity: 0,
-    //             child: IgnorePointer(
-    //               ignoring: true,
-    //               child: TextField(
-    //                 autofocus: true,
-    //                 keyboardType: TextInputType.number,
-    //                 controller: _controller,
-    //                 focusNode: _focusNode,
-    //                 maxLength: 4,
-    //                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-    //                 onChanged: (value) {
-    //                   setState(() {});
-    //                 },
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         Center(
-    //           child: Text(
-    //             'Код подтверждения',
-    //             style: TextStyle(
-    //               fontSize: orientation == Orientation.portrait ? 24.sp : 24,
-    //               fontWeight: FontWeight.w700,
-    //             ),
-    //           ),
-    //         ),
-    //         SizedBox(height: orientation == Orientation.portrait ? 15.h : 15),
-    //         GestureDetector(
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               BoxOtp(
-    //                 char: _controller.text.length > 0
-    //                     ? _controller.text[0]
-    //                     : '',
-    //               ),
-    //               SizedBox(width: 15),
-    //               BoxOtp(
-    //                 char: _controller.text.length > 1
-    //                     ? _controller.text[1]
-    //                     : '',
-    //               ),
-    //               SizedBox(width: 15),
-    //               BoxOtp(
-    //                 char: _controller.text.length > 2
-    //                     ? _controller.text[2]
-    //                     : '',
-    //               ),
-    //               SizedBox(width: 15),
-    //               BoxOtp(
-    //                 char: _controller.text.length > 3
-    //                     ? _controller.text[3]
-    //                     : '',
-    //               ),
-    //             ],
-    //           ),
-    //           onTap: () {
-    //             _focusNode.requestFocus();
-    //             SystemChannels.textInput.invokeMethod('TextInput.show');
-    //           },
-    //         ),
-    //         SizedBox(height: orientation == Orientation.portrait ? 60.h : 60),
-    //         Center(
-    //           child: SizedBox(
-    //             width: orientation == Orientation.portrait ? 250.w : 250,
-    //             child:
-    //             BackendButton(
-    //               text: 'Подтвердить',
-    //               isLoading: _isLoading,
-    //               onPressed: () async {
-    //                 try {
-    //                   setState(() {
-    //                     _isLoading = true;
-    //                   });
-    //                   print(_controller.text);
-    //                   final response = await _dio.post(
-    //                     '/api/code/verify-code',
-    //                     data: jsonEncode({
-    //                       'email': widget.email,
-    //                       'code': _controller.text,
-    //                     }),
-    //                   );
-    //                   await _storage.write(
-    //                     key: 'token',
-    //                     value: response.data['token'],
-    //                   );
-    //                   _getYoomoney(_dio);
-    //                   _getYoomoneyChart(_dio);
-    //                   Navigator.pushNamed(context, '/profile');
-    //                 } on DioException catch (e) {
-    //                   setState(() {
-    //                     _isLoading = false;
-    //                   });
-    //                   Alerts.showError(context, e.response?.data['error']);
-    //                 }
-    //               },
-    //             ),
-    //           ),
-    //         ),
-    //         SizedBox(height: 7.5),
-    //         Center(
-    //           child: GestureDetector(
-    //             onTap: seconds != 0 ? (){
-    //               print('a');
-    //             } : () async {
-    //               await _dio.post(
-    //                 '/api/code/resend-code',
-    //                 data: jsonEncode({'email': widget.email}),
-    //               );
-    //               setState(() {
-    //                 seconds = 60;
-    //               });
-    //             },
-    //             child: Text(
-    //               seconds != 0
-    //                   ? 'Отправить код ещё раз через $seconds'
-    //                   : 'Отправить код ещё раз',
-    //               style: TextStyle(color: Colors.grey, fontSize: orientation == Orientation.portrait ? 12.sp : 12),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -252,15 +121,14 @@ class _OtpState extends State<Otp> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,
-                boxShadow: MediaQuery
-                    .of(context)
-                    .size
-                    .width > 600 ?  [
-                  BoxShadow(
-                    color: Color.fromRGBO(228, 232, 245, 0.6),
-                    blurRadius: 20,
-                  ),
-                ] : null,
+                boxShadow: MediaQuery.of(context).size.width > 600
+                    ? [
+                        BoxShadow(
+                          color: Color.fromRGBO(228, 232, 245, 0.6),
+                          blurRadius: 20,
+                        ),
+                      ]
+                    : null,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -316,9 +184,10 @@ class _OtpState extends State<Otp> {
                   SizedBox(
                     width: 200,
                     child: BackendButton(
+                      color: Color.fromRGBO(89, 65, 174, 1),
                       text: 'Подтвердить',
                       isLoading: _isLoading,
-                      onPressed: () async {
+                      onPressed: _isCan == false || _isLoading ? null : () async {
                         try {
                           setState(() {
                             _isLoading = true;

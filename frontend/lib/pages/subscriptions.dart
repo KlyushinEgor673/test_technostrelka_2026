@@ -66,6 +66,7 @@ class _SubscriptionsState extends State<Subscriptions> {
           });
           break;
         }
+        await Future.delayed(const Duration(seconds: 1));
       }
     } else {
       setState(() {
@@ -189,13 +190,13 @@ class _SubscriptionsState extends State<Subscriptions> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 15),
+                    // SizedBox(height: 15),
                     Container(
                       // color: Colors.red,
                       width: MediaQuery.of(context).size.width > 1040
                           ? 1000
                           : null,
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -449,75 +450,74 @@ class _SubscriptionsState extends State<Subscriptions> {
                                   children: [
                                     Positioned(
                                       top: 5,
-                                        right: 5,
-                                        child:                                               PopupMenuButton(
-                                      color: Colors.white,
-                                      itemBuilder: (context) => [
-                                        PopupMenuItem(
-                                          value: 'edit',
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.edit),
-                                              SizedBox(width: 5),
-                                              Text('Изменить'),
-                                            ],
+                                      right: 5,
+                                      child: PopupMenuButton(
+                                        color: Colors.white,
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            value: 'edit',
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.edit),
+                                                SizedBox(width: 5),
+                                                Text('Изменить'),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        PopupMenuItem(
-                                          value: 'delete',
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'Удалить',
-                                                style: TextStyle(
+                                          PopupMenuItem(
+                                            value: 'delete',
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.delete,
                                                   color: Colors.red,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                      onSelected: (value) async {
-                                        if (value == 'delete') {
-                                          String? token =
-                                          await _storage.read(
-                                            key: 'token',
-                                          );
-                                          await _dio.delete(
-                                            '/api/subscription',
-                                            data: jsonEncode({
-                                              'id':
-                                              _subscriptions[i]['id'],
-                                            }),
-                                            options: Options(
-                                              headers: {
-                                                'Authorization':
-                                                'Bearer $token',
-                                              },
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Удалить',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                          await _init();
-                                        } else {
-                                          await Navigator.pushNamed(
-                                            context,
-                                            '/create_subscription',
-                                            arguments: {
-                                              'id':
-                                              _subscriptions[i]['id'],
-                                            },
-                                          );
-                                          await _init();
-                                        }
-                                      },
-                                      icon: Icon(Icons.more_horiz),
-                                    )),
+                                          ),
+                                        ],
+                                        onSelected: (value) async {
+                                          if (value == 'delete') {
+                                            String? token = await _storage.read(
+                                              key: 'token',
+                                            );
+                                            await _dio.delete(
+                                              '/api/subscription',
+                                              data: jsonEncode({
+                                                'id': _subscriptions[i]['id'],
+                                              }),
+                                              options: Options(
+                                                headers: {
+                                                  'Authorization':
+                                                      'Bearer $token',
+                                                },
+                                              ),
+                                            );
+                                            await _init();
+                                          } else {
+                                            await Navigator.pushNamed(
+                                              context,
+                                              '/create_subscription',
+                                              arguments: {
+                                                'id': _subscriptions[i]['id'],
+                                              },
+                                            );
+                                            await _init();
+                                          }
+                                        },
+                                        icon: Icon(Icons.more_horiz),
+                                      ),
+                                    ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: 75,
@@ -542,7 +542,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(height: 5,),
+                                              SizedBox(height: 5),
                                               Text(
                                                 _subscriptions[i]['name'],
                                                 style: TextStyle(
