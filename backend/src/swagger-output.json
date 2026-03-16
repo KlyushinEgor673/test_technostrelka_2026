@@ -878,6 +878,26 @@
         }
       }
     },
+    "/api/subscription/{{where{date_category_id_user_id:{date:debitDate}": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/subscription/{{where{id:parseInt(id)}})}catch(error){console.error(Произошлаошибкаприудаленииподписки:}": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/yoomoney/exchange-token": {
       "post": {
         "tags": [

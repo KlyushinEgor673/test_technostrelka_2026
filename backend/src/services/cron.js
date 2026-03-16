@@ -39,8 +39,9 @@ const updateExpiredSubscriptions = async () => {
 
             const debSubs = await prisma.debiting_subscriptions.findUnique({
               where: {
-                date_user_id: {
+                date_category_id_user_id: {
                   date: sub.end_date,
+                  category_id: sub.category_id,
                   user_id: user.id
                 }
               }
@@ -50,6 +51,7 @@ const updateExpiredSubscriptions = async () => {
               await prisma.debiting_subscriptions.create({
                 data: {
                   date: sub.end_date,
+                  category_id: sub.category_id,
                   user_id: user.id,
                   price: sub.price
                 }
@@ -57,8 +59,9 @@ const updateExpiredSubscriptions = async () => {
             } else {
               await prisma.debiting_subscriptions.update({
                 where: {
-                  date_user_id: {
+                  date_category_id_user_id: {
                     date: sub.end_date,
+                    category_id: sub.category_id,
                     user_id: user.id
                   }
                 },

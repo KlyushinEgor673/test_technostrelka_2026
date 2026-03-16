@@ -210,14 +210,13 @@ const graphsYoomoneySubs = async (req, res) => {
               case "декабрь":
                 date += "-12-";
                 break;
-
               default:
                 return res.status(400).json({ error: "Произошла ошибка при форматировании даты" });
             }
 
             date += dateArr[0];
             date += "T00:00:00.000Z"
-            
+
             const price = parseFloat(notFormattedPrice);
 
             console.log("Найдена подписка:", price, date);

@@ -149,8 +149,9 @@ exports.Prisma.SubscriptionsScalarFieldEnum = {
 
 exports.Prisma.Debiting_subscriptionsScalarFieldEnum = {
   date: 'date',
-  price: 'price',
-  user_id: 'user_id'
+  category_id: 'category_id',
+  user_id: 'user_id',
+  price: 'price'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {

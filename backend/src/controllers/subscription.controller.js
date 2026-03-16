@@ -47,10 +47,10 @@ const createSubscription = async (req, res) => {
     const formattedPeriod = parseInt(period);
     const formattedPrice = parseFloat(price);
     const flagAutoBool = flag_auto === 'true' || flag_auto === true;
+    const parsedCategoryId = parseInt(category_id);
 
     console.log("end_date:", end_date);
     console.log("period:", period);
-
 
     console.log("formattedEndDate:", formattedEndDate);
     console.log("formattedPeriod:", formattedPeriod);
@@ -60,28 +60,35 @@ const createSubscription = async (req, res) => {
     debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
 
     console.log("debitDate:", debitDate);
-
     console.log("Дата списания: ", debitDate);
 
+    // Поиск существующего списания по дате + категории + пользователю
     const existingDebit = await prisma.debiting_subscriptions.findFirst({
-      where: { date: debitDate }
+      where: { 
+        date: debitDate,
+        category_id: parsedCategoryId,
+        user_id: req.user.id 
+      }
     });
 
     if (!existingDebit) {
+      // Создаем новую запись списания с category_id
       await prisma.debiting_subscriptions.create({
         data: {
           date: debitDate,
+          category_id: parsedCategoryId,
           user_id: req.user.id,
-          price: parseFloat(formattedPrice),
-          user_id: req.user.id
+          price: formattedPrice
         }
       });
     } else {
-      const sumPrice = parseFloat(formattedPrice) + parseFloat(existingDebit.price);
+      // Добавляем цену к существующей записи
+      const sumPrice = formattedPrice + parseFloat(existingDebit.price);
       await prisma.debiting_subscriptions.update({
         where: {
-          date_user_id: {
+          date_category_id_user_id: {
             date: debitDate,
+            category_id: parsedCategoryId,
             user_id: req.user.id
           }
         },
@@ -94,7 +101,7 @@ const createSubscription = async (req, res) => {
     await prisma.subscriptions.create({
       data: {
         name: name,
-        category_id: parseInt(category_id),
+        category_id: parsedCategoryId,
         period: formattedPeriod,
         end_date: formattedEndDate,
         price: formattedPrice,
@@ -171,105 +178,132 @@ const updateSubscription = async (req, res) => {
     }
 
     //проверка на существование категории
+    const parsedCategoryId = parseInt(category_id);
     const checkCategory = await prisma.category.findUnique({
-      where: { id: parseInt(category_id) }
+      where: { id: parsedCategoryId }
     })
 
     if(!checkCategory){
       return res.status(404).json({ error: "Категория с данным id не найдена" })
     }
 
-
     try {
-
       const formattedEndDate = new Date(end_date);
       const formattedPeriod = parseInt(period);
       const formattedPrice = parseFloat(price);
       const flagAutoBool = flag_auto === 'true' || flag_auto === true;
 
-
+      // Получаем старую подписку для сравнения
       const oldSub = await prisma.subscriptions.findUnique({
         where: { id: parseInt(id) },
-      })
+      });
 
-      const newPayDate = new Date(formattedEndDate)
-      newPayDate.setDate(newPayDate.getDate() - formattedPeriod)
-      const oldPayDate = new Date(oldSub.end_date)
-      oldPayDate.setDate(oldPayDate.getDate() - oldSub.period)
-      console.log("Даты", newPayDate, oldPayDate)
+      // Рассчитываем старую и новую даты списания
+      const newPayDate = new Date(formattedEndDate);
+      newPayDate.setDate(newPayDate.getDate() - formattedPeriod);
+      
+      const oldPayDate = new Date(oldSub.end_date);
+      oldPayDate.setDate(oldPayDate.getDate() - oldSub.period);
+      
+      console.log("Старая дата списания:", oldPayDate, "Старая категория:", oldSub.category_id);
+      console.log("Новая дата списания:", newPayDate, "Новая категория:", parsedCategoryId);
 
-      const debitingSubscriptionOld = await prisma.debiting_subscriptions.findUnique({
+      // Проверяем, изменились ли дата или категория
+      const isDateChanged = newPayDate.getTime() !== oldPayDate.getTime();
+      const isCategoryChanged = parsedCategoryId !== oldSub.category_id;
+
+      // Находим старую запись списания
+      const oldDebitSubscription = await prisma.debiting_subscriptions.findUnique({
         where: {
-          date_user_id: {
+          date_category_id_user_id: {
             date: oldPayDate,
+            category_id: oldSub.category_id,
             user_id: req.user.id
           }
         }
-      })
+      });
 
-      if (newPayDate.getDate() == oldPayDate.getDate()) {
-        console.log('ravno')
+      if (!isDateChanged && !isCategoryChanged) {
+        // Случай 4: меняется только цена (дата и категория те же)
+        console.log('Случай: только изменение цены');
+        
         await prisma.debiting_subscriptions.update({
           where: {
-            date_user_id: {
+            date_category_id_user_id: {
               date: oldPayDate,
+              category_id: oldSub.category_id,
               user_id: req.user.id
             }
           },
           data: {
-            price: debitingSubscriptionOld.price - oldSub.price + formattedPrice
+            price: parseFloat(oldDebitSubscription.price) - parseFloat(oldSub.price) + formattedPrice
           }
-        })
+        });
       } else {
-        console.log('OLDATE', oldPayDate)
+        // Случаи 1, 2, 3, 5: изменилась дата И/ИЛИ категория
+        
+        // 1. Вычитаем цену из старой записи списания
+        console.log('Вычитаем из старой записи:', parseFloat(oldDebitSubscription.price) - parseFloat(oldSub.price));
+        
         await prisma.debiting_subscriptions.update({
           where: {
-            date_user_id: {
+            date_category_id_user_id: {
               date: oldPayDate,
+              category_id: oldSub.category_id,
               user_id: req.user.id
             }
           },
           data: {
-            price: debitingSubscriptionOld.price - oldSub.price
+            price: parseFloat(oldDebitSubscription.price) - parseFloat(oldSub.price)
           }
-        })
-        console.log(debitingSubscriptionOld.price - oldSub.price)
-        const debitingSubscriptionNew = await prisma.debiting_subscriptions.findUnique({
+        });
+
+        // 2. Добавляем цену в новую запись списания (по новой дате и категории)
+        const newDebitSubscription = await prisma.debiting_subscriptions.findUnique({
           where: {
-            date_user_id: {
+            date_category_id_user_id: {
               date: newPayDate,
+              category_id: parsedCategoryId,
               user_id: req.user.id
             }
           }
-        })
-        if (!debitingSubscriptionNew) {
+        });
+
+        if (!newDebitSubscription) {
+          // Создаем новую запись
+          console.log('Создаем новую запись списания');
           await prisma.debiting_subscriptions.create({
             data: {
               price: formattedPrice,
               user_id: req.user.id,
-              date: newPayDate
+              date: newPayDate,
+              category_id: parsedCategoryId
             }
-          })
+          });
         } else {
+          // Добавляем к существующей
+          console.log('Добавляем к существующей записи:', parseFloat(newDebitSubscription.price) + formattedPrice);
           await prisma.debiting_subscriptions.update({
             where: {
-              date_user_id: {
-                date: oldPayDate,
+              date_category_id_user_id: {
+                date: newPayDate,
+                category_id: parsedCategoryId,
                 user_id: req.user.id
               }
             },
             data: {
-              price: debitingSubscriptionNew.price + formattedPrice
+              price: parseFloat(newDebitSubscription.price) + formattedPrice
             }
-          })
+          });
         }
       }
 
+      // Обновляем подписку
       await prisma.subscriptions.update({
         where: { id: parseInt(id) },
         data: {
           name: name,
-          category_id: parseInt(category_id),
+          category_id: parsedCategoryId,
           period: formattedPeriod,
           end_date: formattedEndDate,
           price: formattedPrice,
@@ -277,13 +311,15 @@ const updateSubscription = async (req, res) => {
           img: img,
           url: url
         }
-      })
+      });
+      
     } catch (error) {
-      console.error("Ошибка: ", error);
+      console.error("Ошибка при изменении подписки: ", error);
       return res.status(500).json({ error: "Произошла ошибка при изменении подписки" });
     }
 
-    res.status(200).json({ status: "success" })
+    res.status(200).json({ status: "success" });
+    
   } catch (error) {
     // Проверяем, не отправлен ли уже ответ
     if (!res.headersSent) {
@@ -374,45 +410,64 @@ const deleteSubscription = async (req, res) => {
 
 
     try {
-
-      const sub = await prisma.subscriptions.findUnique({
-        where: { id: parseInt(id) }
-      })
-
       const formattedEndDate = sub.end_date;
-      // formattedEndDate.setDate(formattedEndDate.getDate() + 1);
       const formattedPeriod = parseInt(sub.period);
 
       console.log("DELETE formattedEndDate:", formattedEndDate);
       console.log("DELETE formattedPeriod:", formattedPeriod);
 
-      let date = new Date(formattedEndDate);
-      date.setDate(formattedEndDate.getDate() - formattedPeriod);
-      console.log("DELETE date:", date);
+      let debitDate = new Date(formattedEndDate);
+      debitDate.setDate(formattedEndDate.getDate() - formattedPeriod);
+      console.log("DELETE debitDate:", debitDate);
 
-      const dateDebit = await prisma.debiting_subscriptions.findFirst({
-        where: { date: date }
+      const dateDebit = await prisma.debiting_subscriptions.findUnique({
+        where: { 
+          date_category_id_user_id: {
+            date: debitDate,
+            category_id: sub.category_id,
+            user_id: req.user.id
+          }
+        }
       })
 
+      if (!dateDebit) {
+        console.error("Запись списания не найдена");
+        return res.status(404).json({ error: "Запись списания не найдена" });
+      }
+
       //проверка является ли подписка единственной в этот день
-      if (dateDebit.price == sub.price) {
-        await prisma.debiting_subscriptions.delete({
-          where: { date: date }
-        })
+      //этот запрос к бд считывается как запрос RESTAPI
+      if (parseFloat(dateDebit.price) == parseFloat(sub.price)) {
+       await prisma.debiting_subscriptions.delete({
+        where: {
+          date_category_id_user_id: {
+            date: debitDate,
+            category_id: sub.category_id,
+            user_id: req.user.id
+          }
+        }
+       })
       } else {
 
-        const newPrice = dateDebit.price - sub.price
+        const newPrice = parseFloat(dateDebit.price) - parseFloat(sub.price)
 
         await prisma.debiting_subscriptions.update({
-          where: { date: date },
+          where: { 
+            date_category_id_user_id: {
+              date: debitDate,
+              category_id: sub.category_id,
+              user_id: req.user.id
+            }
+          },
           data: {
             price: newPrice
           }
         })
       }
 
+      //этот запрос к бд считывается как запрос RESTAPI
       await prisma.subscriptions.delete({
-        where: { id: id }
+        where: { id: parseInt(id) }
       })
 
     } catch (error) {

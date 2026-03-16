@@ -1171,6 +1171,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CategoryCountOutputType
+   */
+
+  export type CategoryCountOutputType = {
+    debiting_subscriptions: number
+  }
+
+  export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    debiting_subscriptions?: boolean | CategoryCountOutputTypeCountDebiting_subscriptionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CategoryCountOutputType without action
+   */
+  export type CategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CategoryCountOutputType
+     */
+    select?: CategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CategoryCountOutputType without action
+   */
+  export type CategoryCountOutputTypeCountDebiting_subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: debiting_subscriptionsWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -3585,61 +3616,71 @@ export namespace Prisma {
   }
 
   export type Debiting_subscriptionsAvgAggregateOutputType = {
-    price: Decimal | null
+    category_id: number | null
     user_id: number | null
+    price: Decimal | null
   }
 
   export type Debiting_subscriptionsSumAggregateOutputType = {
-    price: Decimal | null
+    category_id: number | null
     user_id: number | null
+    price: Decimal | null
   }
 
   export type Debiting_subscriptionsMinAggregateOutputType = {
     date: Date | null
-    price: Decimal | null
+    category_id: number | null
     user_id: number | null
+    price: Decimal | null
   }
 
   export type Debiting_subscriptionsMaxAggregateOutputType = {
     date: Date | null
-    price: Decimal | null
+    category_id: number | null
     user_id: number | null
+    price: Decimal | null
   }
 
   export type Debiting_subscriptionsCountAggregateOutputType = {
     date: number
-    price: number
+    category_id: number
     user_id: number
+    price: number
     _all: number
   }
 
 
   export type Debiting_subscriptionsAvgAggregateInputType = {
-    price?: true
+    category_id?: true
     user_id?: true
+    price?: true
   }
 
   export type Debiting_subscriptionsSumAggregateInputType = {
-    price?: true
+    category_id?: true
     user_id?: true
+    price?: true
   }
 
   export type Debiting_subscriptionsMinAggregateInputType = {
     date?: true
-    price?: true
+    category_id?: true
     user_id?: true
+    price?: true
   }
 
   export type Debiting_subscriptionsMaxAggregateInputType = {
     date?: true
-    price?: true
+    category_id?: true
     user_id?: true
+    price?: true
   }
 
   export type Debiting_subscriptionsCountAggregateInputType = {
     date?: true
-    price?: true
+    category_id?: true
     user_id?: true
+    price?: true
     _all?: true
   }
 
@@ -3731,8 +3772,9 @@ export namespace Prisma {
 
   export type Debiting_subscriptionsGroupByOutputType = {
     date: Date
-    price: Decimal
+    category_id: number
     user_id: number
+    price: Decimal
     _count: Debiting_subscriptionsCountAggregateOutputType | null
     _avg: Debiting_subscriptionsAvgAggregateOutputType | null
     _sum: Debiting_subscriptionsSumAggregateOutputType | null
@@ -3756,51 +3798,63 @@ export namespace Prisma {
 
   export type debiting_subscriptionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     date?: boolean
-    price?: boolean
+    category_id?: boolean
     user_id?: boolean
+    price?: boolean
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debiting_subscriptions"]>
 
   export type debiting_subscriptionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     date?: boolean
-    price?: boolean
+    category_id?: boolean
     user_id?: boolean
+    price?: boolean
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debiting_subscriptions"]>
 
   export type debiting_subscriptionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     date?: boolean
-    price?: boolean
+    category_id?: boolean
     user_id?: boolean
+    price?: boolean
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debiting_subscriptions"]>
 
   export type debiting_subscriptionsSelectScalar = {
     date?: boolean
-    price?: boolean
+    category_id?: boolean
     user_id?: boolean
+    price?: boolean
   }
 
-  export type debiting_subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"date" | "price" | "user_id", ExtArgs["result"]["debiting_subscriptions"]>
+  export type debiting_subscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"date" | "category_id" | "user_id" | "price", ExtArgs["result"]["debiting_subscriptions"]>
   export type debiting_subscriptionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type debiting_subscriptionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type debiting_subscriptionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | categoryDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
 
   export type $debiting_subscriptionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "debiting_subscriptions"
     objects: {
+      category: Prisma.$categoryPayload<ExtArgs>
       users: Prisma.$usersPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       date: Date
-      price: Prisma.Decimal
+      category_id: number
       user_id: number
+      price: Prisma.Decimal
     }, ExtArgs["result"]["debiting_subscriptions"]>
     composites: {}
   }
@@ -4195,6 +4249,7 @@ export namespace Prisma {
    */
   export interface Prisma__debiting_subscriptionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    category<T extends categoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, categoryDefaultArgs<ExtArgs>>): Prisma__categoryClient<$Result.GetResult<Prisma.$categoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4226,8 +4281,9 @@ export namespace Prisma {
    */
   interface debiting_subscriptionsFieldRefs {
     readonly date: FieldRef<"debiting_subscriptions", 'DateTime'>
-    readonly price: FieldRef<"debiting_subscriptions", 'Decimal'>
+    readonly category_id: FieldRef<"debiting_subscriptions", 'Int'>
     readonly user_id: FieldRef<"debiting_subscriptions", 'Int'>
+    readonly price: FieldRef<"debiting_subscriptions", 'Decimal'>
   }
     
 
@@ -4816,6 +4872,8 @@ export namespace Prisma {
   export type categorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    debiting_subscriptions?: boolean | category$debiting_subscriptionsArgs<ExtArgs>
+    _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
   export type categorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4834,10 +4892,18 @@ export namespace Prisma {
   }
 
   export type categoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["category"]>
+  export type categoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    debiting_subscriptions?: boolean | category$debiting_subscriptionsArgs<ExtArgs>
+    _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type categoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type categoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $categoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "category"
-    objects: {}
+    objects: {
+      debiting_subscriptions: Prisma.$debiting_subscriptionsPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string | null
@@ -5235,6 +5301,7 @@ export namespace Prisma {
    */
   export interface Prisma__categoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    debiting_subscriptions<T extends category$debiting_subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, category$debiting_subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$debiting_subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5283,6 +5350,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * Filter, which category to fetch.
      */
     where: categoryWhereUniqueInput
@@ -5301,6 +5372,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * Filter, which category to fetch.
      */
     where: categoryWhereUniqueInput
@@ -5318,6 +5393,10 @@ export namespace Prisma {
      * Omit specific fields from the category
      */
     omit?: categoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
     /**
      * Filter, which category to fetch.
      */
@@ -5367,6 +5446,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * Filter, which category to fetch.
      */
     where?: categoryWhereInput
@@ -5415,6 +5498,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * Filter, which categories to fetch.
      */
     where?: categoryWhereInput
@@ -5457,6 +5544,10 @@ export namespace Prisma {
      * Omit specific fields from the category
      */
     omit?: categoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
     /**
      * The data needed to create a category.
      */
@@ -5505,6 +5596,10 @@ export namespace Prisma {
      * Omit specific fields from the category
      */
     omit?: categoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
     /**
      * The data needed to update a category.
      */
@@ -5572,6 +5667,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * The filter to search for the category to update in case it exists.
      */
     where: categoryWhereUniqueInput
@@ -5598,6 +5697,10 @@ export namespace Prisma {
      */
     omit?: categoryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
+    /**
      * Filter which category to delete.
      */
     where: categoryWhereUniqueInput
@@ -5618,6 +5721,30 @@ export namespace Prisma {
   }
 
   /**
+   * category.debiting_subscriptions
+   */
+  export type category$debiting_subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the debiting_subscriptions
+     */
+    select?: debiting_subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the debiting_subscriptions
+     */
+    omit?: debiting_subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: debiting_subscriptionsInclude<ExtArgs> | null
+    where?: debiting_subscriptionsWhereInput
+    orderBy?: debiting_subscriptionsOrderByWithRelationInput | debiting_subscriptionsOrderByWithRelationInput[]
+    cursor?: debiting_subscriptionsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Debiting_subscriptionsScalarFieldEnum | Debiting_subscriptionsScalarFieldEnum[]
+  }
+
+  /**
    * category without action
    */
   export type categoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5629,6 +5756,10 @@ export namespace Prisma {
      * Omit specific fields from the category
      */
     omit?: categoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: categoryInclude<ExtArgs> | null
   }
 
 
@@ -5681,8 +5812,9 @@ export namespace Prisma {
 
   export const Debiting_subscriptionsScalarFieldEnum: {
     date: 'date',
-    price: 'price',
-    user_id: 'user_id'
+    category_id: 'category_id',
+    user_id: 'user_id',
+    price: 'price'
   };
 
   export type Debiting_subscriptionsScalarFieldEnum = (typeof Debiting_subscriptionsScalarFieldEnum)[keyof typeof Debiting_subscriptionsScalarFieldEnum]
@@ -6027,33 +6159,40 @@ export namespace Prisma {
     OR?: debiting_subscriptionsWhereInput[]
     NOT?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
     date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
-    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category_id?: IntFilter<"debiting_subscriptions"> | number
     user_id?: IntFilter<"debiting_subscriptions"> | number
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: XOR<CategoryScalarRelationFilter, categoryWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
   export type debiting_subscriptionsOrderByWithRelationInput = {
     date?: SortOrder
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
+    category?: categoryOrderByWithRelationInput
     users?: usersOrderByWithRelationInput
   }
 
   export type debiting_subscriptionsWhereUniqueInput = Prisma.AtLeast<{
-    date_user_id?: debiting_subscriptionsDateUser_idCompoundUniqueInput
+    date_category_id_user_id?: debiting_subscriptionsDateCategory_idUser_idCompoundUniqueInput
     AND?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
     OR?: debiting_subscriptionsWhereInput[]
     NOT?: debiting_subscriptionsWhereInput | debiting_subscriptionsWhereInput[]
     date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
-    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category_id?: IntFilter<"debiting_subscriptions"> | number
     user_id?: IntFilter<"debiting_subscriptions"> | number
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category?: XOR<CategoryScalarRelationFilter, categoryWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-  }, "date_user_id">
+  }, "date_category_id_user_id">
 
   export type debiting_subscriptionsOrderByWithAggregationInput = {
     date?: SortOrder
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
     _count?: debiting_subscriptionsCountOrderByAggregateInput
     _avg?: debiting_subscriptionsAvgOrderByAggregateInput
     _max?: debiting_subscriptionsMaxOrderByAggregateInput
@@ -6066,8 +6205,9 @@ export namespace Prisma {
     OR?: debiting_subscriptionsScalarWhereWithAggregatesInput[]
     NOT?: debiting_subscriptionsScalarWhereWithAggregatesInput | debiting_subscriptionsScalarWhereWithAggregatesInput[]
     date?: DateTimeWithAggregatesFilter<"debiting_subscriptions"> | Date | string
-    price?: DecimalWithAggregatesFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category_id?: IntWithAggregatesFilter<"debiting_subscriptions"> | number
     user_id?: IntWithAggregatesFilter<"debiting_subscriptions"> | number
+    price?: DecimalWithAggregatesFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
   }
 
   export type categoryWhereInput = {
@@ -6076,11 +6216,13 @@ export namespace Prisma {
     NOT?: categoryWhereInput | categoryWhereInput[]
     id?: IntFilter<"category"> | number
     name?: StringNullableFilter<"category"> | string | null
+    debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
   }
 
   export type categoryOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
+    debiting_subscriptions?: debiting_subscriptionsOrderByRelationAggregateInput
   }
 
   export type categoryWhereUniqueInput = Prisma.AtLeast<{
@@ -6089,6 +6231,7 @@ export namespace Prisma {
     OR?: categoryWhereInput[]
     NOT?: categoryWhereInput | categoryWhereInput[]
     name?: StringNullableFilter<"category"> | string | null
+    debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
   }, "id">
 
   export type categoryOrderByWithAggregationInput = {
@@ -6302,31 +6445,36 @@ export namespace Prisma {
   export type debiting_subscriptionsCreateInput = {
     date: Date | string
     price: Decimal | DecimalJsLike | number | string
+    category: categoryCreateNestedOneWithoutDebiting_subscriptionsInput
     users: usersCreateNestedOneWithoutDebiting_subscriptionsInput
   }
 
   export type debiting_subscriptionsUncheckedCreateInput = {
     date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category_id: number
     user_id: number
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type debiting_subscriptionsUpdateInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: categoryUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput
     users?: usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput
   }
 
   export type debiting_subscriptionsUncheckedUpdateInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type debiting_subscriptionsCreateManyInput = {
     date: Date | string
-    price: Decimal | DecimalJsLike | number | string
+    category_id: number
     user_id: number
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type debiting_subscriptionsUpdateManyMutationInput = {
@@ -6336,26 +6484,31 @@ export namespace Prisma {
 
   export type debiting_subscriptionsUncheckedUpdateManyInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type categoryCreateInput = {
     name?: string | null
+    debiting_subscriptions?: debiting_subscriptionsCreateNestedManyWithoutCategoryInput
   }
 
   export type categoryUncheckedCreateInput = {
     id?: number
     name?: string | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type categoryUpdateInput = {
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    debiting_subscriptions?: debiting_subscriptionsUpdateManyWithoutCategoryNestedInput
   }
 
   export type categoryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    debiting_subscriptions?: debiting_subscriptionsUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type categoryCreateManyInput = {
@@ -6792,42 +6945,53 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type CategoryScalarRelationFilter = {
+    is?: categoryWhereInput
+    isNot?: categoryWhereInput
+  }
+
   export type UsersScalarRelationFilter = {
     is?: usersWhereInput
     isNot?: usersWhereInput
   }
 
-  export type debiting_subscriptionsDateUser_idCompoundUniqueInput = {
+  export type debiting_subscriptionsDateCategory_idUser_idCompoundUniqueInput = {
     date: Date | string
+    category_id: number
     user_id: number
   }
 
   export type debiting_subscriptionsCountOrderByAggregateInput = {
     date?: SortOrder
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
   }
 
   export type debiting_subscriptionsAvgOrderByAggregateInput = {
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
   }
 
   export type debiting_subscriptionsMaxOrderByAggregateInput = {
     date?: SortOrder
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
   }
 
   export type debiting_subscriptionsMinOrderByAggregateInput = {
     date?: SortOrder
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
   }
 
   export type debiting_subscriptionsSumOrderByAggregateInput = {
-    price?: SortOrder
+    category_id?: SortOrder
     user_id?: SortOrder
+    price?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -7017,6 +7181,12 @@ export namespace Prisma {
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutSubscriptionsInput, usersUpdateWithoutSubscriptionsInput>, usersUncheckedUpdateWithoutSubscriptionsInput>
   }
 
+  export type categoryCreateNestedOneWithoutDebiting_subscriptionsInput = {
+    create?: XOR<categoryCreateWithoutDebiting_subscriptionsInput, categoryUncheckedCreateWithoutDebiting_subscriptionsInput>
+    connectOrCreate?: categoryCreateOrConnectWithoutDebiting_subscriptionsInput
+    connect?: categoryWhereUniqueInput
+  }
+
   export type usersCreateNestedOneWithoutDebiting_subscriptionsInput = {
     create?: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutDebiting_subscriptionsInput
@@ -7031,12 +7201,62 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type categoryUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput = {
+    create?: XOR<categoryCreateWithoutDebiting_subscriptionsInput, categoryUncheckedCreateWithoutDebiting_subscriptionsInput>
+    connectOrCreate?: categoryCreateOrConnectWithoutDebiting_subscriptionsInput
+    upsert?: categoryUpsertWithoutDebiting_subscriptionsInput
+    connect?: categoryWhereUniqueInput
+    update?: XOR<XOR<categoryUpdateToOneWithWhereWithoutDebiting_subscriptionsInput, categoryUpdateWithoutDebiting_subscriptionsInput>, categoryUncheckedUpdateWithoutDebiting_subscriptionsInput>
+  }
+
   export type usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput = {
     create?: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutDebiting_subscriptionsInput
     upsert?: usersUpsertWithoutDebiting_subscriptionsInput
     connect?: usersWhereUniqueInput
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutDebiting_subscriptionsInput, usersUpdateWithoutDebiting_subscriptionsInput>, usersUncheckedUpdateWithoutDebiting_subscriptionsInput>
+  }
+
+  export type debiting_subscriptionsCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput> | debiting_subscriptionsCreateWithoutCategoryInput[] | debiting_subscriptionsUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutCategoryInput | debiting_subscriptionsCreateOrConnectWithoutCategoryInput[]
+    createMany?: debiting_subscriptionsCreateManyCategoryInputEnvelope
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+  }
+
+  export type debiting_subscriptionsUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput> | debiting_subscriptionsCreateWithoutCategoryInput[] | debiting_subscriptionsUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutCategoryInput | debiting_subscriptionsCreateOrConnectWithoutCategoryInput[]
+    createMany?: debiting_subscriptionsCreateManyCategoryInputEnvelope
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+  }
+
+  export type debiting_subscriptionsUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput> | debiting_subscriptionsCreateWithoutCategoryInput[] | debiting_subscriptionsUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutCategoryInput | debiting_subscriptionsCreateOrConnectWithoutCategoryInput[]
+    upsert?: debiting_subscriptionsUpsertWithWhereUniqueWithoutCategoryInput | debiting_subscriptionsUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: debiting_subscriptionsCreateManyCategoryInputEnvelope
+    set?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    disconnect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    delete?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    update?: debiting_subscriptionsUpdateWithWhereUniqueWithoutCategoryInput | debiting_subscriptionsUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: debiting_subscriptionsUpdateManyWithWhereWithoutCategoryInput | debiting_subscriptionsUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput> | debiting_subscriptionsCreateWithoutCategoryInput[] | debiting_subscriptionsUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: debiting_subscriptionsCreateOrConnectWithoutCategoryInput | debiting_subscriptionsCreateOrConnectWithoutCategoryInput[]
+    upsert?: debiting_subscriptionsUpsertWithWhereUniqueWithoutCategoryInput | debiting_subscriptionsUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: debiting_subscriptionsCreateManyCategoryInputEnvelope
+    set?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    disconnect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    delete?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    connect?: debiting_subscriptionsWhereUniqueInput | debiting_subscriptionsWhereUniqueInput[]
+    update?: debiting_subscriptionsUpdateWithWhereUniqueWithoutCategoryInput | debiting_subscriptionsUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: debiting_subscriptionsUpdateManyWithWhereWithoutCategoryInput | debiting_subscriptionsUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -7337,10 +7557,12 @@ export namespace Prisma {
   export type debiting_subscriptionsCreateWithoutUsersInput = {
     date: Date | string
     price: Decimal | DecimalJsLike | number | string
+    category: categoryCreateNestedOneWithoutDebiting_subscriptionsInput
   }
 
   export type debiting_subscriptionsUncheckedCreateWithoutUsersInput = {
     date: Date | string
+    category_id: number
     price: Decimal | DecimalJsLike | number | string
   }
 
@@ -7408,8 +7630,9 @@ export namespace Prisma {
     OR?: debiting_subscriptionsScalarWhereInput[]
     NOT?: debiting_subscriptionsScalarWhereInput | debiting_subscriptionsScalarWhereInput[]
     date?: DateTimeFilter<"debiting_subscriptions"> | Date | string
-    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
+    category_id?: IntFilter<"debiting_subscriptions"> | number
     user_id?: IntFilter<"debiting_subscriptions"> | number
+    price?: DecimalFilter<"debiting_subscriptions"> | Decimal | DecimalJsLike | number | string
   }
 
   export type subscriptionsUpsertWithWhereUniqueWithoutUsersInput = {
@@ -7518,6 +7741,20 @@ export namespace Prisma {
     debiting_subscriptions?: debiting_subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
 
+  export type categoryCreateWithoutDebiting_subscriptionsInput = {
+    name?: string | null
+  }
+
+  export type categoryUncheckedCreateWithoutDebiting_subscriptionsInput = {
+    id?: number
+    name?: string | null
+  }
+
+  export type categoryCreateOrConnectWithoutDebiting_subscriptionsInput = {
+    where: categoryWhereUniqueInput
+    create: XOR<categoryCreateWithoutDebiting_subscriptionsInput, categoryUncheckedCreateWithoutDebiting_subscriptionsInput>
+  }
+
   export type usersCreateWithoutDebiting_subscriptionsInput = {
     email: string
     password: string
@@ -7550,6 +7787,26 @@ export namespace Prisma {
   export type usersCreateOrConnectWithoutDebiting_subscriptionsInput = {
     where: usersWhereUniqueInput
     create: XOR<usersCreateWithoutDebiting_subscriptionsInput, usersUncheckedCreateWithoutDebiting_subscriptionsInput>
+  }
+
+  export type categoryUpsertWithoutDebiting_subscriptionsInput = {
+    update: XOR<categoryUpdateWithoutDebiting_subscriptionsInput, categoryUncheckedUpdateWithoutDebiting_subscriptionsInput>
+    create: XOR<categoryCreateWithoutDebiting_subscriptionsInput, categoryUncheckedCreateWithoutDebiting_subscriptionsInput>
+    where?: categoryWhereInput
+  }
+
+  export type categoryUpdateToOneWithWhereWithoutDebiting_subscriptionsInput = {
+    where?: categoryWhereInput
+    data: XOR<categoryUpdateWithoutDebiting_subscriptionsInput, categoryUncheckedUpdateWithoutDebiting_subscriptionsInput>
+  }
+
+  export type categoryUpdateWithoutDebiting_subscriptionsInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type categoryUncheckedUpdateWithoutDebiting_subscriptionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUpsertWithoutDebiting_subscriptionsInput = {
@@ -7592,8 +7849,47 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUsersNestedInput
   }
 
+  export type debiting_subscriptionsCreateWithoutCategoryInput = {
+    date: Date | string
+    price: Decimal | DecimalJsLike | number | string
+    users: usersCreateNestedOneWithoutDebiting_subscriptionsInput
+  }
+
+  export type debiting_subscriptionsUncheckedCreateWithoutCategoryInput = {
+    date: Date | string
+    user_id: number
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsCreateOrConnectWithoutCategoryInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    create: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type debiting_subscriptionsCreateManyCategoryInputEnvelope = {
+    data: debiting_subscriptionsCreateManyCategoryInput | debiting_subscriptionsCreateManyCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type debiting_subscriptionsUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    update: XOR<debiting_subscriptionsUpdateWithoutCategoryInput, debiting_subscriptionsUncheckedUpdateWithoutCategoryInput>
+    create: XOR<debiting_subscriptionsCreateWithoutCategoryInput, debiting_subscriptionsUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type debiting_subscriptionsUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: debiting_subscriptionsWhereUniqueInput
+    data: XOR<debiting_subscriptionsUpdateWithoutCategoryInput, debiting_subscriptionsUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type debiting_subscriptionsUpdateManyWithWhereWithoutCategoryInput = {
+    where: debiting_subscriptionsScalarWhereInput
+    data: XOR<debiting_subscriptionsUpdateManyMutationInput, debiting_subscriptionsUncheckedUpdateManyWithoutCategoryInput>
+  }
+
   export type debiting_subscriptionsCreateManyUsersInput = {
     date: Date | string
+    category_id: number
     price: Decimal | DecimalJsLike | number | string
   }
 
@@ -7612,15 +7908,18 @@ export namespace Prisma {
   export type debiting_subscriptionsUpdateWithoutUsersInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    category?: categoryUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput
   }
 
   export type debiting_subscriptionsUncheckedUpdateWithoutUsersInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    category_id?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type debiting_subscriptionsUncheckedUpdateManyWithoutUsersInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    category_id?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
@@ -7657,6 +7956,30 @@ export namespace Prisma {
     flag_auto?: NullableBoolFieldUpdateOperationsInput | boolean | null
     img?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type debiting_subscriptionsCreateManyCategoryInput = {
+    date: Date | string
+    user_id: number
+    price: Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUpdateWithoutCategoryInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    users?: usersUpdateOneRequiredWithoutDebiting_subscriptionsNestedInput
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateWithoutCategoryInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type debiting_subscriptionsUncheckedUpdateManyWithoutCategoryInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: IntFieldUpdateOperationsInput | number
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
 
