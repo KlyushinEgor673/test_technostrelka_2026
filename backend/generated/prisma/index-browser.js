@@ -156,7 +156,8 @@ exports.Prisma.Debiting_subscriptionsScalarFieldEnum = {
 
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  color: 'color'
 };
 
 exports.Prisma.SortOrder = {

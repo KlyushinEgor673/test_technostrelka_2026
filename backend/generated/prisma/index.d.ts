@@ -4721,16 +4721,19 @@ export namespace Prisma {
   export type CategoryMinAggregateOutputType = {
     id: number | null
     name: string | null
+    color: string | null
   }
 
   export type CategoryMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    color: string | null
   }
 
   export type CategoryCountAggregateOutputType = {
     id: number
     name: number
+    color: number
     _all: number
   }
 
@@ -4746,16 +4749,19 @@ export namespace Prisma {
   export type CategoryMinAggregateInputType = {
     id?: true
     name?: true
+    color?: true
   }
 
   export type CategoryMaxAggregateInputType = {
     id?: true
     name?: true
+    color?: true
   }
 
   export type CategoryCountAggregateInputType = {
     id?: true
     name?: true
+    color?: true
     _all?: true
   }
 
@@ -4848,6 +4854,7 @@ export namespace Prisma {
   export type CategoryGroupByOutputType = {
     id: number
     name: string | null
+    color: string | null
     _count: CategoryCountAggregateOutputType | null
     _avg: CategoryAvgAggregateOutputType | null
     _sum: CategorySumAggregateOutputType | null
@@ -4872,6 +4879,7 @@ export namespace Prisma {
   export type categorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    color?: boolean
     debiting_subscriptions?: boolean | category$debiting_subscriptionsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
@@ -4879,19 +4887,22 @@ export namespace Prisma {
   export type categorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    color?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type categorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    color?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type categorySelectScalar = {
     id?: boolean
     name?: boolean
+    color?: boolean
   }
 
-  export type categoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["category"]>
+  export type categoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "color", ExtArgs["result"]["category"]>
   export type categoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     debiting_subscriptions?: boolean | category$debiting_subscriptionsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -4907,6 +4918,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string | null
+      color: string | null
     }, ExtArgs["result"]["category"]>
     composites: {}
   }
@@ -5333,6 +5345,7 @@ export namespace Prisma {
   interface categoryFieldRefs {
     readonly id: FieldRef<"category", 'Int'>
     readonly name: FieldRef<"category", 'String'>
+    readonly color: FieldRef<"category", 'String'>
   }
     
 
@@ -5822,7 +5835,8 @@ export namespace Prisma {
 
   export const CategoryScalarFieldEnum: {
     id: 'id',
-    name: 'name'
+    name: 'name',
+    color: 'color'
   };
 
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -6216,12 +6230,14 @@ export namespace Prisma {
     NOT?: categoryWhereInput | categoryWhereInput[]
     id?: IntFilter<"category"> | number
     name?: StringNullableFilter<"category"> | string | null
+    color?: StringNullableFilter<"category"> | string | null
     debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
   }
 
   export type categoryOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
+    color?: SortOrderInput | SortOrder
     debiting_subscriptions?: debiting_subscriptionsOrderByRelationAggregateInput
   }
 
@@ -6231,12 +6247,14 @@ export namespace Prisma {
     OR?: categoryWhereInput[]
     NOT?: categoryWhereInput | categoryWhereInput[]
     name?: StringNullableFilter<"category"> | string | null
+    color?: StringNullableFilter<"category"> | string | null
     debiting_subscriptions?: Debiting_subscriptionsListRelationFilter
   }, "id">
 
   export type categoryOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
+    color?: SortOrderInput | SortOrder
     _count?: categoryCountOrderByAggregateInput
     _avg?: categoryAvgOrderByAggregateInput
     _max?: categoryMaxOrderByAggregateInput
@@ -6250,6 +6268,7 @@ export namespace Prisma {
     NOT?: categoryScalarWhereWithAggregatesInput | categoryScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"category"> | number
     name?: StringNullableWithAggregatesFilter<"category"> | string | null
+    color?: StringNullableWithAggregatesFilter<"category"> | string | null
   }
 
   export type usersCreateInput = {
@@ -6491,38 +6510,45 @@ export namespace Prisma {
 
   export type categoryCreateInput = {
     name?: string | null
+    color?: string | null
     debiting_subscriptions?: debiting_subscriptionsCreateNestedManyWithoutCategoryInput
   }
 
   export type categoryUncheckedCreateInput = {
     id?: number
     name?: string | null
+    color?: string | null
     debiting_subscriptions?: debiting_subscriptionsUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type categoryUpdateInput = {
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     debiting_subscriptions?: debiting_subscriptionsUpdateManyWithoutCategoryNestedInput
   }
 
   export type categoryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     debiting_subscriptions?: debiting_subscriptionsUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type categoryCreateManyInput = {
     id?: number
     name?: string | null
+    color?: string | null
   }
 
   export type categoryUpdateManyMutationInput = {
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type categoryUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -7013,6 +7039,7 @@ export namespace Prisma {
   export type categoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    color?: SortOrder
   }
 
   export type categoryAvgOrderByAggregateInput = {
@@ -7022,11 +7049,13 @@ export namespace Prisma {
   export type categoryMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    color?: SortOrder
   }
 
   export type categoryMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    color?: SortOrder
   }
 
   export type categorySumOrderByAggregateInput = {
@@ -7743,11 +7772,13 @@ export namespace Prisma {
 
   export type categoryCreateWithoutDebiting_subscriptionsInput = {
     name?: string | null
+    color?: string | null
   }
 
   export type categoryUncheckedCreateWithoutDebiting_subscriptionsInput = {
     id?: number
     name?: string | null
+    color?: string | null
   }
 
   export type categoryCreateOrConnectWithoutDebiting_subscriptionsInput = {
@@ -7802,11 +7833,13 @@ export namespace Prisma {
 
   export type categoryUpdateWithoutDebiting_subscriptionsInput = {
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type categoryUncheckedUpdateWithoutDebiting_subscriptionsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUpsertWithoutDebiting_subscriptionsInput = {
