@@ -93,43 +93,46 @@ const updateExpiredSubscriptions = async () => {
 const notificationSubs = async () => {
   console.log(`[${new Date().toISOString()}] Запуск отправки уведомлений о списании...`);
   try {
-
-    const subs = await prisma.subscriptions.findMany()
-
     const currentDate = new Date();
+    // Устанавливаем время на начало дня для корректного сравнения
+    const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    
+    const subs = await prisma.subscriptions.findMany({
+      where: {
+        end_date: {
+          gte: today, // только активные подписки
+        }
+      }
+    });
 
     for (let sub of subs) {
       try {
-
-        const difDays = differenceInDays(sub.end_date, currentDate) + 1
-
-        console.log(`sub difference: ${difDays}`)
-
-        if(difDays > 0 && difDays < 4) {
+        const difDays = differenceInDays(sub.end_date, today);
+        
+        if (difDays >= 1 && difDays <= 3) {
           const user = await prisma.users.findUnique({
             where: { id: sub.id_user }
-          })
+          });
 
-          const email = user.email
+          if (user?.email) {
+            const subscriptionDetails = {
+              subscriptionName: sub.name,
+              amount: sub.price,
+              in_a_few: difDays
+            };
 
-          const subscriptionDetails = {
-            subscriptionName: sub.name,
-            amount: sub.price,
-            in_a_few: difDays
+            await sendSubscriptionDebitNotification(user.email, subscriptionDetails);
+            console.log(`Письмо отправлено на ${user.email} для подписки ${sub.name}`);
           }
-
-          sendSubscriptionDebitNotification(email, subscriptionDetails)
-
-          console.log(`Письмо было отправлено на ${email}`);
         }
       } catch (error) {
-        console.error(`Ошибка при отправке сообщения на почту при списании:`, error);
+        console.error(`Ошибка при отправке уведомления для подписки ${sub.id}:`, error);
       }
     }
   } catch (error) {
     console.error(`[${new Date().toISOString()}] Ошибка при отправке уведомлений о списании:`, error);
   }
-}
+};
 
 // Для теста можно запустить с другой частотой:
 // Каждую минуту: '* * * * *'
