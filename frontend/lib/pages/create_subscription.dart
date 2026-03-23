@@ -186,7 +186,10 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                         children: [
                           Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment:
+                                  MediaQuery.of(context).size.height > 667
+                                  ? MainAxisAlignment.center
+                                  : MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Center(
@@ -478,8 +481,8 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                                               isLoading: false,
                                               onPressed: _isCan
                                                   ? widget.id == null
-                                                  ? _createSubscription
-                                                  : _changeSubscription
+                                                        ? _createSubscription
+                                                        : _changeSubscription
                                                   : null,
                                             ),
                                           ),

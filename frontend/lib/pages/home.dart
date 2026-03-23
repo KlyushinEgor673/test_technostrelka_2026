@@ -128,7 +128,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _register() async {
-    print('REGISTER');
     if (_controllerPassword.text.isEmpty ||
         _controllerEmail.text.isEmpty ||
         _controllerName.text.isEmpty ||
@@ -435,14 +434,7 @@ class _HomeState extends State<Home> {
                             type: InputTypeCustom.inputText,
                           ),
                         ),
-                      if (_isEnter)
-                        GestureDetector(
-                          child: Text(
-                            'Забыли ваш пароль?',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      SizedBox(height: _isEnter ? 15 : 30),
+                      SizedBox(height: _isEnter ? 0 : 15),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: width * 0.03),
                         width: double.infinity,

@@ -20,18 +20,18 @@ class SelectDate extends StatefulWidget {
 }
 
 class _SelectDateState extends State<SelectDate> {
-  String? value;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if (widget.value != null){
-      setState(() {
-        value = widget.value.toString().substring(0, 10);
-      });
-    }
-    print(value);
-  }
+  // String? value;
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   if (widget.value != null){
+  //     setState(() {
+  //       value = widget.value.toString().substring(0, 10);
+  //     });
+  //   }
+  //   print(value);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +51,9 @@ class _SelectDateState extends State<SelectDate> {
           children: [
             SizedBox(width: 14),
             Text(
-              value ?? widget.hintText,
+              widget.value == null ? widget.hintText : widget.value!.substring(0, 10),
               style: TextStyle(
-                color: value != null ? Colors.black : Colors.grey,
+                color: widget.value != null ? Colors.black : Colors.grey,
                 fontSize: 16
               ),
             ),
@@ -66,10 +66,7 @@ class _SelectDateState extends State<SelectDate> {
           firstDate: widget.firstDate,
           lastDate: widget.lastDate,
         );
-        setState(() {
-          value = res.toString().substring(0, 10);
-        });
-        widget.change(value.toString().substring(0, 10));
+        widget.change(res.toString().substring(0, 10));
       },
     );
   }

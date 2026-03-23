@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/pages/change_password.dart';
 import 'package:frontend/pages/change_profile.dart';
 import 'package:frontend/pages/charts.dart';
 import 'package:frontend/pages/create_subscription.dart';
@@ -14,6 +15,7 @@ import 'package:frontend/pages/subscriptions.dart';
 import 'package:frontend/pages/yoomoney.dart';
 import 'package:frontend/pages/yoomoney_code.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> _getSubscriptionYoomoney(
   Dio dio,
@@ -71,6 +73,16 @@ void main() async {
     Provider(
       create: (_) => dio,
       child: MaterialApp(
+        locale: const Locale('ru', 'RU'),
+        supportedLocales: const [
+          Locale('ru', 'RU'),
+          Locale('en', 'US'),
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         // locale: Locale('ru'),
         theme: ThemeData(
           datePickerTheme: DatePickerThemeData(backgroundColor: Colors.white),
@@ -82,9 +94,7 @@ void main() async {
               if (token == null) {
                 return PageRouteBuilder(pageBuilder: (_, __, ___) => Home());
               } else {
-                return PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => Profile(),
-                );
+                return PageRouteBuilder(pageBuilder: (_, __, ___) => Profile());
               }
             case '/entrance':
               return PageRouteBuilder(pageBuilder: (_, __, ___) => Home());
@@ -96,9 +106,7 @@ void main() async {
             case '/profile':
               return PageRouteBuilder(pageBuilder: (_, __, ___) => Profile());
             case '/yoomoney':
-              return PageRouteBuilder(
-                pageBuilder: (_, __, ___) => Yoomoney(),
-              );
+              return PageRouteBuilder(pageBuilder: (_, __, ___) => Yoomoney());
             case '/subscriptions':
               return PageRouteBuilder(
                 pageBuilder: (_, __, ___) => Subscriptions(),
@@ -106,8 +114,7 @@ void main() async {
             case '/create_subscription':
               final args = settings.arguments as Map;
               return PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    CreateSubscription(id: args['id']),
+                pageBuilder: (_, __, ___) => CreateSubscription(id: args['id']),
               );
             case '/change_profile':
               return PageRouteBuilder(
@@ -118,12 +125,15 @@ void main() async {
             case '/yoomoney_code':
               Map args = settings.arguments as Map;
               return PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    YoomoneyCode(email: args['email']),
+                pageBuilder: (_, __, ___) => YoomoneyCode(email: args['email']),
               );
             case '/recommendations':
               return PageRouteBuilder(
                 pageBuilder: (_, __, ___) => Recommendations(),
+              );
+            case '/change_password':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ChangePassword(),
               );
           }
         },

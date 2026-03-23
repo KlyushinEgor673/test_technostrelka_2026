@@ -563,6 +563,21 @@ class _SubscriptionsState extends State<Subscriptions> {
                                                 ),
                                               ),
                                               SizedBox(height: 2.5),
+                                              Text(
+                                                '${_subscriptions[i]['flag_auto'] ? 'Спишется' : 'Активна до'} ${date}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color.fromRGBO(
+                                                    89,
+                                                    65,
+                                                    174,
+                                                    1,
+                                                  ),
+                                                  //Color.fromRGBO(216, 139, 49, 1),
+                                                  fontWeight:
+                                                  FontWeight.w700,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),

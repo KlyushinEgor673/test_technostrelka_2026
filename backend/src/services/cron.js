@@ -89,7 +89,7 @@ const updateExpiredSubscriptions = async () => {
 
 
 
-//уведомления о списании
+//уведомления о списаниич
 const notificationSubs = async () => {
   console.log(`[${new Date().toISOString()}] Запуск отправки уведомлений о списании...`);
   try {

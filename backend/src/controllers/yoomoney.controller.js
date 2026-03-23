@@ -1,21 +1,30 @@
 const prisma = require("../client");
 const { usedCodes, driverStorage, cookieStorage, userData } = require("../utils/tempStorage");
 const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome')
+
+//настройка драйвера
+const options = new chrome.Options();
+options.addArguments('--headless=new');
+options.addArguments('--no-sandbox');
+options.addArguments('--disable-dev-shm-usage');
+options.addArguments('--disable-gpu');
+options.addArguments('--window-size=1920,1080');
 
 
 // Обмен токена
 const exchangeToken = async (req, res) => {
   console.log(`[${new Date().toISOString()}] POST /api/exchange-token called`);
   console.log(`Request ID: ${Math.random().toString(36).substring(7)}`);
-  
+
   try {
     const { code } = req.body;
-    
+
     if (!code) {
       return res.status(400).json({ error: 'Код обязателен' });
     }
 
-    if(usedCodes.has(code)){
+    if (usedCodes.has(code)) {
       console.log(`Код ${code} уже был использован. Запрос проигнорирован.`)
       return res.status(200).json({ error: "данный код уже использовался" })
     }
@@ -23,7 +32,7 @@ const exchangeToken = async (req, res) => {
     usedCodes.set(code, { inProgress: true, userId: req.user.id })
 
     console.log(`[${new Date().toISOString()}] Sending request to YooMoney...`);
-    
+
     const response = await fetch('https://yoomoney.ru/oauth/token', {
       method: 'POST',
       headers: {
@@ -37,10 +46,10 @@ const exchangeToken = async (req, res) => {
         client_secret: '455A0A2D77D5F9DC82D86586215E65ECA0255E265B270F7C35A2BE8DC5B314D12A8B2A124C2AB17300A9336BA3DA6BC1F75B2D85B7F0B70E7018EA399D2DCF67'
       })
     });
-    
+
     const data = await response.json();
 
-    if(!data.access_token){
+    if (!data.access_token) {
       usedCodes.delete(code)
       return res.status(400).json({ error: "Неверный токен" })
     }
@@ -72,20 +81,20 @@ const getOperationHistory = async (req, res) => {
     const access_token = user.access_token_yoomoney;
 
     if (!access_token) {
-      return res.status(400).json({ 
-        error: "Токен доступа не найден. Подключите YooMoney аккаунт" 
+      return res.status(400).json({
+        error: "Токен доступа не найден. Подключите YooMoney аккаунт"
       });
     }
 
-    if(req.query.type) bodyParams.append('type', req.query.type);
-    if(req.query.label) bodyParams.append('label', req.query.label);
-    if(req.query.from) bodyParams.append('from', req.query.from);
-    if(req.query.till) bodyParams.append('till', req.query.till);
-    if(req.query.start_record) bodyParams.append('start_record', req.query.start_record);
-    if(req.query.records) bodyParams.append('records', req.query.records);
-    if(req.query.details) bodyParams.append('details', req.query.details);
+    if (req.query.type) bodyParams.append('type', req.query.type);
+    if (req.query.label) bodyParams.append('label', req.query.label);
+    if (req.query.from) bodyParams.append('from', req.query.from);
+    if (req.query.till) bodyParams.append('till', req.query.till);
+    if (req.query.start_record) bodyParams.append('start_record', req.query.start_record);
+    if (req.query.records) bodyParams.append('records', req.query.records);
+    if (req.query.details) bodyParams.append('details', req.query.details);
 
-    if(bodyParams.toString().length === 0){
+    if (bodyParams.toString().length === 0) {
       bodyParams.append('records', 100);
     }
 
@@ -98,13 +107,13 @@ const getOperationHistory = async (req, res) => {
       body: bodyParams
     });
 
-    if(!response.ok){
+    if (!response.ok) {
       return res.status(400).json({ error: response.status });
     }
 
     const data = await response.json();
 
-    if(data.error){
+    if (data.error) {
       return res.status(400).json({ error: data.error });
     }
 
@@ -167,7 +176,7 @@ const yoomoneyLogin = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    if(!email || !password){
+    if (!email || !password) {
       return res.status(400).json({ error: "Почта и пароль обязательны" });
     }
 
@@ -187,10 +196,10 @@ const yoomoneyLogin = async (req, res) => {
     // }
 
     // if(!driver){
-      
+
     // }
 
-    let driver = await new Builder().forBrowser('chrome').build();
+    let driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build();
     await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
     await driver.manage().deleteAllCookies();
     driverStorage.set(email, driver);
@@ -249,7 +258,7 @@ const yoomoneyLogin = async (req, res) => {
 
     const cookiesWeb = await driver.manage().getCookies();
 
-    const authCookies = cookiesWeb.filter(c => 
+    const authCookies = cookiesWeb.filter(c =>
       ['__zzatw-ymoney', 'DAT', 'DL'].includes(c.name)
     );
 
@@ -271,7 +280,7 @@ const yoomoneyLogin = async (req, res) => {
 
     await driver.quit()
 
-    res.status(200).json({ message: "Вы вошли в аккаунт yoomoney", is_enter: true})
+    res.status(200).json({ message: "Вы вошли в аккаунт yoomoney", is_enter: true })
   } catch (error) {
     if (driver) await driver.quit();
     console.error(error);
@@ -284,13 +293,13 @@ const yoomoneyLogin = async (req, res) => {
 const checkSessionStatus = async (req, res) => {
   try {
     const email = req.body.email;
-    
+
     const driver = driverStorage.get(email);
     const cookies = cookieStorage.get(email);
-    
+
     let driverUrl = null;
     let driverStatus = 'not_found';
-    
+
     if (driver) {
       try {
         driverUrl = await driver.getCurrentUrl();
@@ -299,7 +308,7 @@ const checkSessionStatus = async (req, res) => {
         driverStatus = 'dead';
       }
     }
-    
+
     res.json({
       email,
       driver_exists: !!driver,
@@ -321,17 +330,17 @@ const checkCodeYoomoney = async (req, res) => {
     const code = req.body.code
 
     if (!email || !code) {
-      return res.status(400).json({ 
-        error: "Email и код обязательны" 
+      return res.status(400).json({
+        error: "Email и код обязательны"
       });
     }
 
     let driver = driverStorage.get(email)
 
     if (!driver) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: "Сессия не найдена, войдите заново",
-        requires_login: true 
+        requires_login: true
       });
     }
 
@@ -341,21 +350,21 @@ const checkCodeYoomoney = async (req, res) => {
     } catch (error) {
       driverStorage.delete(email);
       cookieStorage.delete(email);
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: "Сессия истекла, войдите заново",
-        requires_login: true 
+        requires_login: true
       });
     }
 
     // Вводим код
     const input = await driver.findElement(By.xpath("//input"));
     await input.sendKeys(code);
-    
+
     await driver.sleep(3000);
 
     const currentUrl = await driver.getCurrentUrl()
 
-    if(currentUrl.includes('confirmation')) {
+    if (currentUrl.includes('confirmation')) {
       await prisma.users.update({
         where: { id: req.user.id },
         data: {
@@ -398,10 +407,10 @@ const getCookies = async (req, res) => {
 
 const getYoomoneySubscriptions = async (req, res) => {
   let driver = null;
-  
+
   try {
     const user = await prisma.users.findUnique({
-      where: {id: req.user.id}
+      where: { id: req.user.id }
     });
 
     // if(!user || !user.cookies || user.cookies.length === 0) {
@@ -412,9 +421,9 @@ const getYoomoneySubscriptions = async (req, res) => {
     const password = user.password_ym
 
     // Создаем driver
-    driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build();
     await driver.get("https://yoomoney.ru/yooid/signin/step/login?origin=Wallet&returnUrl=https%3A%2F%2Fyoomoney.ru%2F");
-    
+
     await driver.sleep(2000);
 
     const input = await driver.findElement(By.xpath("//input"));
@@ -488,10 +497,10 @@ const yoomoneyLogout = async (req, res) => {
       where: { id: req.user.id },
     });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ error: "Пользователь не найден" })
     }
-    if(!user.email_ym || !user.password_ym || user.is_enter_ym === false){
+    if (!user.email_ym || !user.password_ym || user.is_enter_ym === false) {
       return res.status(400).json({ error: "Вы не в аккаунте" })
     }
 
@@ -513,7 +522,7 @@ const yoomoneyLogout = async (req, res) => {
 
 
 
-module.exports = { 
+module.exports = {
   exchangeToken,
   getOperationHistory,
   getOperationDetails,

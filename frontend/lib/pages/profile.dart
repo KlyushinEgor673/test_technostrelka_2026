@@ -45,6 +45,12 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void dispose() {
+    // Если забыли вызвать _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final orientation = MediaQuery.of(context).orientation;
     return Scaffold(

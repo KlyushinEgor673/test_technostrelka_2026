@@ -75,11 +75,11 @@ class _OtpState extends State<Otp> {
     // TODO: implement initState
     super.initState();
     _dio = Provider.of<Dio>(context, listen: false);
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        _focusNode.requestFocus();
-      }
-    });
+    // _focusNode.addListener(() {
+    //   if (!_focusNode.hasFocus) {
+    //     _focusNode.requestFocus();
+    //   }
+    // });
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (seconds != 0) {
         setState(() {
@@ -187,52 +187,59 @@ class _OtpState extends State<Otp> {
                       color: Color.fromRGBO(89, 65, 174, 1),
                       text: 'Подтвердить',
                       isLoading: _isLoading,
-                      onPressed: _isCan == false || _isLoading ? null : () async {
-                        try {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          print(_controller.text);
-                          final response = await _dio.post(
-                            '/api/code/verify-code',
-                            data: jsonEncode({
-                              'email': widget.email,
-                              'code': _controller.text,
-                            }),
-                          );
-                          await _storage.write(
-                            key: 'token',
-                            value: response.data['token'],
-                          );
-                          _getYoomoney(_dio);
-                          _getYoomoneyChart(_dio);
-                          Navigator.pushNamed(context, '/profile');
-                        } on DioException catch (e) {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          Alerts.showError(context, e.response?.data['error']);
-                        }
-                      },
+                      onPressed: _isCan == false || _isLoading
+                          ? null
+                          : () async {
+                              try {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                print(_controller.text);
+                                final response = await _dio.post(
+                                  '/api/code/verify-code',
+                                  data: jsonEncode({
+                                    'email': widget.email,
+                                    'code': _controller.text,
+                                  }),
+                                );
+                                await _storage.write(
+                                  key: 'token',
+                                  value: response.data['token'],
+                                );
+                                _getYoomoney(_dio);
+                                _getYoomoneyChart(_dio);
+                                Navigator.pushNamed(context, '/profile');
+                              } on DioException catch (e) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                Alerts.showError(
+                                  context,
+                                  e.response?.data['error'],
+                                );
+                              }
+                            },
                     ),
                   ),
                   SizedBox(height: 7.5),
-                  GestureDetector(
+                  TextButton(
+                    onPressed: seconds != 0
+                        ? null
+                        : () async {
+                            setState(() {
+                              seconds = 60;
+                            });
+                            await _dio.post(
+                              '/api/code/resend-code',
+                              data: jsonEncode({'email': widget.email}),
+                            );
+                          },
                     child: Text(
                       seconds != 0
                           ? 'Отправить код ещё раз через $seconds'
                           : 'Отправить код ещё раз',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    onTap: () async {
-                      await _dio.post(
-                        '/api/code/resend-code',
-                        data: jsonEncode({'email': widget.email}),
-                      );
-                      setState(() {
-                        seconds = 60;
-                      });
-                    },
                   ),
                 ],
               ),

@@ -35,7 +35,7 @@ class Footer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () {
+                onPressed: currentIndex == 0 ? (){} : () {
                   Navigator.pushNamed(context, '/recommendations');
                 },
                 icon: Icon(
@@ -47,7 +47,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
+                onPressed: currentIndex == 1 ? (){} : () {
                   Navigator.pushNamed(context, '/charts');
                 },
                 icon: Icon(
@@ -59,7 +59,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
+                onPressed: currentIndex == 2 ? (){} : () {
                   Navigator.pushNamed(context, '/subscriptions');
                 },
                 icon: Icon(
@@ -71,7 +71,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
+                onPressed: currentIndex == 3 ? (){} : () {
                   Navigator.pushNamed(context, '/profile');
                 },
                 icon: Icon(

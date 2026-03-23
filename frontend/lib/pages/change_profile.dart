@@ -28,20 +28,14 @@ class _ChangeProfileState extends State<ChangeProfile> {
     setState(() {
       _isLoading = true;
     });
-    String? token = await _storage.read(
-      key: 'token',
-    );
+    String? token = await _storage.read(key: 'token');
     await _dio.put(
       '/api/user/edit-profile',
       data: jsonEncode({
         'name': _controllerName.text,
         'surname': _controllerSurname.text,
       }),
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      ),
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
     Navigator.pop(context);
   }
@@ -84,19 +78,14 @@ class _ChangeProfileState extends State<ChangeProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final orientation = MediaQuery
-        .of(context)
-        .orientation;
+    final orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      appBar: MediaQuery
-          .of(context)
-          .size
-          .width < 540
+      appBar: MediaQuery.of(context).size.width < 540
           ? AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-      )
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+            )
           : null,
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -106,19 +95,10 @@ class _ChangeProfileState extends State<ChangeProfile> {
               children: [
                 SizedBox(
                   height:
-                  MediaQuery
-                      .of(context)
-                      .size
-                      .height -
+                      MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
-                      MediaQuery
-                          .of(context)
-                          .padding
-                          .top -
-                      MediaQuery
-                          .of(context)
-                          .padding
-                          .bottom,
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -175,10 +155,31 @@ class _ChangeProfileState extends State<ChangeProfile> {
                           ),
                         ),
                       ),
-                      if (MediaQuery
-                          .of(context)
-                          .size
-                          .width > 540)
+
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: 15,
+                          left: 20,
+                          right: 20,
+                        ),
+                        constraints: BoxConstraints(maxWidth: 500),
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/change_password',
+                                );
+                              },
+                              child: Text('Изменить пароль'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (MediaQuery.of(context).size.width > 540)
                         Center(
                           child: Container(
                             margin: EdgeInsets.only(
@@ -235,10 +236,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                             ),
                           ),
                         ),
-                      if (MediaQuery
-                          .of(context)
-                          .size
-                          .width < 540)
+                      if (MediaQuery.of(context).size.width < 540)
                         Container(
                           width: double.infinity,
                           constraints: BoxConstraints(maxWidth: 500),

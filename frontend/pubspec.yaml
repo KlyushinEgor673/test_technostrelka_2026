@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.1.5+1
   email_validator: ^3.0.0
   flutter_launcher_icons: ^0.14.4
+  hexcolor: ^3.0.2
 
 dev_dependencies:
   flutter_test:

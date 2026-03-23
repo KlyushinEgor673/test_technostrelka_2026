@@ -30,7 +30,7 @@ class _HeaderState extends State<Header> {
       leading: SizedBox.shrink(),
       actions: [
         TextButton(
-          onPressed: () {
+          onPressed: widget.id == 0 ? (){} : () {
             Navigator.pushNamed(context, '/recommendations');
           },
           child: Text(
@@ -43,7 +43,7 @@ class _HeaderState extends State<Header> {
           ),
         ),
         TextButton(
-          onPressed: () {
+          onPressed:  widget.id == 1 ? (){} : () {
             Navigator.pushNamed(context, '/charts');
           },
           child: Text(
@@ -56,7 +56,7 @@ class _HeaderState extends State<Header> {
           ),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: widget.id == 2 ? (){} : () {
             Navigator.pushNamed(context, '/subscriptions');
           },
           child: Text(
@@ -69,7 +69,7 @@ class _HeaderState extends State<Header> {
           ),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: widget.id == 3 ? (){} : () {
             Navigator.pushNamed(context, '/profile');
           },
           child: Text(
