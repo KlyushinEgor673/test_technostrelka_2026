@@ -105,7 +105,7 @@ class _ChartsState extends State<Charts> {
         _barGroups.add(
           BarChartGroupData(
             x: i,
-            barRods: [BarChartRodData(toY: _mapDates[date])],
+            barRods: [BarChartRodData(toY: (_mapDates[date] as num).toDouble())],
           ),
         );
       }

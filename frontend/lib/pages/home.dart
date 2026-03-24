@@ -286,20 +286,6 @@ class _HomeState extends State<Home> {
                               constraints: BoxConstraints(
                                 maxWidth: 500
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    child: Text(
-                                      'Восстановить',
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(89, 65, 174, 1),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
                           SizedBox(height: 7.5),
                           Container(

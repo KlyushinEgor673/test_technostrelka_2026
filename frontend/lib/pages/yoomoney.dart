@@ -177,7 +177,7 @@ class _YoomoneyState extends State<Yoomoney> {
                     _checkCan();
                   },
                 ),
-                Text('Даю согласие на обработку персональных данных'),
+                Expanded(child: Text('Даю согласие на обработку персональных данных')),
               ],
             ),
           ),
